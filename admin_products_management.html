@@ -1,0 +1,242 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#e6e8eb",
+                      "surface-container": "#eceef1",
+                      "on-tertiary-fixed-variant": "#3d4756",
+                      "inverse-on-surface": "#eff1f4",
+                      "surface-container-highest": "#e0e3e6",
+                      "tertiary-container": "#6b7586",
+                      "primary-dark": "#008C44",
+                      "on-tertiary-container": "#fdfcff",
+                      "gradient-orange": "linear-gradient(135deg, #FF8A00 0%, #E64A00 100%)",
+                      "on-primary-fixed-variant": "#005225",
+                      "primary-fixed-dim": "#5adf82",
+                      "outline-variant": "#bccabb",
+                      "tertiary-fixed-dim": "#bdc7d9",
+                      "on-background": "#191c1e",
+                      "tertiary-fixed": "#d9e3f6",
+                      "primary-fixed": "#78fc9c",
+                      "surface": "#f7f9fc",
+                      "on-secondary-container": "#613100",
+                      "secondary-fixed": "#ffdcc4",
+                      "background": "#f7f9fc",
+                      "on-surface": "#191c1e",
+                      "surface-dim": "#d8dadd",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-container": "#008740",
+                      "on-tertiary-fixed": "#121c2a",
+                      "on-surface-variant": "#3d4a3e",
+                      "outline": "#6d7b6d",
+                      "surface-variant": "#e0e3e6",
+                      "on-error-container": "#93000a",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-container": "#f7fff3",
+                      "surface-bright": "#f7f9fc",
+                      "surface-container-low": "#f2f4f7",
+                      "primary": "#006b32",
+                      "gradient-dark": "linear-gradient(135deg, #1F2937 0%, #374151 100%)",
+                      "on-error": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "secondary-fixed-dim": "#ffb77f",
+                      "secondary": "#914c00",
+                      "gradient-green": "linear-gradient(135deg, #00A651 0%, #006B35 100%)",
+                      "inverse-primary": "#5adf82",
+                      "on-secondary-fixed-variant": "#6f3900",
+                      "error-container": "#ffdad6",
+                      "on-primary-fixed": "#00210b",
+                      "muted": "#9CA3AF",
+                      "tertiary": "#525d6c",
+                      "on-secondary": "#ffffff",
+                      "inverse-surface": "#2d3133",
+                      "surface-tint": "#006d33",
+                      "secondary-container": "#ff8a00",
+                      "on-secondary-fixed": "#2f1500",
+                      "error": "#EF4444"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "margin-mobile": "12px",
+                      "gutter": "12px",
+                      "margin-desktop": "24px",
+                      "container-max": "1280px",
+                      "section-gap": "16px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Noto Serif"],
+                      "micro": ["Noto Serif"],
+                      "label-sm": ["Noto Serif"],
+                      "label-md": ["Noto Serif"],
+                      "headline-lg-mobile": ["Noto Serif"],
+                      "headline-lg": ["Noto Serif"],
+                      "body-md": ["Noto Serif"],
+                      "body-lg": ["Noto Serif"],
+                      "headline-sm": ["Noto Serif"]
+              },
+              "fontSize": {
+                      "headline-md": ["17px", {"lineHeight": "24px", "fontWeight": "700"}],
+                      "micro": ["9px", {"lineHeight": "10px", "fontWeight": "400"}],
+                      "label-sm": ["10px", {"lineHeight": "12px", "fontWeight": "500"}],
+                      "label-md": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "body-md": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                      "body-lg": ["15px", {"lineHeight": "22px", "fontWeight": "400"}],
+                      "headline-sm": ["16px", {"lineHeight": "20px", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+    }catch(_e){}</script></head><body class="bg-background text-on-background font-body-md text-body-md antialiased overflow-hidden flex h-screen w-full">
+<!-- SideNavBar -->
+<aside class="hidden md:flex bg-surface-container dark:bg-surface-dim text-primary dark:text-primary-fixed-dim shadow-sm fixed left-0 top-0 h-full w-64 flex-col py-6 px-4 gap-2 z-20">
+<div class="mb-8 px-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface">Back Office</h1>
+<p class="font-micro text-micro text-on-surface-variant">Management Console</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2 flex-1">
+<!-- Active Tab -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-semibold active:scale-[0.98] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2" data-weight="fill" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="">Products</span>
+</a>
+<!-- Inactive Tabs -->
+
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-transform duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="">Orders</span>
+</a>
+</nav>
+<div class="mt-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-transform duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="">Log Out</span>
+</a>
+</div>
+</aside>
+
+<!-- Mobile Bottom Nav -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-lowest border-t border-surface-container-highest z-50 flex items-center justify-around px-2 py-2 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+<a class="flex flex-col items-center p-2 text-primary" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="inventory_2" data-weight="fill" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-micro text-[10px] mt-1">Products</span>
+</a>
+
+<a class="flex flex-col items-center p-2 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-micro text-[10px] mt-1">Orders</span>
+</a>
+<a class="flex flex-col items-center p-2 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="settings">settings</span>
+<span class="font-micro text-[10px] mt-1">Settings</span>
+</a>
+</nav>
+
+<!-- Main Content Wrapper -->
+<div class="md:ml-64 flex-1 flex flex-col h-full w-full relative z-10 pb-16 md:pb-0">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface shadow-sm dark:bg-surface-container-high flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16 shrink-0 sticky top-0 z-10">
+<div class="flex items-center gap-4 flex-1">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary dark:text-primary-fixed-dim font-bold tracking-tight">Dashboard</h2>
+<div class="hidden md:flex items-center bg-surface-container-low rounded-full px-4 py-2 ml-8 max-w-md w-full border border-surface-container-highest focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none outline-none w-full font-body-md text-body-md text-on-surface placeholder-on-surface-variant focus:ring-0 p-0" placeholder="Quick search..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-2 md:gap-4">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container dark:hover:bg-on-tertiary-fixed-variant transition-colors scale-95 active:scale-90 relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="hidden md:block h-6 w-px bg-surface-container-highest mx-2"></div>
+<button class="flex items-center gap-2 hover:bg-surface-container dark:hover:bg-on-tertiary-fixed-variant transition-colors p-1 md:pr-3 rounded-full scale-95 active:scale-90">
+<img class="w-8 h-8 rounded-full object-cover border border-surface-container-highest" data-alt="A professional headshot of a female administrator with a friendly expression, wearing a dark blazer over a light blouse, set against a solid neutral grey background in bright studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2FYPGDN-d-q5TPfBusJ94c9NDSHm5uaOUp0c6yJTUdE3FaCqKGOIyC8J7JOBW9aYYDf8-D7wLYigQjomGg7RClAWvq-d2jRgKp4jAjBHy43v1NhQIary4jw5aDQV_nt3v9TmNrVunbehJ2TA4k4sSYllb0R9GXepM-bjW8dr05L5lwbuj_VwOLADIBGdt2zpMic1RnspkQXcFAg_SHsm7HfRp27IZuKAp2NLcwsEdMZ6vtu6zpAJhSQ">
+<span class="font-headline-sm text-headline-sm text-primary dark:text-inverse-primary hidden md:block">Admin Profile</span>
+</button>
+</div>
+</header>
+<!-- Main Product Canvas -->
+<main class="flex-1 overflow-y-auto custom-scrollbar bg-surface p-margin-mobile md:p-margin-desktop">
+<!-- Page Header Actions -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-section-gap">
+<div>
+<h3 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">Product Catalog</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage your inventory, pricing, and product visibility.</p>
+</div>
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+<div class="flex items-center bg-surface-container-lowest border border-surface-container-highest rounded-lg px-3 py-2 shadow-sm focus-within:border-primary transition-colors flex-1 md:w-64">
+<span class="material-symbols-outlined text-on-surface-variant mr-2 text-sm" data-icon="filter_list">filter_list</span>
+<input class="bg-transparent border-none outline-none w-full font-body-md text-body-md text-on-surface placeholder-on-surface-variant focus:ring-0 p-0" placeholder="Filter products..." type="text">
+</div>
+<button class="shrink-0 flex items-center justify-center gap-2 rounded-full px-5 py-2.5 font-headline-sm text-headline-sm text-on-primary shadow-sm hover:shadow-md transition-all scale-95 active:scale-90" style="background: linear-gradient(135deg, #00A651 0%, #006B35 100%);">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+<span class="">Add New Product</span>
+</button>
+</div>
+</div>
+<!-- Data Table Container -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-surface-container-highest overflow-hidden">
+<!-- Mobile Card Layout -->
+<div class="md:hidden flex flex-col divide-y divide-surface-container-highest">
+<!-- Card 1 -->
+<div class="p-4 flex gap-4 hover:bg-surface-container transition-colors"><img class="w-16 h-16 rounded-lg object-cover border border-surface-container-highest bg-surface shrink-0" data-alt="A clean, high-resolution product shot of a clear plastic bag filled with premium white Miniket rice, resting on a stark white studio background with soft, even lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQ3ulIILGGsVv5lFkrzqoO_U4Op5Bq-yOfa-mPmQHPh0a8WcdDxkPx0WTJo_JR0UTPd7ZzwBzqzqLQ307EgoelEaep1owLzkZbEhDBB7Xc48O8o54RF6rHUTsradDeABSs57C8_Evh_KjNdhE5A4peVHarUf9fq5I3aVg1CcMoCk8yTCFmd1vbyT1ZLLu5BOyYvEllQCTLdtk7U0tZmsJeol7jqCf0NHHtDoV9GlZH8mP5jG_ZcWDdew"><div class="flex-1 min-w-0"><p class="font-headline-sm text-headline-sm text-on-surface truncate">প্রিমিয়াম মিনিকেট চাল</p><p class="font-micro text-micro text-on-surface-variant mt-0.5">SKU: GRO-RICE-001</p><div class="flex items-center justify-between mt-2"><span class="font-body-md text-body-md text-on-surface font-semibold">৳৫.৯৯</span><button aria-checked="true" class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" role="switch"><span class="translate-x-6 inline-block h-4 w-4 transform rounded-full bg-white transition-transform"></span></button></div></div></div>
+<!-- Card 2 -->
+<div class="p-4 flex gap-4 hover:bg-surface-container transition-colors"><img class="w-16 h-16 rounded-lg object-cover border border-surface-container-highest bg-surface shrink-0" data-alt="A brightly lit, professional product photo of a 5-liter yellow plastic bottle of soybean oil with a green cap, standing upright on a pure white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgVSZppPd8sW5EjZQDaNOFka04p7iRLN_MFrqSnZuvGCC6Al_yTb2k9ahxv1Q8lKBSpbeKlMDalCj21LLCcBFhLyhQeadydqSiXZUHgy5sVP_2aX7Vu9JZ2q1eD0YNwSqXSuPLEVOSAzpnlO_DAyk1kDugdYlQbOOptqr6FE0L3bKYSqkAm11gu1JvQk8X-EiXkgeaLYNDeGubtEA4HUmariZrp6Fi_CtO8hf0OWLdy0N3-L0jyWVumw"><div class="flex-1 min-w-0"><p class="font-headline-sm text-headline-sm text-on-surface truncate">খাঁটি সয়াবিন তেল (৫ লিটার)</p><p class="font-micro text-micro text-on-surface-variant mt-0.5">SKU: GRO-OIL-005</p><div class="flex items-center justify-between mt-2"><span class="font-body-md text-body-md text-on-surface font-semibold">৳৮.৫০</span><button aria-checked="true" class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" role="switch"><span class="translate-x-6 inline-block h-4 w-4 transform rounded-full bg-white transition-transform"></span></button></div></div></div>
+<!-- Card 3 -->
+<div class="p-4 flex gap-4 hover:bg-surface-container transition-colors"><img class="w-16 h-16 rounded-lg object-cover border border-surface-container-highest bg-surface shrink-0" data-alt="A crisp, high-angle studio shot of a rustic cardboard carton containing one dozen fresh brown organic eggs, set against a pristine white backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBj_p5zMrJJr6X_YeLR_IMWpOVq56U8EiJ_-OM8bXk8yDWnIYuHpIIENy5sHMtdOzggH7zvKzTkZduwqTZ3mjLxy66-BOpyBq0XppnJfGOniIeqaIYYNtc3DhJHiD83nO_Gjzv-IGqf7dvQmzRcF7MMidG5NnaQog_SOoOM6KhWDA_0DQTHxog-TmV0-SS47jKt7EHk5uhYAc58FMm62YGzIXLynD4Lu2hEq7QGFoBF56ylJtAxbZFJMg"><div class="flex-1 min-w-0"><p class="font-headline-sm text-headline-sm text-on-surface truncate">ফার্মের টাটকা ডিম (১ ডজন)</p><p class="font-micro text-micro text-on-surface-variant mt-0.5">SKU: DAI-EGG-012</p><div class="flex items-center justify-between mt-2"><span class="font-body-md text-body-md text-on-surface font-semibold">৳৩.২০</span><button aria-checked="true" class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" role="switch"><span class="translate-x-6 inline-block h-4 w-4 transform rounded-full bg-white transition-transform"></span></button></div></div></div>
+<!-- Card 4 (Out of Stock) -->
+<div class="p-4 flex gap-4 hover:bg-surface-container transition-colors bg-surface-container-lowest/50 opacity-75"><img class="w-16 h-16 rounded-lg object-cover border border-surface-container-highest bg-surface shrink-0 grayscale-[0.3]" data-alt="A clean top-down photograph of three perfectly round, vibrant red organic tomatoes resting on a solid white surface in bright, diffused light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbOJhIhMQ2OtJ6FZt-0K_qhrwWlTAJp-3HCdyhhAcmLZ4cPwPX94iVsraeSgCrGgnvyUSBUqMnylByus6VZxUGyduxGlazKGJwFIP1cHMI-j8WGtoQgsVMYdGFyDQ7eHIi7rYmfuRVKfuA1EVjQ6AGlG-JzH0-lpkkKNIPTPcZLxlxuR18JNlDarMRB6rtNkhtYwXIYAdi1-j7EaDBpgmVyyUdyz-rm9IGBTF7rizNoL4iEbVWZRn8Vg"><div class="flex-1 min-w-0"><p class="font-headline-sm text-headline-sm text-on-surface truncate">অর্গানিক লাল টমেটো (১ কেজি)</p><p class="font-micro text-micro text-error mt-0.5 font-semibold">Out of Stock</p><div class="flex items-center justify-between mt-2"><span class="font-body-md text-body-md text-on-surface font-semibold">৳৪.০০</span><button aria-checked="false" class="relative inline-flex h-6 w-11 items-center rounded-full bg-surface-container-highest transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" role="switch"><span class="translate-x-1 inline-block h-4 w-4 transform rounded-full bg-on-surface-variant transition-transform"></span></button></div></div></div>
+</div>
+
+<!-- Desktop Table Layout -->
+<div class="hidden md:block overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead class="bg-surface-container-low border-b border-surface-container-highest">
+<tr>
+<th class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider px-6 py-4 font-semibold w-16">Image</th>
+<th class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider px-6 py-4 font-semibold">Product Name</th>
+<th class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider px-6 py-4 font-semibold w-24">Price</th>
+<th class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider px-6 py-4 font-semibold w-32">Category</th>
+<th class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider px-6 py-4 font-semibold w-24 text-right">Stock</th>
+<th class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider px-6 py-4 font-semibold w-32 text-center">Status</th>
+<th class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider px-6 py-4 font-semibold w-24 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-highest">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container transition-colors group"><td class="px-6 py-3"><img class="w-12 h-12 rounded-lg object-cover border border-surface-container-highest bg-surface" data-alt="A clean, high-resolution product shot of a clear plastic bag filled with premium white Miniket rice, resting on a stark white studio background with soft, even lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQ3ulIILGGsVv5lFkrzqoO_U4Op5Bq-yOfa-mPmQHPh0a8WcdDxkPx0WTJo_JR0UTPd7ZzwBzqzqLQ307EgoelEaep1owLzkZbEhDBB7Xc48O8o54RF6rHUTsradDeABSs57C8_Evh_KjNdhE5A4peVHarUf9fq5I3aVg1CcMoCk8yTCFmd1vbyT1ZLLu5BOyYvEllQCTLdtk7U0tZmsJeol7jqCf0NHHtDoV9GlZH8mP5jG_ZcWDdew"></td><td class="px-6 py-3"><p class="font-headline-sm text-headline-sm text-on-surface">প্রিমিয়াম মিনিকেট চাল</p><p class="font-micro text-micro text-on-surface-variant mt-0.5">SKU: GRO-RICE-001</p></td><td class="px-6 py-3 font-body-md text-body-md text-on-surface font-semibold">৳৫.৯৯</td><td class="px-6 py-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant border border-surface-container-highest">Groceries</span></td><td class="px-6 py-3 font-body-md text-body-md text-on-surface text-right">150</td><td class="px-6 py-3 text-center"><button aria-checked="true" class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" role="switch"><span class="translate-x-6 inline-block h-4 w-4 transform rounded-full bg-white transition-transform"></span></button></td><td class="px-6 py-3 text-right"><div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-primary transition-colors" title="Edit"><span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span></button><button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-error-container hover:text-error transition-colors" title="Delete"><span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span></button></div></td></tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container transition-colors group"><td class="px-6 py-3"><img class="w-12 h-12 rounded-lg object-cover border border-surface-container-highest bg-surface" data-alt="A brightly lit, professional product photo of a 5-liter yellow plastic bottle of soybean oil with a green cap, standing upright on a pure white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgVSZppPd8sW5EjZQDaNOFka04p7iRLN_MFrqSnZuvGCC6Al_yTb2k9ahxv1Q8lKBSpbeKlMDalCj21LLCcBFhLyhQeadydqSiXZUHgy5sVP_2aX7Vu9JZ2q1eD0YNwSqXSuPLEVOSAzpnlO_DAyk1kDugdYlQbOOptqr6FE0L3bKYSqkAm11gu1JvQk8X-EiXkgeaLYNDeGubtEA4HUmariZrp6Fi_CtO8hf0OWLdy0N3-L0jyWVumw"></td><td class="px-6 py-3"><p class="font-headline-sm text-headline-sm text-on-surface">খাঁটি সয়াবিন তেল (৫ লিটার)</p><p class="font-micro text-micro text-on-surface-variant mt-0.5">SKU: GRO-OIL-005</p></td><td class="px-6 py-3 font-body-md text-body-md text-on-surface font-semibold">৳৮.৫০</td><td class="px-6 py-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant border border-surface-container-highest">Groceries</span></td><td class="px-6 py-3 font-body-md text-body-md text-on-surface text-right">85</td><td class="px-6 py-3 text-center"><button aria-checked="true" class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" role="switch"><span class="translate-x-6 inline-block h-4 w-4 transform rounded-full bg-white transition-transform"></span></button></td><td class="px-6 py-3 text-right"><div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-primary transition-colors" title="Edit"><span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span></button><button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-error-container hover:text-error transition-colors" title="Delete"><span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span></button></div></td></tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container transition-colors group"><td class="px-6 py-3"><img class="w-12 h-12 rounded-lg object-cover border border-surface-container-highest bg-surface" data-alt="A crisp, high-angle studio shot of a rustic cardboard carton containing one dozen fresh brown organic eggs, set against a pristine white backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBj_p5zMrJJr6X_YeLR_IMWpOVq56U8EiJ_-OM8bXk8yDWnIYuHpIIENy5sHMtdOzggH7zvKzTkZduwqTZ3mjLxy66-BOpyBq0XppnJfGOniIeqaIYYNtc3DhJHiD83nO_Gjzv-IGqf7dvQmzRcF7MMidG5NnaQog_SOoOM6KhWDA_0DQTHxog-TmV0-SS47jKt7EHk5uhYAc58FMm62YGzIXLynD4Lu2hEq7QGFoBF56ylJtAxbZFJMg"></td><td class="px-6 py-3"><p class="font-headline-sm text-headline-sm text-on-surface">ফার্মের টাটকা ডিম (১ ডজন)</p><p class="font-micro text-micro text-on-surface-variant mt-0.5">SKU: DAI-EGG-012</p></td><td class="px-6 py-3 font-body-md text-body-md text-on-surface font-semibold">৳৩.২০</td><td class="px-6 py-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant border border-surface-container-highest">Dairy</span></td><td class="px-6 py-3 font-body-md text-body-md text-on-surface text-right">40</td><td class="px-6 py-3 text-center"><button aria-checked="true" class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" role="switch"><span class="translate-x-6 inline-block h-4 w-4 transform rounded-full bg-white transition-transform"></span></button></td><td class="px-6 py-3 text-right"><div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-primary transition-colors" title="Edit"><span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span></button><button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-error-container hover:text-error transition-colors" title="Delete"><span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span></button></div></td></tr>
+<!-- Row 4 (Out of Stock / Inactive) -->
+<tr class="hover:bg-surface-container transition-colors group bg-surface-container-lowest/50 opacity-75"><td class="px-6 py-3"><img class="w-12 h-12 rounded-lg object-cover border border-surface-container-highest bg-surface grayscale-[0.3]" data-alt="A clean top-down photograph of three perfectly round, vibrant red organic tomatoes resting on a solid white surface in bright, diffused light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbOJhIhMQ2OtJ6FZt-0K_qhrwWlTAJp-3HCdyhhAcmLZ4cPwPX94iVsraeSgCrGgnvyUSBUqMnylByus6VZxUGyduxGlazKGJwFIP1cHMI-j8WGtoQgsVMYdGFyDQ7eHIi7rYmfuRVKfuA1EVjQ6AGlG-JzH0-lpkkKNIPTPcZLxlxuR18JNlDarMRB6rtNkhtYwXIYAdi1-j7EaDBpgmVyyUdyz-rm9IGBTF7rizNoL4iEbVWZRn8Vg"></td><td class="px-6 py-3"><p class="font-headline-sm text-headline-sm text-on-surface">অর্গানিক লাল টমেটো (১ কেজি)</p><p class="font-micro text-micro text-error mt-0.5 font-semibold">Out of Stock</p></td><td class="px-6 py-3 font-body-md text-body-md text-on-surface font-semibold">৳৪.০০</td><td class="px-6 py-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant border border-surface-container-highest">Produce</span></td><td class="px-6 py-3 font-body-md text-body-md text-error text-right font-bold">0</td><td class="px-6 py-3 text-center"><button aria-checked="false" class="relative inline-flex h-6 w-11 items-center rounded-full bg-surface-container-highest transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" role="switch"><span class="translate-x-1 inline-block h-4 w-4 transform rounded-full bg-on-surface-variant transition-transform"></span></button></td><td class="px-6 py-3 text-right"><div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-primary transition-colors" title="Edit"><span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span></button><button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-error-container hover:text-error transition-colors" title="Delete"><span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span></button></div></td></tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="bg-surface-container-lowest border-t border-surface-container-highest px-4 md:px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+<p class="font-body-md text-body-md text-on-surface-variant text-center md:text-left">Showing 1 to 4 of 124 products</p>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 rounded-md border border-surface-container-highest flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-md border border-primary bg-primary-container text-primary font-body-md text-body-md font-semibold flex items-center justify-center">1</button>
+<button class="w-8 h-8 rounded-md border border-surface-container-highest flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors font-body-md text-body-md">2</button>
+</div></div></div></main></div>
+
+</body></html>

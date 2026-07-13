@@ -1,0 +1,324 @@
+<!DOCTYPE html><html class="light" lang="bn" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>শপিং কার্ট - Smart Super Shop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#5adf82",
+                        "on-surface-variant": "#3d4a3e",
+                        "outline-variant": "#bccabb",
+                        "on-secondary-fixed-variant": "#6f3900",
+                        "background": "#f7f9fc",
+                        "on-tertiary-fixed": "#121c2a",
+                        "error-container": "#ffdad6",
+                        "gradient-green": "linear-gradient(135deg, #00A651 0%, #006B35 100%)",
+                        "on-primary-fixed": "#00210b",
+                        "inverse-surface": "#2d3133",
+                        "tertiary-container": "#6b7586",
+                        "primary-dark": "#008C44",
+                        "inverse-primary": "#5adf82",
+                        "on-primary-container": "#f7fff3",
+                        "on-error": "#ffffff",
+                        "primary-container": "#008740",
+                        "on-secondary-fixed": "#2f1500",
+                        "on-error-container": "#93000a",
+                        "surface": "#f7f9fc",
+                        "secondary": "#914c00",
+                        "on-secondary-container": "#613100",
+                        "tertiary-fixed": "#d9e3f6",
+                        "on-primary-fixed-variant": "#005225",
+                        "surface-container-high": "#e6e8eb",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f7f9fc",
+                        "primary-fixed": "#78fc9c",
+                        "muted": "#9CA3AF",
+                        "on-surface": "#191c1e",
+                        "surface-container": "#eceef1",
+                        "error": "#EF4444",
+                        "tertiary-fixed-dim": "#bdc7d9",
+                        "surface-container-highest": "#e0e3e6",
+                        "primary": "#006b32",
+                        "on-tertiary-fixed-variant": "#3d4756",
+                        "on-background": "#191c1e",
+                        "gradient-orange": "linear-gradient(135deg, #FF8A00 0%, #E64A00 100%)",
+                        "secondary-fixed": "#ffdcc4",
+                        "tertiary": "#525d6c",
+                        "outline": "#6d7b6d",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f2f4f7",
+                        "surface-dim": "#d8dadd",
+                        "secondary-container": "#ff8a00",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#eff1f4",
+                        "surface-variant": "#e0e3e6",
+                        "surface-tint": "#006d33",
+                        "secondary-fixed-dim": "#ffb77f",
+                        "on-tertiary-container": "#fdfcff",
+                        "gradient-dark": "linear-gradient(135deg, #1F2937 0%, #374151 100%)"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "12px",
+                        "section-gap": "16px",
+                        "margin-mobile": "12px",
+                        "margin-desktop": "24px",
+                        "container-max": "1280px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Noto Serif"],
+                        "label-sm": ["Noto Serif"],
+                        "headline-lg-mobile": ["Noto Serif"],
+                        "body-md": ["Noto Serif"],
+                        "micro": ["Noto Serif"],
+                        "headline-sm": ["Noto Serif"],
+                        "headline-md": ["Noto Serif"],
+                        "label-md": ["Noto Serif"],
+                        "headline-lg": ["Noto Serif"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+                        "label-sm": ["10px", { "lineHeight": "12px", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "micro": ["9px", { "lineHeight": "10px", "fontWeight": "400" }],
+                        "headline-sm": ["16px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "headline-md": ["17px", { "lineHeight": "24px", "fontWeight": "700" }],
+                        "label-md": ["11px", { "lineHeight": "14px", "fontWeight": "500" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background font-body-md text-on-background min-h-screen flex flex-col antialiased">
+<!-- Header (TopNavBar) -->
+<header class="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 bg-surface/90 backdrop-blur-md shadow-sm">
+<div class="flex items-center gap-4">
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<a class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed" href="#">
+                Smart Super Shop
+            </a>
+</div>
+<!-- Desktop Navigation -->
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors duration-200" href="#">Home</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors duration-200" href="#">Shop</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors duration-200" href="#">About</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors duration-200" href="#">Contact</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="relative hidden md:block">
+<input class="rounded-full bg-surface-container-high border-none py-2 pl-4 pr-10 text-body-md focus:ring-2 focus:ring-primary w-64 transition-all" placeholder="Search products..." type="text">
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+</div>
+<button class="relative text-primary dark:text-inverse-primary font-bold border-b-2 border-primary scale-95 active:scale-90 transition-transform flex items-center justify-center p-2 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined filled-icon">shopping_cart</span>
+<span class="absolute top-0 right-0 bg-secondary-container text-on-secondary-container text-micro font-bold rounded-full h-4 w-4 flex items-center justify-center animate-pulse">2</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-section-gap">
+<div class="mb-section-gap flex items-center gap-2">
+<h1 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-on-surface">আপনার কার্ট</h1>
+<span class="bg-surface-container-high text-on-surface-variant px-2 py-1 rounded-full text-label-md font-label-md">২টি পণ্য</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-section-gap items-start">
+<!-- Left Column: Cart Items -->
+<div class="lg:col-span-8 flex flex-col gap-4">
+<!-- Item 1 -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 border border-outline-variant/30 relative overflow-hidden group">
+<!-- Image -->
+<div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-surface-container shrink-0 overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="A pristine, highly detailed studio photograph of a 5kg sack of premium Miniket rice. The packaging is modern and clean, sitting on a soft white surface. Studio lighting creates a bright, trustworthy, and premium light-mode aesthetic, emphasizing the high quality of the grocery product." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4qIb1onnip1Mel_aQYkKh0JukqEO0txnQIo6SN5R2lF2j3_lYgJBl9nOt56YiDrewRd3KLc0spkx1UNWzk5o_0IaNWaOaBaZdR8DPNjnCT2bUNLAs-broGfyizLllDlvSeYwd1Zz-1qkl4XvkF0U-_1MLFSLpUDlcSZtDvdm3ChbGpuSy0-cUg_CK1d-vJRfM9RwxyMCphAhZxEuLLPf2VJhzXLDmm1alZTthY8jD2tSOq2_-KexHPA">
+</div>
+<!-- Details -->
+<div class="flex-grow flex flex-col justify-between h-full w-full">
+<div class="flex justify-between items-start mb-2 w-full">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface mb-1">মিনিকেট চাল (প্রিমিয়াম)</h3>
+<p class="text-label-md font-label-md text-on-surface-variant">প্যাকেজ: ৫ কেজি</p>
+</div>
+<button aria-label="Remove item" class="text-on-surface-variant hover:text-error transition-colors p-1 rounded-full hover:bg-error-container/50 focus:outline-none">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+<div class="flex justify-between items-end mt-auto w-full">
+<div class="flex items-center bg-surface-container rounded-full border border-outline-variant/50 overflow-hidden">
+<button aria-label="Decrease quantity" class="w-8 h-8 flex items-center justify-center text-on-surface hover:bg-surface-container-high active:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<input class="w-10 text-center bg-transparent border-none text-body-md font-body-md p-0 focus:ring-0 appearance-none m-0" min="1" type="number" value="1">
+<button aria-label="Increase quantity" class="w-8 h-8 flex items-center justify-center text-on-surface hover:bg-surface-container-high active:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+<div class="text-right">
+<div class="text-label-sm font-label-sm text-on-surface-variant line-through opacity-70">৳৩৭০</div>
+<div class="text-headline-md font-headline-md text-primary font-bold">৳৩৪০</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 border border-outline-variant/30 relative overflow-hidden group">
+<!-- Image -->
+<div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-surface-container shrink-0 overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="A clean, high-resolution product shot of a carton of one dozen fresh farm eggs. The carton is elegantly placed on a soft, light background. Bright, natural-looking studio lighting highlights the freshness and quality of the eggs, maintaining a modern, clean light-mode aesthetic suitable for a premium grocery store." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxxxCeeuT4INKzd6hbt6Y_8fZ8-fu-K4GlIkGqc9-srihZC63sPZsUJ-rMdHSaghgLJU4KaFroDTpTRocNe4BdzV7__mNjDAz-i2n6A2D7z800QCPAQPOUtx6iVhixfmK7myNP0lUSm8PUhSvi5tfKGwMbxbaXvC4J_1qZNcEhksY_U3_qBz5nDjjiXJSOfN9VwbqV5EB5JpIgDqJKo8Azgi4l6ftbooakpjggRtsnHaS2I-6jaW59AA">
+</div>
+<!-- Details -->
+<div class="flex-grow flex flex-col justify-between h-full w-full">
+<div class="flex justify-between items-start mb-2 w-full">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface mb-1">ফার্মের ডিম (সাদা)</h3>
+<p class="text-label-md font-label-md text-on-surface-variant">পরিমাণ: ১ ডজন</p>
+</div>
+<button aria-label="Remove item" class="text-on-surface-variant hover:text-error transition-colors p-1 rounded-full hover:bg-error-container/50 focus:outline-none">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+<div class="flex justify-between items-end mt-auto w-full">
+<div class="flex items-center bg-surface-container rounded-full border border-outline-variant/50 overflow-hidden">
+<button aria-label="Decrease quantity" class="w-8 h-8 flex items-center justify-center text-on-surface hover:bg-surface-container-high active:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<input class="w-10 text-center bg-transparent border-none text-body-md font-body-md p-0 focus:ring-0 appearance-none m-0" min="1" type="number" value="2">
+<button aria-label="Increase quantity" class="w-8 h-8 flex items-center justify-center text-on-surface hover:bg-surface-container-high active:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+<div class="text-right">
+<div class="text-headline-md font-headline-md text-primary font-bold">৳২৮০</div>
+<div class="text-micro font-micro text-on-surface-variant mt-1">৳১৪০ / ডজন</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Order Summary -->
+<div class="lg:col-span-4">
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm p-6 border border-outline-variant/30 sticky top-24">
+<h2 class="text-headline-sm font-headline-sm text-on-surface mb-6 flex items-center gap-2 border-b border-outline-variant/30 pb-4">
+<span class="material-symbols-outlined text-primary">receipt_long</span>
+                        অর্ডার সারসংক্ষেপ
+                    </h2>
+<!-- Promo Code -->
+
+<!-- Cost Breakdown -->
+<div class="space-y-3 mb-6 pb-6 border-b border-outline-variant/30">
+<div class="flex justify-between items-center text-body-md font-body-md text-on-surface">
+<span class="">উপ-মোট (২টি পণ্য)</span>
+<span class="font-medium">৳৬২০</span>
+</div>
+<div class="flex justify-between items-center text-body-md font-body-md text-on-surface">
+<span class="">ডেলিভারি চার্জ</span>
+<span class="font-medium text-on-surface-variant">৳৫০</span>
+</div>
+<div class="flex justify-between items-center text-body-md font-body-md text-on-surface">
+<span class="">ডিসকাউন্ট</span>
+<span class="font-medium text-error">- ৳৩০</span>
+</div>
+</div>
+<!-- Total -->
+<div class="flex justify-between items-end mb-6">
+<span class="text-headline-sm font-headline-sm text-on-surface font-bold">সর্বমোট</span>
+<div class="text-right">
+<span class="text-headline-lg font-headline-lg text-primary font-bold block">৳৬৪০</span>
+<span class="text-micro font-micro text-on-surface-variant">ভ্যাট/ট্যাক্স অন্তর্ভুক্ত</span>
+</div>
+</div>
+<!-- Action -->
+<button class="w-full text-on-primary bg-primary rounded-full py-3 px-4 font-headline-sm text-headline-sm shadow-sm hover:shadow-md hover:bg-primary-dark transition-all duration-200 active:scale-95 flex items-center justify-center gap-2" style="background: linear-gradient(135deg, #00A651 0%, #006B35 100%);">অর্ডার নিশ্চিত করুন
+                        <span class="material-symbols-outlined text-[20px]">arrow_forward</span></button>
+<div class="mt-4 flex items-center justify-center gap-2 text-label-sm font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-primary">verified_user</span>
+                         নিরাপদ পেমেন্ট গ্যারান্টিড
+                    </div>
+</div>
+</div>
+</div>
+<!-- Empty State (Hidden by default for this view, but included in DOM for functionality) -->
+<div class="hidden flex-col items-center justify-center py-20 text-center">
+<div class="w-48 h-48 mb-6 opacity-80">
+<!-- Using animated SVG placeholder for empty state illustration -->
+
+</div>
+<h2 class="text-headline-md font-headline-md text-on-surface mb-2">আপনার কার্টটি বর্তমানে খালি</h2>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6 max-w-md">আপনার পছন্দের পণ্যগুলো খুঁজতে শুরু করুন এবং দারুণ সব অফার উপভোগ করুন!</p>
+<button class="border border-primary text-primary hover:bg-primary/5 rounded-full py-2 px-6 font-label-md text-label-md transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+                কেনাকাটা চালিয়ে যান
+            </button>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 md:hidden shadow-lg bg-surface dark:bg-inverse-surface rounded-t-xl border-t border-outline-variant/20">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-lg p-2 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">local_grocery_store</span>
+<span class="font-label-sm text-label-sm mt-1">Groceries</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-lg p-2 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">nutrition</span>
+<span class="font-label-sm text-label-sm mt-1">Fruits</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-lg p-2 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">eco</span>
+<span class="font-label-sm text-label-sm mt-1">Vegetables</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-lg p-2 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">baby_changing_station</span>
+<span class="font-label-sm text-label-sm mt-1">Baby care</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="w-full mt-section-gap px-margin-mobile md:px-margin-desktop py-12 border-t border-outline-variant bg-surface-container-lowest dark:bg-inverse-surface flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-16 md:mb-0">
+<div>
+<div class="text-headline-sm font-headline-sm text-primary mb-2">Smart Super Shop</div>
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 Smart Super Shop. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap gap-4 md:gap-6">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary underline opacity-80 hover:opacity-100 transition-opacity" href="#">About</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary underline opacity-80 hover:opacity-100 transition-opacity" href="#">Contact</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary underline opacity-80 hover:opacity-100 transition-opacity" href="#">Returns Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary underline opacity-80 hover:opacity-100 transition-opacity" href="#">Privacy Policy</a>
+</div>
+</footer>
+
+
+</body></html>

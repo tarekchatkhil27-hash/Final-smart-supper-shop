@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html lang="bn"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&amp;family=Tiro+Bangla:ital@0;1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#e0e3e6",
+                      "surface-container-highest": "#e0e3e6",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-low": "#f2f4f7",
+                      "surface-container-high": "#e6e8eb",
+                      "secondary-fixed-dim": "#ffb77f",
+                      "primary-fixed": "#78fc9c",
+                      "secondary-fixed": "#ffdcc4",
+                      "secondary-container": "#ff8a00",
+                      "surface-tint": "#006d33",
+                      "inverse-surface": "#2d3133",
+                      "primary-dark": "#008C44",
+                      "outline-variant": "#bccabb",
+                      "surface": "#f7f9fc",
+                      "on-tertiary-fixed": "#121c2a",
+                      "inverse-primary": "#5adf82",
+                      "on-background": "#191c1e",
+                      "error": "#EF4444",
+                      "on-secondary": "#ffffff",
+                      "surface-dim": "#d8dadd",
+                      "on-error-container": "#93000a",
+                      "tertiary-container": "#6b7586",
+                      "on-secondary-fixed": "#2f1500",
+                      "surface-container": "#eceef1",
+                      "gradient-green": "linear-gradient(135deg, #00A651 0%, #006B35 100%)",
+                      "on-tertiary-container": "#fdfcff",
+                      "gradient-orange": "linear-gradient(135deg, #FF8A00 0%, #E64A00 100%)",
+                      "on-surface": "#191c1e",
+                      "on-primary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "gradient-dark": "linear-gradient(135deg, #1F2937 0%, #374151 100%)",
+                      "on-secondary-fixed-variant": "#6f3900",
+                      "surface-bright": "#f7f9fc",
+                      "on-error": "#ffffff",
+                      "primary-fixed-dim": "#5adf82",
+                      "primary-container": "#008740",
+                      "on-surface-variant": "#3d4a3e",
+                      "on-primary-fixed": "#00210b",
+                      "tertiary": "#525d6c",
+                      "tertiary-fixed-dim": "#bdc7d9",
+                      "on-primary-fixed-variant": "#005225",
+                      "on-primary-container": "#f7fff3",
+                      "outline": "#6d7b6d",
+                      "secondary": "#914c00",
+                      "tertiary-fixed": "#d9e3f6",
+                      "background": "#f7f9fc",
+                      "muted": "#9CA3AF",
+                      "primary": "#006b32",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-container": "#613100",
+                      "on-tertiary-fixed-variant": "#3d4756",
+                      "inverse-on-surface": "#eff1f4"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px",
+                      "2xl": "1rem"
+              },
+              "spacing": {
+                      "section-gap": "16px",
+                      "margin-mobile": "12px",
+                      "container-max": "1280px",
+                      "base": "4px",
+                      "margin-desktop": "24px",
+                      "gutter": "12px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "headline-md": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "body-md": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "label-sm": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "label-md": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "headline-lg": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "headline-sm": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "body-lg": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "micro": ["Noto Serif", "Tiro Bangla", "serif"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "headline-md": ["17px", {"lineHeight": "24px", "fontWeight": "700"}],
+                      "body-md": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                      "label-sm": ["10px", {"lineHeight": "12px", "fontWeight": "500"}],
+                      "label-md": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "headline-sm": ["16px", {"lineHeight": "20px", "fontWeight": "600"}],
+                      "body-lg": ["15px", {"lineHeight": "22px", "fontWeight": "400"}],
+                      "micro": ["9px", {"lineHeight": "10px", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    }catch(_e){}</script><meta charset="utf-8"/></head><body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 bg-surface/90 backdrop-blur-md shadow-sm border-b-0">
+<div class="flex items-center gap-4">
+<h1 class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">Smart Super Shop</h1>
+</div>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors duration-200" href="#">Home</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md transition-colors duration-200" href="#">Shop</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors duration-200" href="#">About</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors duration-200" href="#">Contact</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 scale-95 active:scale-90 relative">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-gradient-orange text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center animate-pulse">2</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-section-gap flex flex-col md:flex-row gap-6 mt-4 mb-16 md:mb-0">
+<!-- Sidebar Filters (Desktop) -->
+<aside class="hidden md:block w-64 flex-shrink-0 bg-surface-container-lowest p-4 rounded-2xl shadow-sm border border-surface-variant self-start sticky top-24">
+<h2 class="font-headline-sm text-headline-sm text-on-background mb-4 pb-2 border-b border-surface-variant">ফিল্টার করুন</h2>
+<!-- Price Range -->
+<div class="mb-6">
+<h3 class="font-label-md text-label-md text-on-surface font-bold mb-3">মূল্য পরিসীমা</h3>
+<input class="w-full accent-primary h-2 bg-surface-container-high rounded-full appearance-none cursor-pointer" max="10000" min="0" type="range"/>
+<div class="flex justify-between text-body-md text-on-surface-variant mt-2">
+<span class="">৳ ০</span>
+<span class="">৳ ১০,০০০</span>
+</div>
+</div>
+<!-- Categories -->
+<div class="mb-6">
+<h3 class="font-label-md text-label-md text-on-surface font-bold mb-3">ক্যাটাগরি</h3>
+<div class="space-y-2">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input checked="" class="form-checkbox text-primary rounded border-outline-variant focus:ring-primary w-4 h-4 cursor-pointer" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary transition-colors">চাল ও ডাল</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="form-checkbox text-primary rounded border-outline-variant focus:ring-primary w-4 h-4 cursor-pointer" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary transition-colors">ফলমূল</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="form-checkbox text-primary rounded border-outline-variant focus:ring-primary w-4 h-4 cursor-pointer" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary transition-colors">তাজা সবজি</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="form-checkbox text-primary rounded border-outline-variant focus:ring-primary w-4 h-4 cursor-pointer" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary transition-colors">বেবি কেয়ার</span>
+</label>
+</div>
+</div>
+<!-- Size -->
+<!-- Color -->
+</aside>
+<!-- Product Grid Area -->
+<div class="flex-grow w-full">
+<!-- Top Bar -->
+<div class="flex flex-col sm:flex-row justify-between items-center bg-surface-container-lowest p-3 md:p-4 rounded-xl shadow-sm border border-surface-variant mb-6 gap-4">
+<p class="font-body-md text-body-md text-on-surface-variant">৪২টি পণ্য পাওয়া গেছে</p>
+<div class="flex items-center gap-2 w-full sm:w-auto">
+<label class="font-label-md text-label-md text-on-surface whitespace-nowrap" for="sort">সাজান:</label>
+<select class="form-select w-full sm:w-auto font-body-md text-body-md text-on-surface bg-surface border border-outline-variant rounded-lg focus:border-primary focus:ring focus:ring-primary/20 py-1.5 pl-3 pr-8" id="sort">
+<option>সবচেয়ে জনপ্রিয়</option>
+<option>নতুন পণ্য</option>
+<option>মূল্য: কম থেকে বেশি</option>
+<option class="">মূল্য: বেশি থেকে কম</option>
+</select>
+</div>
+</div>
+<!-- Grid -->
+<div class="space-y-10">
+<!-- Category: মুদি বাজার -->
+<section>
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-headline-sm text-headline-sm text-on-background">মুদি বাজার</h2>
+<a class="text-primary font-label-md text-label-md hover:underline" href="#">সব দেখুন</a>
+</div>
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+<!-- Product Card 1 (Rice) -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-surface-variant overflow-hidden group hover:shadow-md transition-all duration-300 flex flex-col h-full relative">
+<div class="absolute top-2 left-2 z-10 bg-gradient-orange text-on-primary text-[10px] px-2 py-0.5 rounded-full">-১০%</div>
+<div class="aspect-square bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgbdEhf_QhiD73wVEVHhN8V7MPp4yvGK63tYc7NWGA5Z3mtfobzbT9YJNV8yOLIWHBMKIW6LMImopU3RrtuCuDcGC9GwjdiuChJoQ8DHemqP_txi-8b_IqdtPTlgrrh-QcrH_ltr_7aUNJfbKWTQ6HcDjiv_TMlV94ndDKe7JSsMVQ5GLymrxpBktz5COk6u4orMkw8SEpCFnjTpeRsoN87eAzNOcvuId4MatRsoPQjomBpBagK55OEg"/>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<h3 class="font-label-md text-label-md text-on-surface mb-1 line-clamp-1">প্রিমিয়াম মিনিকেট চাল</h3>
+<div class="mt-auto flex justify-between items-center">
+<span class="font-headline-sm text-headline-sm text-primary">৳ ৩৫০</span>
+<button class="bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center"><span class="material-symbols-outlined text-sm">add</span></button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 (Oil) -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-surface-variant overflow-hidden group hover:shadow-md transition-all duration-300 flex flex-col h-full relative">
+<div class="aspect-square bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlH9133cJ-_6wXMh22DhAN88vGxHRnofzN3N72VMXCav4JWUENrw8x6wpzovAXTmqEAyoFD6An_R9WEXzV898DydrjjwYb1fm0QsW96ConhPrXo934SWm2LTr5tskahEpK78S6uypX2DUUeXGn21gD-KdEYMmIXvj9-U9ZtUq79NWQKQO8_F2s_x7uNq-FUtP_g71py6MjwNunztyK2bJQQLS8mYvC1njeSRoUQWPHEaNxb5_0DYlI_w"/>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<h3 class="font-label-md text-label-md text-on-surface mb-1 line-clamp-1">খাঁটি সয়াবিন তেল</h3>
+<div class="mt-auto flex justify-between items-center">
+<span class="font-headline-sm text-headline-sm text-primary">৳ ৮২০</span>
+<button class="bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center"><span class="material-symbols-outlined text-sm">add</span></button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Category: সবজি ও ফলমূল -->
+<section>
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-headline-sm text-headline-sm text-on-background">সবজি ও ফলমূল</h2>
+<a class="text-primary font-label-md text-label-md hover:underline" href="#">সব দেখুন</a>
+</div>
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+<!-- Product Card 3 (Veggie Pack) -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-surface-variant overflow-hidden group hover:shadow-md transition-all duration-300 flex flex-col h-full relative">
+<div class="absolute top-2 left-2 z-10 bg-primary text-on-primary text-[10px] px-2 py-0.5 rounded-full">তাজা</div>
+<div class="aspect-square bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv29wXL4fYAkwuFCcjJUuklVfqzpoqlhwAT54y9EGV47Vu8X_SvVHkLpRqD-y73GWGPROucQfxO37lO5SW--AU77yZ8ySg-FKCfuB2ynH92unbHwgg1tlthg4GI6cP_Euib_glYy6Q0x_yQ2JPt9GP5Axu8z0_peDIm7NOWts_vSD-lXlBxWadvfzTfqbtDjUHPkCRp4_l_FHh5N63e-69uYXQNZyRs5Prs8nTKXKLdNX7BX_Uf5zJwQ"/>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<h3 class="font-label-md text-label-md text-on-surface mb-1 line-clamp-1">তাজা সবজি প্যাক</h3>
+<div class="mt-auto flex justify-between items-center">
+<span class="font-headline-sm text-headline-sm text-primary">৳ ১২০</span>
+<button class="bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center"><span class="material-symbols-outlined text-sm">add</span></button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 (Lentils) -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-surface-variant overflow-hidden group hover:shadow-md transition-all duration-300 flex flex-col h-full relative">
+<div class="aspect-square bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUDWJYFqD4fJHLaaUwqQF3J2-TUqEPdEfuPW8I51_o7hha7ZR9GVYLK8rqyzGvIDSeUGMvTlOE4KtZT_a9Yn_REdG35hqqVIGc6olMzZsAvKYXfPDvAeRE0-h-d98Izf7_dep_RYkLt_h1FdTYvT3eYz-ATaSQIZVWQenM-nlR3dQLWe3Bvsyh4zNpj6STF5KPrP39ZoLXIlXVIyO1wuGdUEprNunJjZCb1NAFwEqdqHFzXL6cwN_wJw"/>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<h3 class="font-label-md text-label-md text-on-surface mb-1 line-clamp-1">দেশী মসুর ডাল</h3>
+<div class="mt-auto flex justify-between items-center">
+<span class="font-headline-sm text-headline-sm text-primary">৳ ১৪০</span>
+<button class="bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center"><span class="material-symbols-outlined text-sm">add</span></button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Load More Button -->
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] rounded-t-xl md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high scale-94 transition-all duration-150 rounded-2xl px-3 py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container scale-94 transition-all duration-150 rounded-2xl px-3 py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="local_grocery_store">local_grocery_store</span>
+<span class="font-label-sm text-label-sm font-bold">Shop</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high scale-94 transition-all duration-150 rounded-2xl px-3 py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="nutrition">nutrition</span>
+<span class="font-label-sm text-label-sm">Offers</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high scale-94 transition-all duration-150 rounded-2xl px-3 py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="w-full mt-section-gap px-margin-mobile md:px-margin-desktop py-12 bg-surface-container-lowest dark:bg-inverse-surface border-t border-outline-variant mb-[72px] md:mb-0">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center md:items-start gap-6 text-center md:text-left">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-primary mb-2">Smart Super Shop</h2>
+<p class="text-on-surface-variant font-body-md text-body-md opacity-80">© 2024 Smart Super Shop. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-2">
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary underline opacity-80 hover:opacity-100 transition-opacity" href="#">About</a>
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary underline opacity-80 hover:opacity-100 transition-opacity" href="#">Contact</a>
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary underline opacity-80 hover:opacity-100 transition-opacity" href="#">Returns Policy</a>
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary underline opacity-80 hover:opacity-100 transition-opacity" href="#">Privacy Policy</a>
+</div>
+</div>
+</footer>
+</body></html>

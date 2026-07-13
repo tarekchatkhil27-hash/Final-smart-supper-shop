@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="bn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Order Confirmation - Smart Super Shop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700&amp;family=Noto+Serif:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e6e8eb",
+                        "on-primary-fixed-variant": "#005225",
+                        "tertiary-fixed": "#d9e3f6",
+                        "on-secondary-container": "#613100",
+                        "outline": "#6d7b6d",
+                        "on-error-container": "#93000a",
+                        "primary-dark": "#008C44",
+                        "on-tertiary-fixed": "#121c2a",
+                        "gradient-dark": "linear-gradient(135deg, #1F2937 0%, #374151 100%)",
+                        "secondary": "#914c00",
+                        "primary-fixed-dim": "#5adf82",
+                        "secondary-fixed-dim": "#ffb77f",
+                        "error": "#EF4444",
+                        "on-tertiary-container": "#fdfcff",
+                        "background": "#f7f9fc",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#00210b",
+                        "on-surface": "#191c1e",
+                        "tertiary": "#525d6c",
+                        "tertiary-container": "#6b7586",
+                        "surface-container-highest": "#e0e3e6",
+                        "surface-variant": "#e0e3e6",
+                        "surface-container-low": "#f2f4f7",
+                        "gradient-orange": "linear-gradient(135deg, #FF8A00 0%, #E64A00 100%)",
+                        "secondary-container": "#ff8a00",
+                        "surface-dim": "#d8dadd",
+                        "inverse-surface": "#2d3133",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#eceef1",
+                        "inverse-on-surface": "#eff1f4",
+                        "on-background": "#191c1e",
+                        "on-primary-container": "#f7fff3",
+                        "on-surface-variant": "#3d4a3e",
+                        "muted": "#9CA3AF",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#008740",
+                        "on-secondary-fixed-variant": "#6f3900",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#bdc7d9",
+                        "surface-tint": "#006d33",
+                        "outline-variant": "#bccabb",
+                        "inverse-primary": "#5adf82",
+                        "secondary-fixed": "#ffdcc4",
+                        "gradient-green": "linear-gradient(135deg, #00A651 0%, #006B35 100%)",
+                        "surface-bright": "#f7f9fc",
+                        "on-tertiary-fixed-variant": "#3d4756",
+                        "primary": "#006b32",
+                        "on-secondary-fixed": "#2f1500",
+                        "primary-fixed": "#78fc9c",
+                        "surface": "#f7f9fc"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "12px",
+                        "gutter": "12px",
+                        "container-max": "1280px",
+                        "section-gap": "16px",
+                        "base": "4px",
+                        "margin-desktop": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Noto Serif Bengali", "Noto Serif", "serif"],
+                        "body-md": ["Noto Serif Bengali", "Noto Serif", "serif"],
+                        "headline-lg-mobile": ["Noto Serif Bengali", "Noto Serif", "serif"],
+                        "headline-sm": ["Noto Serif Bengali", "Noto Serif", "serif"],
+                        "label-md": ["Noto Serif Bengali", "Noto Serif", "serif"],
+                        "headline-lg": ["Noto Serif Bengali", "Noto Serif", "serif"],
+                        "micro": ["Noto Serif Bengali", "Noto Serif", "serif"],
+                        "headline-md": ["Noto Serif Bengali", "Noto Serif", "serif"],
+                        "body-lg": ["Noto Serif Bengali", "Noto Serif", "serif"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["10px", { "lineHeight": "12px", "fontWeight": "500" }],
+                        "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-sm": ["16px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "label-md": ["11px", { "lineHeight": "14px", "fontWeight": "500" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "micro": ["9px", { "lineHeight": "10px", "fontWeight": "400" }],
+                        "headline-md": ["17px", { "lineHeight": "24px", "fontWeight": "700" }],
+                        "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- Simplified Header -->
+<header class="w-full bg-surface py-4 px-margin-mobile md:px-margin-desktop shadow-sm flex justify-center items-center z-50">
+<a aria-label="Smart Super Shop Home" class="text-headline-md font-headline-md font-bold text-primary flex items-center gap-2" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+            Smart Super Shop
+        </a>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-[800px] mx-auto px-margin-mobile md:px-margin-desktop py-8 flex flex-col gap-8">
+<!-- Success Banner -->
+<section class="bg-surface-container-lowest rounded-2xl p-8 shadow-sm flex flex-col items-center text-center gap-4 border-t-4 border-primary">
+<div class="w-20 h-20 bg-primary-container rounded-full flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h1 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg-mobile md:font-headline-lg text-on-surface">আপনার অর্ডারটি সফল হয়েছে!</h1>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-md">
+                অর্ডার নাম্বার: <span class="font-bold text-on-surface">#SSS-84920</span><br/>
+                আপনার মোবাইল নম্বরে একটি কনফার্মেশন মেসেজ পাঠানো হয়েছে। আমাদের সাথে কেনাকাটা করার জন্য ধন্যবাদ।
+            </p>
+</section>
+<!-- Order Summary -->
+<section class="bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden">
+<div class="px-6 py-4 bg-surface-container-low border-b border-outline-variant">
+<h2 class="text-headline-sm font-headline-sm text-on-surface">অর্ডার সারসংক্ষেপ</h2>
+</div>
+<div class="p-6 flex flex-col gap-4">
+<!-- Item 1 -->
+<div class="flex items-center gap-4 pb-4 border-b border-surface-container-highest">
+<img alt="কাঁচা কলা" class="w-16 h-16 object-cover rounded-lg bg-surface-container shadow-sm" data-alt="A fresh bunch of green bananas, perfectly ripe for cooking, displayed on a clean white surface with bright natural lighting, emphasizing the vibrant green color and healthy texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuN9kueYO5qVjCUVjzV03sJzln8FUYtQ84HCP4UbUJXqNAp9BzmWsc9yuCMdQgv4go1kyr1t5EcWMHHhJGmRqxVw3SnYBNCfmKObSQ28mJcCanMngelXxMzEbpKzBFA07mLKZa-Acrv8Xd7ZSvGaU1ha9iP9h3eueqweG_fWv3BzWHmUgV69mMEoS0ZMj55CTNLiiEYFc94gjZxoBkwIpIKfy3FPPJa9-khRFNLnFEwTlIDJBXG-ajkA"/>
+<div class="flex-grow">
+<h3 class="text-body-md font-body-md font-bold text-on-surface">কাঁচা কলা (Green Banana)</h3>
+<p class="text-label-md font-label-md text-on-surface-variant">পরিমাণ: ১ হালি</p>
+</div>
+<div class="text-right">
+<p class="text-body-md font-body-md font-bold text-on-surface">৳৪০</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center gap-4 pb-4 border-b border-surface-container-highest">
+<img alt="চিনিগুঁড়া চাল" class="w-16 h-16 object-cover rounded-lg bg-surface-container shadow-sm" data-alt="A premium 1kg bag of aromatic Chinigura rice, packaging designed with a rural Bengal motif, set against a modern clean kitchen background, brightly lit to highlight the product quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-hTjbV-50mCSRRimhQ6vwzUNgEsN6Bi0jWgv6yxhlhVvNCBYQX_dVQXsPE7jfi1azo1dx8yw5lP7Lfer1xWgLe7RgJzRCOkYqqtE10gqK3Z-w01NhLG81N_d729qUgw4V3tFggCtn7fFE94rk83mlpQl1DDyqlzLSMrU39Bmr2fnM_oTXRb-leS6Q8xlk-l4eiOXdJvKDw6CtWWNlF4gfh6lk5LubSrGuHpIYSQmRG_D3ie9UEctyxw"/>
+<div class="flex-grow">
+<h3 class="text-body-md font-body-md font-bold text-on-surface">চিনিগুঁড়া চাল (Chinigura Rice)</h3>
+<p class="text-label-md font-label-md text-on-surface-variant">পরিমাণ: ১ কেজি</p>
+</div>
+<div class="text-right">
+<p class="text-body-md font-body-md font-bold text-on-surface">৳১৪০</p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center gap-4 pb-4 border-b border-surface-container-highest">
+<img alt="সরিষার তেল" class="w-16 h-16 object-cover rounded-lg bg-surface-container shadow-sm" data-alt="A pristine bottle of pure mustard oil, golden amber liquid catching the light, displayed on a rustic wooden table with a few yellow mustard seeds scattered around, conveying purity and tradition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBh7fTpX-Ko279mT78-WvjA7x81q-k3COujxbz7dfZFryBlxiy1U86xxEvEnqTgvoUz_dpcXNAfs7ztaEjr2oCs9iIfQmEMeFhhrCNoExfR6CzCbyDVwtC7dnmfMxZJBgfCg0joI0hrLoAbUGQytUR_V6Zqx_swZpQRGT3dTmZUAWTnh5FFYHqW9qibtu6NIvkoEDMFmHPtBOV8EdDEyEyB9TVgxPcADVtPSjypklgfhjemjTqJl-1wCQ"/>
+<div class="flex-grow">
+<h3 class="text-body-md font-body-md font-bold text-on-surface">সরিষার তেল (Mustard Oil)</h3>
+<p class="text-label-md font-label-md text-on-surface-variant">পরিমাণ: ৫০০ মিলি</p>
+</div>
+<div class="text-right">
+<p class="text-body-md font-body-md font-bold text-on-surface">৳১৬০</p>
+</div>
+</div>
+<!-- Totals -->
+<div class="flex flex-col gap-2 pt-2">
+<div class="flex justify-between text-body-md font-body-md text-on-surface-variant">
+<span>সাবটোটাল</span>
+<span>৳৩৪০</span>
+</div>
+<div class="flex justify-between text-body-md font-body-md text-on-surface-variant">
+<span>ডেলিভারি চার্জ</span>
+<span>৳৬০</span>
+</div>
+<div class="flex justify-between text-headline-sm font-headline-sm text-primary pt-4 mt-2 border-t border-outline-variant">
+<span>সর্বমোট</span>
+<span>৳৪০০</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Actions -->
+<div class="flex justify-center pb-12">
+<button class="bg-gradient-to-r from-primary to-primary-dark text-on-primary rounded-full px-8 py-4 flex items-center justify-center gap-2 w-full md:w-auto shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all duration-200">
+<span class="text-headline-sm font-headline-sm">কেনাকাটা চালিয়ে যান</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</main>
+<!-- Footer Component from JSON -->
+<footer class="w-full mt-auto px-margin-mobile md:px-margin-desktop border-t border-outline-variant bg-surface-container-lowest py-12 flex flex-col items-center text-center">
+<div class="text-headline-sm font-headline-sm text-primary mb-4">Smart Super Shop</div>
+<div class="flex flex-wrap justify-center gap-4 mb-6">
+<a class="text-body-md font-body-md text-on-surface-variant hover:text-primary underline opacity-80 hover:opacity-100 transition-opacity" href="#">About</a>
+<a class="text-body-md font-body-md text-on-surface-variant hover:text-primary underline opacity-80 hover:opacity-100 transition-opacity" href="#">Contact</a>
+<a class="text-body-md font-body-md text-on-surface-variant hover:text-primary underline opacity-80 hover:opacity-100 transition-opacity" href="#">Returns Policy</a>
+<a class="text-body-md font-body-md text-on-surface-variant hover:text-primary underline opacity-80 hover:opacity-100 transition-opacity" href="#">Privacy Policy</a>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant">© 2024 Smart Super Shop. All rights reserved.</p>
+</footer>
+</body></html>

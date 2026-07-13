@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html lang="bn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Smart Super Shop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&amp;family=Tiro+Bangla:ital@0;1&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "gradient-dark": "linear-gradient(135deg, #1F2937 0%, #374151 100%)",
+                        "on-surface-variant": "#3d4a3e",
+                        "primary": "#00A651",
+                        "on-tertiary-fixed-variant": "#3d4756",
+                        "secondary": "#914c00",
+                        "gradient-green": "linear-gradient(135deg, #00A651 0%, #006B35 100%)",
+                        "on-primary-fixed": "#00210b",
+                        "background": "#f7f9fc",
+                        "secondary-container": "#ff8a00",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "muted": "#9CA3AF",
+                        "surface-dim": "#d8dadd",
+                        "outline-variant": "#bccabb",
+                        "surface-variant": "#e0e3e6",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f2f4f7",
+                        "inverse-primary": "#5adf82",
+                        "surface": "#f7f9fc",
+                        "on-surface": "#191c1e",
+                        "surface-container-highest": "#e0e3e6",
+                        "on-background": "#191c1e",
+                        "primary-dark": "#008C44",
+                        "surface-tint": "#006d33",
+                        "tertiary": "#525d6c",
+                        "primary-fixed": "#78fc9c",
+                        "secondary-fixed": "#ffdcc4",
+                        "surface-container-high": "#e6e8eb",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#6f3900",
+                        "tertiary-container": "#6b7586",
+                        "on-tertiary-fixed": "#121c2a",
+                        "surface-bright": "#f7f9fc",
+                        "on-secondary-fixed": "#2f1500",
+                        "error": "#EF4444",
+                        "inverse-surface": "#2d3133",
+                        "surface-container": "#eceef1",
+                        "tertiary-fixed-dim": "#bdc7d9",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#00A651",
+                        "outline": "#6d7b6d",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#eff1f4",
+                        "on-tertiary-container": "#fdfcff",
+                        "on-primary-container": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#5adf82",
+                        "secondary-fixed-dim": "#ffb77f",
+                        "on-secondary-container": "#613100",
+                        "gradient-orange": "linear-gradient(135deg, #FF8A00 0%, #E64A00 100%)",
+                        "tertiary-fixed": "#d9e3f6",
+                        "on-primary-fixed-variant": "#005225",
+                        "accent": "#FF8A00",
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "margin-mobile": "12px",
+                        "gutter": "12px",
+                        "margin-desktop": "24px",
+                        "container-max": "1280px",
+                        "section-gap": "16px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Tiro Bangla", "serif"],
+                        "micro": ["Tiro Bangla", "serif"],
+                        "headline-sm": ["Tiro Bangla", "serif"],
+                        "body-lg": ["Tiro Bangla", "serif"],
+                        "body-md": ["Tiro Bangla", "serif"],
+                        "headline-lg": ["Tiro Bangla", "serif"],
+                        "headline-md": ["Tiro Bangla", "serif"],
+                        "headline-lg-mobile": ["Tiro Bangla", "serif"],
+                        "label-sm": ["Tiro Bangla", "serif"],
+                        "tiro": ["Tiro Bangla", "serif"]
+                    },
+                    "fontSize": {
+                        "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }],
+                        "micro": ["11px", { "lineHeight": "14px", "fontWeight": "400" }],
+                        "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "body-lg": ["17px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[style*="'FILL' 1"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-gradient-green { background: linear-gradient(135deg, #00A651 0%, #006B35 100%); }
+        .bg-gradient-orange { background: linear-gradient(135deg, #FF8A00 0%, #E64A00 100%); }
+        
+        .hover-lift {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 166, 81, 0.13), 0 4px 6px -2px rgba(0, 166, 81, 0.05);
+        }
+        .btn-press {
+            transition: transform 0.15s ease;
+        }
+        .btn-press:active {
+            transform: scale(0.94);
+        }
+        body { font-family: 'Tiro Bangla', serif; }
+        .trust-circle{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar (JSON implementation) -->
+<header class="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 bg-surface/90 backdrop-blur-md shadow-sm">
+<div class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">Smart Super Shop</div>
+<!-- Desktop Nav -->
+<nav class="hidden md:flex gap-6">
+<a class="text-primary dark:text-inverse-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">হোম</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-label-md text-label-md" href="#">শপ</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-label-md text-label-md" href="#">আমাদের সম্পর্কে</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-label-md text-label-md" href="#">যোগাযোগ</a>
+</nav>
+<div class="flex items-center gap-4 text-primary dark:text-inverse-primary">
+<button class="scale-95 active:scale-90 transition-transform hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="relative scale-95 active:scale-90 transition-transform hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-gradient-orange text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[16px] h-[16px] flex items-center justify-center animate-pulse">৩</span>
+</button>
+</div>
+</header>
+<!-- Category Pills -->
+<div class="w-full bg-surface-container-lowest py-3 px-margin-mobile md:px-margin-desktop overflow-x-auto whitespace-nowrap shadow-sm border-b border-surface-variant hide-scrollbar flex gap-3">
+<button class="inline-flex items-center px-4 py-2 bg-primary-container text-on-primary-container rounded-full font-label-md text-label-md btn-press shadow">
+            মুদি বাজার
+        </button>
+<button class="inline-flex items-center px-4 py-2 bg-surface border border-outline-variant text-on-surface-variant rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-colors btn-press">
+            ফলমূল
+        </button>
+<button class="inline-flex items-center px-4 py-2 bg-surface border border-outline-variant text-on-surface-variant rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-colors btn-press">
+            সবজি
+        </button>
+<button class="inline-flex items-center px-4 py-2 bg-surface border border-outline-variant text-on-surface-variant rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-colors btn-press">
+            বেবি কেয়ার
+        </button>
+</div>
+<main class="flex-grow w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-section-gap flex flex-col gap-8 md:gap-12 pb-24 md:pb-12">
+<!-- Hero Banner -->
+<section class="relative w-full h-[300px] md:h-[400px] rounded-2xl overflow-hidden shadow-lg flex items-center bg-surface-container-high">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A vibrant, high-resolution lifestyle photograph of fresh, colorful organic vegetables and fruits arranged beautifully on a rustic wooden table in a well-lit modern kitchen. Bright natural light creates a fresh, neighborly, and trustworthy atmosphere. Green and orange hues pop. Modern e-commerce grocery aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDRu51jFjJMF5nY0eGG0SfreRJzQZ3_Qe2FjOJQONOMZm3msHfZqvC2-KWhN8IGm_dffrcEq4SjLOWIJn3cj6zbQMgL8G1vnhsbad51Ec_778UPpEb9sHwC-tZRwNqfVuvHThJ8Lp5Td2nztd_Jjx_RdnH9ENQ5Tpl2wxnU4LvIVhHWvIEzuwUA9Bglzr5rFqLAZcMIoOaGuj_wCB6W5aSDM-V3FI66BfvJHu60yQpOQC5CMZ2QCwaAow')"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+<div class="relative z-10 p-8 md:p-12 max-w-lg">
+<h1 class="font-tiro text-3xl md:text-5xl text-white font-bold leading-tight mb-4 drop-shadow-md">বাজার এখন ঘরে</h1>
+<p class="font-body-lg text-surface-container-low mb-6">ফ্রেশ কোয়ালিটির বাজার পৌঁছে যাবে সরাসরি আপনার দরজায়। দ্রুত, নির্ভরযোগ্য এবং সাশ্রয়ী।</p>
+<button class="bg-gradient-green text-white font-headline-sm text-headline-sm px-6 py-3 rounded-full btn-press shadow-md hover:shadow-lg inline-flex items-center gap-2">
+                    অর্ডার করুন <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Featured Products Grid -->
+<section>
+<div class="flex justify-between items-end mb-6">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background">জনপ্রিয় পণ্য</h2>
+<a class="text-primary font-label-md text-label-md hover:underline" href="#">সব দেখুন</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+<!-- Product Card 1 -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-surface-variant hover-lift flex flex-col h-full relative group">
+<div class="absolute top-3 left-3 bg-gradient-orange text-white px-2 py-1 rounded font-micro text-micro font-bold z-10">১০% ছাড়</div>
+<div class="aspect-square w-full rounded-xl overflow-hidden bg-surface-container mb-3 relative">
+<img class="w-full h-full object-cover" data-alt="A high-quality studio shot of a bunch of fresh, vibrant green spinach tied with a small string, placed against a pure white background. Well-lit, modern grocery catalog aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3Vz7w0JL9j29hd6355thufdV-KR0HjJvkJBOIsfGA4TrH_hzaZmwixv46qVfQ6m0I-kHZb73aU_fWk9daUDViRN851VHuoiF3HDFIOsJ9cR-FjvTevtFqIppIkIjYHyBXNmS2nHIDD6o9tTeZC9Z2QXi6egdDNlfTI7x3kxL8mwSzjpJ5fSVSdTo8gKYiE-RzTjF7xiSJ4Y14_dO5rGEdtss8tBl-pgYzk-tcFqeZ9a5UyfbFGFBG1Q"/>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-1 line-clamp-2">ফ্রেশ পালং শাক</h3>
+<p class="font-label-sm text-label-sm text-muted mb-2">২৫০ গ্রাম</p>
+<div class="mt-auto flex items-center justify-between">
+<div class="font-headline-md text-headline-md text-primary">৳৩০</div>
+<button class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center btn-press">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-surface-variant hover-lift flex flex-col h-full relative">
+<div class="aspect-square w-full rounded-xl overflow-hidden bg-surface-container mb-3 relative">
+<img class="w-full h-full object-cover" data-alt="A high-quality studio shot of a cluster of bright yellow, perfectly ripe bananas against a pure white background. Bright lighting, appetizing modern grocery catalog aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAryiwjwEWCaUWrbpaqfjgMJoL1-5qD2bKSw5njXuzKVKjA458BQ0_2Dih4UDX3gz0cWqMVNKtgsaFhV119Xntu2P9FbuELW00Dlks95X2ABlZT1Tcxx1Wavewm-3oWDv9Dql40qtFkdqNqDXXJpyy-WncuDT82s7CFpxBsz9ylyizHx98-jLibAAaeTcymkl4X1kxojR5RrmGEenUpdwTljJumgYSq388DtvRd8IwnGm3w1wUKcFTxBw"/>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-1 line-clamp-2">সাগর কলা</h3>
+<p class="font-label-sm text-label-sm text-muted mb-2">১ ডজন</p>
+<div class="mt-auto flex items-center justify-between">
+<div class="font-headline-md text-headline-md text-primary">৳১০০</div>
+<button class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center btn-press">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-surface-variant hover-lift flex flex-col h-full relative">
+<div class="aspect-square w-full rounded-xl overflow-hidden bg-surface-container mb-3 relative">
+<img class="w-full h-full object-cover" data-alt="A high-quality studio shot of a loaf of sliced whole wheat bread in clear packaging, against a pure white background. Clean, reliable grocery catalog aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSUFI1zQDBh5A50YMGoFVcKLyp558UcXzQHDJlAeUk4S5lrAbNOpP9DP1plP4bOCgPWqpHtZnQ9dOJBkkgcjSU935lCLMHx0QDMQ5NcCS7QNF5WZCU8N1WgC8qNizq23lXkHz06wJIt9SiX6K7y9pafDvJczi8AUwiPM-EuoMldLhpA0EW5RXMhh5SpPMfDvveqOICtPdgYxabBz2iDLDCIc7H5vZdW7DuH8sdgZ1CQNm6PUETHkOiNQ"/>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-1 line-clamp-2">হোল হুইট ব্রেড</h3>
+<p class="font-label-sm text-label-sm text-muted mb-2">৪০০ গ্রাম</p>
+<div class="mt-auto flex items-center justify-between">
+<div class="font-headline-md text-headline-md text-primary">৳৮০</div>
+<button class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center btn-press">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-surface-variant hover-lift flex flex-col h-full relative">
+<div class="absolute top-3 left-3 bg-gradient-orange text-white px-2 py-1 rounded font-micro text-micro font-bold z-10">নতুন</div>
+<div class="aspect-square w-full rounded-xl overflow-hidden bg-surface-container mb-3 relative">
+<img class="w-full h-full object-cover" data-alt="A high-quality studio shot of a bottle of cold-pressed organic orange juice with condensation on the glass, against a pure white background. Refreshing, vibrant modern grocery catalog aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUVSfK6IMpuni2_5pXMkGCGoYXrJor6FQ_v35n2sdpEDYqOYil-uOL72oULJeaSn4cWbfZMv4lBVGfXn-k0-n85LuNMoHUO3jViuaudSiNuKdD-lYFQnXK5PQssYfsZDOiZ-g3mS3xBL0DkNrPhaCL5AKMT_UDkYeBXSOyg4VuInduGdsAdqgda6Dz2AYYRCMSNlpOQ9QJ1xXjWATnfalidYXPtQhPvqjd0JdCWFTD1HdRW-GpWq8UGA"/>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-1 line-clamp-2">অরেঞ্জ জুস</h3>
+<p class="font-label-sm text-label-sm text-muted mb-2">১ লিটার</p>
+<div class="mt-auto flex items-center justify-between">
+<div class="font-headline-md text-headline-md text-primary">৳২৫০</div>
+<button class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center btn-press">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Shop by Category -->
+<section class="mt-4">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-6">ক্যাটাগরি সমূহ</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<a class="relative h-32 md:h-48 rounded-2xl overflow-hidden group hover-lift shadow-sm" href="#">
+<div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="A top-down view of various pantry staples, pasta, rice, and canned goods neatly arranged on a clean white surface. Modern, organized grocery aesthetic with good lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBWJnEvyTbL--raIyz6vRHQKOTDjeMAulQByWimkcOFcEGVKmoYVq4KTwyu5mHTx7xb8Zt-pRnMpyhGjj9kQAR1SaeUoDniyNO5-dfTesvOdlmpDfC_jYWtw6QBw6MS9CMTuaQiqcw7u--BoE50_bxhPu0jrou1uKV3_ukkGd1c1ss4_gPo3rdT5Qh7gTZ9zniYf6i70zyPpaPAF96Nqt8Ro5_LLNdX1TzunUXRI5DtvZ-2-zGT_9-KzQ')"></div>
+<div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-white font-headline-md text-headline-md bg-white/20 backdrop-blur-md px-4 py-2 rounded-lg">মুদি বাজার</span>
+</div>
+</a>
+<a class="relative h-32 md:h-48 rounded-2xl overflow-hidden group hover-lift shadow-sm" href="#">
+<div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="A vibrant, close-up photograph of a variety of fresh, colorful fruits including apples, oranges, and berries piled together. Bright, appetizing, fresh modern aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCBe-srAdjDQguZQmbsrytKWXNqWepQqmH0RciTnySQQd9wARzrE4IKTcOsCUwY9wqaR221PPxjCtA2Nh646sizLXoAirGug46JzoTXvK_6j7oWTwQlvlrdjXIQ1RLrsGwaqZtF19lDNgrItbr5jeC6chUIzSLo0XxLpJ4AV79An7_dvxxVJOX9YvpEw6p-2JatCs4S-5D2AXyJn9P-w1k78k0J8GnYBC5Z1uSECyz9LJf_q5npZB-fEw')"></div>
+<div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-white font-headline-md text-headline-md bg-white/20 backdrop-blur-md px-4 py-2 rounded-lg">ফলমূল</span>
+</div>
+</a>
+<a class="relative h-32 md:h-48 rounded-2xl overflow-hidden group hover-lift shadow-sm" href="#">
+<div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="A top-down composition of fresh, leafy green vegetables, broccoli, and peppers on a light wooden background. Crisp, healthy, and organic visual style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCs_UuoOgrbCFEmRaAdAiib8bIbGn8B1s5bEKFLJGNUBCEvycljf_dafzbe_nC7OA99sRrPWGx1W2UkIl8TCB4Fx_VCjfxSwv9auBgl5svwR_2B14wr_JnuSMTXOZAetWc7wzCiWMDuDLcgg5qr4fVKu2URsDzwlinSJEirPcdemTvBqO2lTFjnSPLOlkmoxDjyaFua2NWGzNPag1tMdVB5ntjLNaZUUj54rn4VPqNsrcKD4AWoeHONyg')"></div>
+<div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-white font-headline-md text-headline-md bg-white/20 backdrop-blur-md px-4 py-2 rounded-lg">সবজি</span>
+</div>
+</a>
+<a class="relative h-32 md:h-48 rounded-2xl overflow-hidden group hover-lift shadow-sm" href="#">
+<div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="A soft, beautifully lit photograph of baby care items including gentle lotion, a stack of soft white towels, and a small rubber duck on a pastel background. Trustworthy, gentle aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB5eEcnOcyxwdye57vqc5_BTU3QFi_YaR3mSXm6dWYvtcRm2AiYF5oaNnwszNLEddP8sOXRFBJgf6thzVV6m-L3n8e_MZo8RAWtWXSPWcg_V8N5aOFgYxJxbsnE_FopT246oApHSqQ5LLFfqlXCYRMHYzT7wjQBUqHBiGhLUrNohEaW3PnZ6wsdADbYrm8aUW3POJEZ-rnnl1Dr3QeahXWdJOW7OS4NhBZNhGzg6npUdSZ7SAPOnKQcaw')"></div>
+<div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-white font-headline-md text-headline-md bg-white/20 backdrop-blur-md px-4 py-2 rounded-lg">বেবি কেয়ার</span>
+</div>
+</a>
+</div>
+</section>
+<!-- Trust Badges -->
+<section class="mt-4 mb-4">
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-surface-variant p-6">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background text-center mb-6">কেন আমাদের বেছে নেবেন?</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<div class="text-center">
+<div class="trust-circle bg-green-50">
+<i class="fas fa-shield-alt text-primary text-2xl"></i>
+</div>
+<div class="text-sm font-bold text-gray-800 mt-2">আসল পণ্য</div>
+<div class="text-gray-500 mt-1 text-xs">১০০% নিশ্চিত</div>
+</div>
+<div class="text-center">
+<div class="trust-circle bg-orange-50">
+<i class="fas fa-motorcycle text-orange-500 text-2xl"></i>
+</div>
+<div class="text-sm font-bold text-gray-800 mt-2">দ্রুত ডেলিভারি</div>
+<div class="text-gray-500 mt-1 text-xs">৩০–৬০ মিনিট</div>
+</div>
+<div class="text-center">
+<div class="trust-circle bg-blue-50">
+<i class="fas fa-lock text-blue-500 text-2xl"></i>
+</div>
+<div class="text-sm font-bold text-gray-800 mt-2">নিরাপদ পেমেন্ট</div>
+<div class="text-gray-500 mt-1 text-xs">SSL সুরক্ষিত</div>
+</div>
+<div class="text-center">
+<div class="trust-circle bg-red-50">
+<i class="fas fa-undo text-red-400 text-2xl"></i>
+</div>
+<div class="text-sm font-bold text-gray-800 mt-2">সহজ রিটার্ন</div>
+<div class="text-gray-500 mt-1 text-xs">৭ দিনের মধ্যে</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-auto py-12 px-margin-mobile md:px-margin-desktop" style="background:#111827">
+<div class="max-w-[1280px] mx-auto">
+<div class="flex items-center gap-2.5 mb-8">
+<div class="w-12 h-12 rounded-2xl bg-gradient-green flex items-center justify-center shadow-lg">
+<i class="fas fa-shopping-basket text-white text-xl"></i>
+</div>
+<div>
+<div class="text-white font-bold text-xl">Smart Super Shop</div>
+<div class="text-gray-400 text-sm">বাজার এখন ঘরে | Since 2024</div>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+<div>
+<div class="text-white font-semibold text-base mb-4">দ্রুত লিঙ্ক</div>
+<ul class="space-y-3">
+<li><a class="text-gray-400 text-sm hover:text-white transition-colors" href="#">আমাদের সম্পর্কে</a></li>
+<li><a class="text-gray-400 text-sm hover:text-white transition-colors" href="#">ক্যারিয়ার</a></li>
+<li><a class="text-gray-400 text-sm hover:text-white transition-colors" href="#">আজকের অফার</a></li>
+<li><a class="text-gray-400 text-sm hover:text-white transition-colors" href="#">যোগাযোগ করুন</a></li>
+</ul>
+</div>
+<div>
+<div class="text-white font-semibold text-base mb-4">গ্রাহক সেবা</div>
+<ul class="space-y-3">
+<li><a class="text-gray-400 text-sm hover:text-white transition-colors" href="#">শর্তাবলী</a></li>
+<li><a class="text-gray-400 text-sm hover:text-white transition-colors" href="#">গোপনীয়তা নীতি</a></li>
+<li><a class="text-gray-400 text-sm hover:text-white transition-colors" href="#">রিটার্ন পলিসি</a></li>
+<li><a class="text-gray-400 text-sm hover:text-white transition-colors" href="#">আমার অ্যাকাউন্ট</a></li>
+</ul>
+</div>
+<div class="col-span-2 md:col-span-2 rounded-2xl p-6" style="background:#1F2937">
+<div class="text-white text-base font-semibold mb-4">যোগাযোগ করুন</div>
+<div class="space-y-3">
+<div class="flex items-center gap-3 text-gray-300 text-sm">
+<i class="fas fa-phone text-primary text-base w-5 text-center"></i>
+<span>১৬৪৭৮ (সকাল ৮টা – রাত ১০টা)</span>
+</div>
+<div class="flex items-center gap-3 text-gray-300 text-sm">
+<i class="fas fa-envelope text-primary text-base w-5 text-center"></i>
+<span>support@smartsupershop.com.bd</span>
+</div>
+<div class="flex items-center gap-3 text-gray-300 text-sm">
+<i class="fas fa-map-marker-alt text-primary text-base w-5 text-center"></i>
+<span>ঢাকা, চট্টগ্রাম, সিলেট, রাজশাহী</span>
+</div>
+</div>
+<div class="flex items-center gap-4 mt-6">
+<span class="text-gray-400 text-sm">ফলো করুন:</span>
+<button class="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center hover:scale-110 transition-transform">
+<i class="fab fa-facebook-f text-white text-sm"></i>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition-transform" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)">
+<i class="fab fa-instagram text-white text-sm"></i>
+</button>
+<button class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center hover:scale-110 transition-transform">
+<i class="fab fa-youtube text-white text-sm"></i>
+</button>
+</div>
+</div>
+</div>
+<div class="border-t pt-6" style="border-color:#374151">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="text-gray-500 text-sm">
+              © ২০২৪ Smart Super Shop. সর্বস্বত্ব সংরক্ষিত।
+            </div>
+<div class="text-gray-500 text-sm">
+              Made with ❤️ in Bangladesh
+            </div>
+</div>
+</div>
+</div>
+</footer>
+<!-- BottomNavBar (JSON implementation for mobile) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 md:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] bg-surface dark:bg-inverse-surface rounded-t-2xl border-t border-surface-variant">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-2xl px-3 py-1 scale-94 transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="local_grocery_store" style="font-variation-settings: 'FILL' 1;">local_grocery_store</span>
+<span class="font-label-sm text-label-sm mt-1">মুদি বাজার</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-2xl px-3 py-1 scale-94 transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-primary dark:text-inverse-primary" data-icon="nutrition">nutrition</span>
+<span class="font-label-sm text-label-sm mt-1 text-primary dark:text-inverse-primary">ফলমূল</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-2xl px-3 py-1 scale-94 transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-primary dark:text-inverse-primary" data-icon="eco">eco</span>
+<span class="font-label-sm text-label-sm mt-1 text-primary dark:text-inverse-primary">সবজি</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-2xl px-3 py-1 scale-94 transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-primary dark:text-inverse-primary" data-icon="baby_changing_station">baby_changing_station</span>
+<span class="font-label-sm text-label-sm mt-1 text-primary dark:text-inverse-primary">বেবি কেয়ার</span>
+</a>
+</nav>
+</body></html>

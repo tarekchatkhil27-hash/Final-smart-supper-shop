@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html class="light" lang="bn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Guest Checkout - Smart Super Shop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-highest": "#e0e3e6",
+                      "primary-dark": "#008C44",
+                      "on-tertiary-container": "#fdfcff",
+                      "gradient-orange": "linear-gradient(135deg, #FF8A00 0%, #E64A00 100%)",
+                      "on-primary-fixed-variant": "#005225",
+                      "tertiary-container": "#6b7586",
+                      "surface-container-high": "#e6e8eb",
+                      "surface-container": "#eceef1",
+                      "on-tertiary-fixed-variant": "#3d4756",
+                      "inverse-on-surface": "#eff1f4",
+                      "on-secondary-container": "#613100",
+                      "surface": "#f7f9fc",
+                      "secondary-fixed": "#ffdcc4",
+                      "background": "#f7f9fc",
+                      "primary-fixed-dim": "#5adf82",
+                      "outline-variant": "#bccabb",
+                      "on-background": "#191c1e",
+                      "tertiary-fixed": "#d9e3f6",
+                      "primary-fixed": "#78fc9c",
+                      "tertiary-fixed-dim": "#bdc7d9",
+                      "primary-container": "#008740",
+                      "surface-container-lowest": "#ffffff",
+                      "on-surface": "#191c1e",
+                      "surface-dim": "#d8dadd",
+                      "on-error-container": "#93000a",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-fixed": "#121c2a",
+                      "surface-variant": "#e0e3e6",
+                      "on-surface-variant": "#3d4a3e",
+                      "outline": "#6d7b6d",
+                      "surface-container-low": "#f2f4f7",
+                      "primary": "#006b32",
+                      "on-primary-container": "#f7fff3",
+                      "surface-bright": "#f7f9fc",
+                      "secondary": "#914c00",
+                      "gradient-green": "linear-gradient(135deg, #00A651 0%, #006B35 100%)",
+                      "inverse-primary": "#5adf82",
+                      "secondary-fixed-dim": "#ffb77f",
+                      "gradient-dark": "linear-gradient(135deg, #1F2937 0%, #374151 100%)",
+                      "on-error": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "on-primary-fixed": "#00210b",
+                      "on-secondary-fixed-variant": "#6f3900",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed": "#2f1500",
+                      "error": "#EF4444",
+                      "muted": "#9CA3AF",
+                      "tertiary": "#525d6c",
+                      "surface-tint": "#006d33",
+                      "secondary-container": "#ff8a00",
+                      "on-secondary": "#ffffff",
+                      "inverse-surface": "#2d3133"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px",
+                      "2xl": "1rem"
+              },
+              "spacing": {
+                      "section-gap": "16px",
+                      "margin-desktop": "24px",
+                      "container-max": "1280px",
+                      "margin-mobile": "12px",
+                      "gutter": "12px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "body-md": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "body-lg": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "headline-sm": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "label-md": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "headline-lg-mobile": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "micro": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "label-sm": ["Noto Serif", "Tiro Bangla", "serif"],
+                      "headline-md": ["Noto Serif", "Tiro Bangla", "serif"]
+              },
+              "fontSize": {
+                      "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "body-md": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                      "body-lg": ["15px", {"lineHeight": "22px", "fontWeight": "400"}],
+                      "headline-sm": ["16px", {"lineHeight": "20px", "fontWeight": "600"}],
+                      "label-md": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "micro": ["9px", {"lineHeight": "10px", "fontWeight": "400"}],
+                      "label-sm": ["10px", {"lineHeight": "12px", "fontWeight": "500"}],
+                      "headline-md": ["17px", {"lineHeight": "24px", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body { font-family: 'Tiro Bangla', 'Noto Serif', serif; }
+        .gradient-green-bg { background: linear-gradient(135deg, #00A651 0%, #006B35 100%); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col antialiased">
+<!-- Simplified Header for Transactional Context -->
+<header class="w-full bg-surface-container-lowest shadow-sm py-4 px-margin-mobile md:px-margin-desktop sticky top-0 z-50">
+<div class="max-w-container-max mx-auto flex items-center justify-center md:justify-start">
+<span class="text-headline-md font-headline-md text-primary font-bold tracking-tight">Smart Super Shop</span>
+</div>
+</header>
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-6 md:py-10">
+<!-- Step Indicator -->
+<div class="mb-10 max-w-2xl mx-auto px-4">
+<div class="flex items-center justify-between relative">
+<!-- Background Line -->
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[2px] bg-surface-variant z-0 rounded-full"></div>
+<!-- Progress Line (Active up to Step 1) -->
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-[2px] bg-primary z-0 rounded-full transition-all duration-500"></div>
+<!-- Step 1: Active -->
+<div class="relative z-10 flex flex-col items-center group">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md text-label-md mb-2 shadow-md ring-4 ring-surface-container-lowest">
+                        1
+                    </div>
+<span class="font-label-md text-label-md text-primary font-bold text-center">যোগাযোগ ও শিপিং</span>
+</div>
+<!-- Step 2: Inactive -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-label-md text-label-md mb-2 ring-4 ring-surface-container-lowest">
+                        2
+                    </div>
+<span class="font-label-md text-label-md text-on-surface-variant text-center">পেমেন্ট</span>
+</div>
+<!-- Step 3: Inactive -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-label-md text-label-md mb-2 ring-4 ring-surface-container-lowest">
+                        3
+                    </div>
+<span class="font-label-md text-label-md text-on-surface-variant text-center">অর্ডার রিভিউ</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-section-gap md:gap-8 items-start">
+<!-- Left Column: Forms and Info -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<!-- Delivery Info Form -->
+<section class="bg-surface-container-lowest rounded-2xl p-6 md:p-8 shadow-sm border border-outline-variant/40">
+<div class="flex items-center gap-3 mb-6 border-b border-outline-variant/30 pb-4">
+<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">ডেলিভারি তথ্য</h2>
+</div>
+<form class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-5">
+<div class="md:col-span-2">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1.5 ml-1">মোবাইল নম্বর <span class="text-error">*</span></label>
+<input class="w-full bg-surface rounded-full border border-outline-variant/60 px-5 py-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" placeholder="01XXX-XXXXXX" type="tel"/>
+</div>
+<div class="md:col-span-2">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1.5 ml-1">নাম <span class="text-error">*</span></label>
+<input class="w-full bg-surface rounded-full border border-outline-variant/60 px-5 py-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" placeholder="আপনার সম্পূর্ণ নাম" type="text"/>
+</div>
+<div class="md:col-span-2">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1.5 ml-1">ঠিকানা <span class="text-error">*</span></label>
+<textarea class="w-full bg-surface rounded-2xl border border-outline-variant/60 px-5 py-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors resize-none h-28" placeholder="বাড়ির নম্বর, রাস্তার নাম, ফ্ল্যাট নম্বর"></textarea>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1.5 ml-1">গ্রাম/মহল্লা</label>
+<input class="w-full bg-surface rounded-full border border-outline-variant/60 px-5 py-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" placeholder="গ্রামের নাম" type="text"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1.5 ml-1">উপজেলা/থানা <span class="text-error">*</span></label>
+<input class="w-full bg-surface rounded-full border border-outline-variant/60 px-5 py-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" placeholder="উপজেলার নাম" type="text"/>
+</div>
+<div class="md:col-span-2">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1.5 ml-1">জেলা <span class="text-error">*</span></label>
+<div class="relative">
+<select class="w-full bg-surface rounded-full border border-outline-variant/60 px-5 py-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors appearance-none cursor-pointer">
+<option disabled="" selected="" value="">জেলা নির্বাচন করুন</option>
+<option value="dhaka">ঢাকা</option>
+<option value="chittagong">চট্টগ্রাম</option>
+<option value="sylhet">সিলেট</option>
+<option value="rajshahi">রাজশাহী</option>
+<option value="khulna">খুলনা</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+</form>
+</section>
+<!-- Payment Info -->
+<section class="bg-primary-container/10 rounded-2xl p-6 shadow-sm border border-primary/20 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+<div class="w-12 h-12 rounded-full gradient-green-bg text-on-primary flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-1">পেমেন্ট পদ্ধতি: ক্যাশ অন ডেলিভারি (ম্যানুয়াল পেমেন্ট)</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">পণ্য হাতে পেয়ে মূল্য পরিশোধ করুন। কোনো অগ্রিম পেমেন্টের প্রয়োজন নেই।</p>
+</div>
+</section>
+</div>
+<!-- Right Column: Order Summary (Sidebar) -->
+<div class="lg:col-span-4">
+<div class="bg-surface-container-lowest rounded-2xl p-6 shadow-md border border-outline-variant/30 sticky top-24">
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-5 pb-4 border-b border-outline-variant/30 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="receipt_long">receipt_long</span>
+                        অর্ডার সামারি
+                    </h2>
+<div class="space-y-3 mb-6">
+<div class="flex justify-between items-center font-body-md text-body-md text-on-surface-variant">
+<span>উপ-মোট (৩টি আইটেম)</span>
+<span class="font-bold text-on-surface">৳ ১২৫০</span>
+</div>
+<div class="flex justify-between items-center font-body-md text-body-md text-on-surface-variant">
+<span>ডেলিভারি চার্জ</span>
+<span class="font-bold text-on-surface">৳ ৬০</span>
+</div>
+<div class="flex justify-between items-center font-body-md text-body-md text-secondary-container">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="loyalty">loyalty</span>
+                                ডিসকাউন্ট
+                            </span>
+<span class="font-bold">- ৳ ৫০</span>
+</div>
+</div>
+<div class="border-t border-dashed border-outline-variant pt-4 mb-6">
+<div class="flex justify-between items-end">
+<span class="font-headline-sm text-headline-sm text-on-surface">সর্বমোট</span>
+<span class="font-headline-lg text-headline-lg text-primary font-bold">৳ ১২৬০</span>
+</div>
+<p class="font-micro text-micro text-on-surface-variant mt-1 text-right">ভ্যাট সহ</p>
+</div>
+<button class="w-full gradient-green-bg text-on-primary font-label-md text-label-md py-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-[2px] active:scale-95 flex justify-center items-center gap-2" type="button">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                        অর্ডার প্লেস করুন
+                    </button>
+<div class="mt-5 flex items-center justify-center gap-2 text-on-surface-variant font-micro text-micro bg-surface-container px-3 py-2 rounded-full w-fit mx-auto">
+<span class="material-symbols-outlined text-[14px]" data-icon="lock">lock</span>
+<span>নিরাপদ ও এনক্রিপ্টেড চেকআউট</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
