@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #00A651;
+  --color-primary-dark: #008C44;
+  --color-primary-container: #00A651;
+  --color-on-primary-container: #ffffff;
+  --color-secondary: #914c00;
+  --color-secondary-container: #ff8a00;
+  --color-accent: #FF8A00;
+  
+  --color-on-surface-variant: #3d4a3e;
+  --color-on-tertiary-fixed-variant: #3d4756;
+  --color-on-primary-fixed: #00210b;
+  --color-background: #f7f9fc;
+  --color-on-error: #ffffff;
+  --color-on-primary: #ffffff;
+  --color-muted: #9CA3AF;
+  --color-surface-dim: #d8dadd;
+  --color-outline-variant: #bccabb;
+  --color-surface-variant: #e0e3e6;
+  --color-on-error-container: #93000a;
+  --color-surface-container-low: #f2f4f7;
+  --color-inverse-primary: #5adf82;
+  --color-surface: #f7f9fc;
+  --color-on-surface: #191c1e;
+  --color-surface-container-highest: #e0e3e6;
+  --color-on-background: #191c1e;
+  --color-surface-tint: #006d33;
+  --color-tertiary: #525d6c;
+  --color-primary-fixed: #78fc9c;
+  --color-secondary-fixed: #ffdcc4;
+  --color-surface-container-high: #e6e8eb;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-fixed-variant: #6f3900;
+  --color-tertiary-container: #6b7586;
+  --color-on-tertiary-fixed: #121c2a;
+  --color-surface-bright: #f7f9fc;
+  --color-on-secondary-fixed: #2f1500;
+  --color-error: #EF4444;
+  --color-inverse-surface: #2d3133;
+  --color-surface-container: #eceef1;
+  --color-tertiary-fixed-dim: #bdc7d9;
+  --color-surface-container-lowest: #ffffff;
+  --color-outline: #6d7b6d;
+  --color-on-tertiary: #ffffff;
+  --color-inverse-on-surface: #eff1f4;
+  --color-on-tertiary-container: #fdfcff;
+  --color-error-container: #ffdad6;
+  --color-primary-fixed-dim: #5adf82;
+  --color-secondary-fixed-dim: #ffb77f;
+  --color-on-secondary-container: #613100;
+  --color-tertiary-fixed: #d9e3f6;
+  --color-on-primary-fixed-variant: #005225;
+
+  /* Spacing */
+  --spacing-base: 4px;
+  --spacing-margin-mobile: 12px;
+  --spacing-gutter: 12px;
+  --spacing-margin-desktop: 24px;
+  --spacing-container-max: 1280px;
+  --spacing-section-gap: 16px;
+
+  /* Border Radius */
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-full: 9999px;
+
+  /* Fonts */
+  --font-tiro: "Tiro Bangla", serif;
+  --font-noto-bengali: "Noto Serif Bengali", serif;
+  --font-noto-serif: "Noto Serif", serif;
+}
+
+@utility text-label-md {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+}
+@utility text-micro {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 400;
+}
+@utility text-headline-sm {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+}
+@utility text-body-lg {
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 400;
+}
+@utility text-body-md {
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 400;
+}
+@utility text-headline-lg {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 700;
+}
+@utility text-headline-md {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+}
+@utility text-headline-lg-mobile {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+}
+@utility text-label-sm {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+@utility bg-gradient-green {
+  background: linear-gradient(135deg, #00A651 0%, #006B35 100%);
+}
+@utility bg-gradient-orange {
+  background: linear-gradient(135deg, #FF8A00 0%, #E64A00 100%);
+}
+@utility bg-gradient-dark {
+  background: linear-gradient(135deg, #1F2937 0%, #374151 100%);
+}
+
+@utility hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 166, 81, 0.13), 0 4px 6px -2px rgba(0, 166, 81, 0.05);
+  }
+}
+
+@utility btn-press {
+  transition: transform 0.15s ease;
+  &:active {
+    transform: scale(0.94);
+  }
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.trust-circle {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body {
+  font-family: 'Tiro Bangla', 'Noto Serif Bengali', 'Noto Serif', serif;
+  background: var(--color-background);
+  color: var(--color-on-background);
+}
+
+/* Global image responsiveness rule */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mobile viewport adjustments for Apple-style bottom nav */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 72px; /* Space for fixed bottom bar */
+  }
+}
+
+/* Tappable pseudo target rule for accessibility */
+.tappable {
+  position: relative;
+}
+@media (max-width: 767px) {
+  .tappable::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    min-width: 100%;
+    min-height: 100%;
+    cursor: pointer;
+    z-index: 1;
+  }
+}
+
+/* Logo accents navigation style */
+.logo-nav-link {
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.logo-nav-link:hover {
+  color: #ff6600 !important; /* Orange from logo */
+}
+.logo-nav-link-active {
+  color: #003366 !important; /* Dark blue from logo */
+  border-color: #003366 !important;
+}
+
+/* UI UX Pro Max Premium Utilities */
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.shadow-premium {
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.12), 0 4px 10px -5px rgba(0, 0, 0, 0.08);
+}
+
+.shadow-soft {
+  box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.15);
+}
+
+.card-zoom-image {
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.group:hover .card-zoom-image {
+  transform: scale(1.05);
+}
