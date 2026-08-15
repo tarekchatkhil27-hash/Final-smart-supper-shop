@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AdminSidebar } from "@/components/AdminSidebar";
 import { useApp } from "@/context/AppContext";
-import { mockProducts as initialProducts } from "@/data/mockData";
 import { Product } from "@/context/AppContext";
+import { insforge } from "@/lib/insforge";
 
 interface AdminProduct extends Product {
   stock?: number;
@@ -22,66 +22,57 @@ export default function AdminProductsPage() {
   const [sortBy, setSortBy] = useState<string>("newest");
 
   useEffect(() => {
-    // Auth guard
-    const isAuth = sessionStorage.getItem("sss_admin_auth");
-    if (isAuth !== "true") {
-      router.push("/admin/login");
-      return;
-    }
-
-    // Load products from sessionStorage or fallback to initialProducts
-    const savedProducts = sessionStorage.getItem("sss_admin_products");
-    if (savedProducts) {
-      try {
-        const parsed: AdminProduct[] = JSON.parse(savedProducts);
-        // Ensure all products have stock and isActive initialized
-        const initialized = parsed.map((p) => ({
-          ...p,
-          stock: p.stock !== undefined ? p.stock : (p.id === "13" ? 0 : Math.floor(15 + (parseInt(p.id) * 17) % 120)),
-          isActive: p.isActive !== undefined ? p.isActive : (p.id !== "13"),
+    // Auth guard is handled by layout, but we fetch from insforge now
+    const fetchProducts = async () => {
+      const { data } = await insforge.database.from("Products").select().order('created_at', { ascending: false });
+      if (data) {
+        const mapped: AdminProduct[] = data.map((p: any) => ({
+          id: p.id,
+          slug: p.id,
+          nameBn: p.name,
+          nameEn: p.name,
+          price: p.price,
+          image: p.image_url || "https://placehold.co/400x400?text=No+Image",
+          unitBn: "১ টি",
+          unitEn: "1 Pc",
+          category: "general",
+          descriptionBn: p.description,
+          descriptionEn: p.description,
+          stock: p.stock || 0,
+          isActive: true
         }));
-        setProducts(initialized);
-      } catch (e) {
-        console.error("Failed to parse saved admin products", e);
+        setProducts(mapped);
       }
-    } else {
-      const initialized = initialProducts.map((p) => ({
-        ...p,
-        stock: p.id === "13" ? 0 : Math.floor(15 + (parseInt(p.id) * 17) % 120),
-        isActive: p.id !== "13",
-      }));
-      setProducts(initialized);
-      sessionStorage.setItem("sss_admin_products", JSON.stringify(initialized));
-    }
+    };
+    fetchProducts();
   }, [router]);
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     const confirmMsg = language === "bn"
       ? "আপনি কি নিশ্চিতভাবে এই পণ্যটি মুছে ফেলতে চান?"
       : "Are you sure you want to delete this product?";
     
     if (confirm(confirmMsg)) {
-      const updated = products.filter((p) => p.id !== id);
-      setProducts(updated);
-      sessionStorage.setItem("sss_admin_products", JSON.stringify(updated));
+      const { error } = await insforge.database.from("Products").delete().eq("id", id);
+      if (!error) {
+        setProducts(products.filter((p) => p.id !== id));
+      } else {
+        alert("Error deleting product");
+      }
     }
   };
 
-  const toggleActiveStatus = (id: string) => {
+  const toggleActiveStatus = async (id: string) => {
     const updated = products.map((p) => {
       if (p.id === id) {
-        const nextStatus = !p.isActive;
         return {
           ...p,
-          isActive: nextStatus,
-          // If toggled active but stock is 0, give it some mock stock
-          stock: nextStatus && p.stock === 0 ? 25 : p.stock,
+          isActive: !p.isActive,
         };
       }
       return p;
     });
     setProducts(updated);
-    sessionStorage.setItem("sss_admin_products", JSON.stringify(updated));
   };
 
   const filteredProducts = products.filter((product) => {

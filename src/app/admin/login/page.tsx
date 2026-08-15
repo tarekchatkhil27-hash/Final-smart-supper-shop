@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useApp } from "@/context/AppContext";
+import { insforge } from "@/lib/insforge";
 
 export default function AdminLoginPage() {
   const { t } = useApp();
@@ -12,13 +13,7 @@ export default function AdminLoginPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loginError, setLoginError] = useState("");
 
-  useEffect(() => {
-    // Redirect if already authenticated
-    const isAuth = sessionStorage.getItem("sss_admin_auth");
-    if (isAuth === "true") {
-      router.push("/admin/products");
-    }
-  }, [router]);
+
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -36,21 +31,26 @@ export default function AdminLoginPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
-    // Placeholder credential check
-    if (email === "admin@smartsupershop.com" && password === "admin123") {
-      sessionStorage.setItem("sss_admin_auth", "true");
-      router.push("/admin/products");
-    } else {
+    setLoginError("");
+    const { data, error } = await insforge.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
       setLoginError(
-        t(
-          "ভুল ইমেইল বা পাসওয়ার্ড! অনুগ্রহ করে সঠিক তথ্য দিন।",
-          "Invalid email or password! Please provide correct credentials."
-        )
+        error.message ||
+          t(
+            "ভুল ইমেইল বা পাসওয়ার্ড! অনুগ্রহ করে সঠিক তথ্য দিন।",
+            "Invalid email or password! Please provide correct credentials."
+          )
       );
+    } else if (data?.user) {
+      router.push("/admin/products");
     }
   };
 

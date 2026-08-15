@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { AdminSidebar } from "@/components/AdminSidebar";
 import { useApp } from "@/context/AppContext";
-import { mockProducts } from "@/data/mockData";
 import { Product } from "@/context/AppContext";
+import { insforge } from "@/lib/insforge";
 
 export default function AdminNewProductPage() {
   const router = useRouter();
@@ -29,16 +29,12 @@ export default function AdminNewProductPage() {
   const [packSizes, setPackSizes] = useState<string[]>(["১ কেজি", "৫ কেজি"]);
   const [newSizeInput, setNewSizeInput] = useState("");
 
-  const [image, setImage] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSaving, setIsSaving] = useState(false);
 
-  useEffect(() => {
-    // Auth guard
-    const isAuth = sessionStorage.getItem("sss_admin_auth");
-    if (isAuth !== "true") {
-      router.push("/admin/login");
-    }
-  }, [router]);
+
 
   const handleAddSizeTag = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -83,74 +79,70 @@ export default function AdminNewProductPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    setIsSaving(true);
 
-    // Load active list
-    const saved = sessionStorage.getItem("sss_admin_products");
-    const activeProducts: Product[] = saved ? JSON.parse(saved) : mockProducts;
+    let uploadedImageUrl = "https://placehold.co/400x400?text=No+Image";
+
+    if (imageFile) {
+      const { data: uploadData, error: uploadError } = await insforge.storage
+        .from("product-images")
+        .uploadAuto(imageFile);
+
+      if (uploadError) {
+        alert("Error uploading image: " + uploadError.message);
+        setIsSaving(false);
+        return;
+      }
+      if (uploadData) {
+        uploadedImageUrl = uploadData.url;
+      }
+    }
 
     // Calculate discount percentages and prices
     const priceNum = parseFloat(price);
-    let calculatedDiscountPrice: number | undefined = undefined;
-    let calculatedDiscountPercent: number | undefined = undefined;
+    let finalDiscountPrice = null;
+    let finalDiscountPercent = null;
 
     if (discountType === "percent") {
-      calculatedDiscountPercent = parseFloat(discountValue);
-      calculatedDiscountPrice = Math.round(priceNum - (priceNum * calculatedDiscountPercent) / 100);
+      finalDiscountPercent = parseFloat(discountValue);
+      finalDiscountPrice = priceNum - (priceNum * (finalDiscountPercent / 100));
     } else if (discountType === "fixed") {
-      const val = parseFloat(discountValue);
-      calculatedDiscountPrice = priceNum - val;
-      calculatedDiscountPercent = Math.round((val / priceNum) * 100);
+      const discountVal = parseFloat(discountValue);
+      finalDiscountPrice = priceNum - discountVal;
+      finalDiscountPercent = Math.round((discountVal / priceNum) * 100);
     }
 
-    const sizeMapping = packSizes.map((size) => {
-      // Scale price slightly by size for mock data
-      const scale = size.includes("৫") || size.includes("5") ? 4.5 : size.includes("১০") || size.includes("10") ? 8.5 : 1.0;
-      const baseSizePrice = Math.round(priceNum * scale);
-      let sizeDiscountPrice: number | undefined = undefined;
-      
-      if (calculatedDiscountPercent) {
-        sizeDiscountPrice = Math.round(baseSizePrice - (baseSizePrice * calculatedDiscountPercent) / 100);
-      }
+    const unitStr = packSizes.length > 0 ? packSizes[0] : "১ টি";
 
-      return {
-        nameBn: size,
-        nameEn: size.replace(/১/g, "1").replace(/৫/g, "5").replace(/১০/g, "10").replace(/কেজি/g, "kg").replace(/গ্রাম/g, "g"),
-        price: baseSizePrice,
-        discountPrice: sizeDiscountPrice,
-        discountPercent: calculatedDiscountPercent,
-      };
-    });
-
-    const mockImg = "https://lh3.googleusercontent.com/aida-public/AB6AXuBgbdEhf_QhiD73wVEVHhN8V7MPp4yvGK63tYc7NWGA5Z3mtfobzbT9YJNV8yOLIWHBMKIW6LMImopU3RrtuCuDcGC9GwjdiuChJoQ8DHemqP_txi-8b_IqdtPTlgrrh-QcrH_ltr_7aUNJfbKWTQ6HcDjiv_TMlV94ndDKe7JSsMVQ5GLymrxpBktz5COk6u4orMkw8SEpCFnjTpeRsoN87eAzNOcvuId4MatRsoPQjomBpBagK55OEg";
-
-    const newProduct = {
-      id: `${activeProducts.length + 1001}`,
-      slug: nameEn.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
-      nameBn,
-      nameEn,
+    const { error } = await insforge.database.from("Products").insert([{
+      name: nameEn,
+      description: descriptionBn,
       price: priceNum,
-      discountPrice: calculatedDiscountPrice,
-      discountPercent: calculatedDiscountPercent,
-      unitBn: packSizes[0] || "১ কেজি",
-      unitEn: (packSizes[0] || "১ কেজি").replace(/১/g, "1").replace(/কেজি/g, "kg"),
-      category,
-      image: image || mockImg,
-      descriptionBn,
-      descriptionEn,
-      isNew: true,
       stock: parseInt(stock),
-      isActive,
-      packSizes: sizeMapping.length > 0 ? sizeMapping : undefined,
-    };
+      image_url: uploadedImageUrl,
+      category: category,
+      discount_price: finalDiscountPrice,
+      discount_percent: finalDiscountPercent,
+      unit: unitStr
+    }]);
 
-    const updated = [newProduct, ...activeProducts];
-    sessionStorage.setItem("sss_admin_products", JSON.stringify(updated));
+    setIsSaving(false);
+    if (!error) {
+      router.push("/admin/products");
+    } else {
+      alert("Error saving product: " + error.message);
+    }
+  };
 
-    // Redirect to list
-    router.push("/admin/products");
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
   };
 
   return (
@@ -182,11 +174,12 @@ export default function AdminNewProductPage() {
               {t("বাতিল করুন", "Cancel")}
             </button>
             <button
+              disabled={isSaving}
               onClick={handleSave}
-              className="bg-gradient-green text-on-primary px-6 py-2 rounded-full font-label-md text-label-md shadow-md hover:shadow-lg transition-all active:scale-[0.94] flex items-center gap-2 cursor-pointer font-bold"
+              className="bg-gradient-green text-on-primary px-6 py-2 rounded-full font-label-md text-label-md shadow-md hover:shadow-lg transition-all active:scale-[0.94] flex items-center gap-2 cursor-pointer font-bold disabled:opacity-50"
             >
               <span className="material-symbols-outlined text-[18px]">save</span>
-              {t("পণ্য সংরক্ষণ করুন", "Save Product")}
+              {isSaving ? "সংরক্ষণ করা হচ্ছে..." : t("পণ্য সংরক্ষণ করুন", "Save Product")}
             </button>
           </div>
         </header>
@@ -453,23 +446,28 @@ export default function AdminNewProductPage() {
                     {t("পণ্যের ছবি", "Product Image")}
                   </h2>
 
-                  {/* Drag and Drop Box */}
-                  <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-xl bg-surface p-6 text-center hover:border-primary transition-colors cursor-pointer group min-h-[180px]">
-                    <div className="w-12 h-12 rounded-full bg-primary-container text-primary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <span className="material-symbols-outlined text-[24px]">cloud_upload</span>
-                    </div>
-                    <p className="font-body-md text-on-surface font-semibold mb-0.5">
-                      {t("এখানে ছবি ড্র্যাগ করুন", "Drag and drop image here")}
-                    </p>
-                    <p className="font-label-sm text-label-sm text-on-surface-variant mb-4">
-                      {t("SVG, PNG, JPG বা GIF (সর্বোচ্চ ৮০০x৪০০)", "SVG, PNG, JPG or GIF (max. 800x400px)")}
-                    </p>
-                    <button
-                      type="button"
-                      className="px-4 py-1.5 rounded-full border border-primary text-primary hover:bg-primary/5 font-label-md text-label-md transition-all active:scale-95 cursor-pointer font-bold"
-                    >
+                  <div className="relative flex-1 flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-xl bg-surface p-6 text-center hover:border-primary transition-colors group min-h-[180px]">
+                    {imagePreview ? (
+                      <div className="absolute inset-0 w-full h-full p-2">
+                        <img src={imagePreview} className="w-full h-full object-contain rounded-lg" alt="Preview" />
+                      </div>
+                    ) : (
+                      <>
+                        <div className="w-12 h-12 rounded-full bg-primary-container text-primary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                          <span className="material-symbols-outlined text-[24px]">cloud_upload</span>
+                        </div>
+                        <p className="font-body-md text-on-surface font-semibold mb-0.5">
+                          {t("এখানে ছবি ড্র্যাগ করুন", "Drag and drop image here")}
+                        </p>
+                        <p className="font-label-sm text-label-sm text-on-surface-variant mb-4">
+                          {t("SVG, PNG, JPG বা GIF (৬০০x৪০০ পিক্সেল)", "SVG, PNG, JPG or GIF (600x400 px)")}
+                        </p>
+                      </>
+                    )}
+                    <label className="px-4 py-1.5 rounded-full border border-primary text-primary hover:bg-primary/5 font-label-md text-label-md transition-all active:scale-95 cursor-pointer font-bold relative z-10 bg-white shadow-sm mt-auto">
                       {t("ফাইল খুঁজুন", "Browse Files")}
-                    </button>
+                      <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                    </label>
                   </div>
                 </div>
 
@@ -545,11 +543,12 @@ export default function AdminNewProductPage() {
             {t("বাতিল করুন", "Cancel")}
           </button>
           <button
+            disabled={isSaving}
             onClick={handleSave}
-            className="flex-[2] bg-gradient-green text-on-primary py-3 rounded-full font-label-md text-label-md shadow-md hover:shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer font-bold"
+            className="flex-[2] bg-gradient-green text-on-primary py-3 rounded-full font-label-md text-label-md shadow-md hover:shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer font-bold disabled:opacity-50"
           >
             <span className="material-symbols-outlined text-[18px]">save</span>
-            {t("পণ্য সংরক্ষণ করুন", "Save Product")}
+            {isSaving ? "সংরক্ষণ করা হচ্ছে..." : t("পণ্য সংরক্ষণ করুন", "Save Product")}
           </button>
         </div>
       </main>

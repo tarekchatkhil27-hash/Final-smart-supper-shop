@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { AdminSidebar } from "@/components/AdminSidebar";
 import { useApp } from "@/context/AppContext";
 
@@ -14,6 +15,7 @@ interface OrderItem {
   unitBn: string;
   unitEn: string;
 }
+import { insforge } from "@/lib/insforge";
 
 interface AdminOrder {
   id: string;
@@ -22,89 +24,11 @@ interface AdminOrder {
   address: string;
   items: OrderItem[];
   totalAmount: number;
-  status: "pending" | "processing" | "delivered" | "cancelled";
+  status: "pending" | "processing" | "delivered" | "cancelled" | "Pending Payment" | "Paid" | "Shipped";
   createdAt: string;
+  shortId?: string;
+  deliveryFee: number;
 }
-
-// Initial 6 orders for management console
-const initialAdminOrders: AdminOrder[] = [
-  {
-    id: "SSS-1001",
-    customerName: "আব্দুর রহমান",
-    phone: "01712345678",
-    address: "বাসা ১২, রোড ৩, ধানমন্ডি, ঢাকা",
-    items: [
-      { productId: "13", nameBn: "ফ্রেশ পালং শাক", nameEn: "Fresh Spinach", price: 30, quantity: 2, unitBn: "২৫০ গ্রাম", unitEn: "250g" },
-      { productId: "4", nameBn: "হোল হুইট ব্রেড", nameEn: "Whole Wheat Bread", price: 80, quantity: 1, unitBn: "৪০০ গ্রাম", unitEn: "400g" },
-    ],
-    totalAmount: 190,
-    status: "pending",
-    createdAt: "2026-07-13T10:15:00Z",
-  },
-  {
-    id: "SSS-1002",
-    customerName: "সুমি আক্তার",
-    phone: "01887654321",
-    address: "ফ্ল্যাট ৪বি, গুলশান, ঢাকা",
-    items: [
-      { productId: "8", nameBn: "সাগর কলা", nameEn: "Sagor Banana", price: 100, quantity: 1, unitBn: "১ ডজন", unitEn: "1 Dozen" },
-      { productId: "2", nameBn: "খাঁটি সয়াবিন তেল", nameEn: "Pure Soybean Oil", price: 820, quantity: 1, unitBn: "৫ লিটার", unitEn: "5 Liter" },
-    ],
-    totalAmount: 970,
-    status: "processing",
-    createdAt: "2026-07-13T09:30:00Z",
-  },
-  {
-    id: "SSS-1003",
-    customerName: "মোহাম্মদ আলি",
-    phone: "01911223344",
-    address: "সেক্টর ৪, উত্তরা, ঢাকা",
-    items: [
-      { productId: "3", nameBn: "দেশী মসুর ডাল", nameEn: "Local Lentils", price: 140, quantity: 2, unitBn: "১ কেজি", unitEn: "1kg" },
-    ],
-    totalAmount: 330,
-    status: "delivered",
-    createdAt: "2026-07-12T15:45:00Z",
-  },
-  {
-    id: "SSS-1004",
-    customerName: "ফাতেমা বেগম",
-    phone: "01555667788",
-    address: "হালিশহর, চট্টগ্রাম",
-    items: [
-      { productId: "18", nameBn: "বেবি ডায়াপার লার্জ", nameEn: "Baby Diaper Large", price: 855, quantity: 1, unitBn: "৪৪ টি", unitEn: "44 Pack" },
-      { productId: "17", nameBn: "বেবি ওয়াইপস", nameEn: "Baby Wipes", price: 220, quantity: 2, unitBn: "৮০ টি", unitEn: "80 Sheets" },
-    ],
-    totalAmount: 1345,
-    status: "delivered",
-    createdAt: "2026-07-12T11:20:00Z",
-  },
-  {
-    id: "SSS-1005",
-    customerName: "আহসান হাবিব",
-    phone: "01711223344",
-    address: "উপশহর, সিলেট",
-    items: [
-      { productId: "9", nameBn: "অর্গানিক আপেল", nameEn: "Organic Apple", price: 180, quantity: 2, unitBn: "১ কেজি", unitEn: "1kg" },
-      { productId: "10", nameBn: "তাজা পেয়ারা", nameEn: "Fresh Guava", price: 90, quantity: 3, unitBn: "১ কেজি", unitEn: "1kg" },
-    ],
-    totalAmount: 680,
-    status: "pending",
-    createdAt: "2026-07-11T18:10:00Z",
-  },
-  {
-    id: "SSS-1006",
-    customerName: "নাসরিন সুলতানা",
-    phone: "01666778899",
-    address: "সোনাডাঙ্গা, খুলনা",
-    items: [
-      { productId: "5", nameBn: "প্যাকেট চিনি", nameEn: "Packet Sugar", price: 130, quantity: 2, unitBn: "১ কেজি", unitEn: "1kg" },
-    ],
-    totalAmount: 310,
-    status: "processing",
-    createdAt: "2026-07-11T14:05:00Z",
-  },
-];
 
 export default function AdminOrdersPage() {
   const router = useRouter();
@@ -113,34 +37,99 @@ export default function AdminOrdersPage() {
   const [orderSortBy, setOrderSortBy] = useState<string>("newest");
 
   useEffect(() => {
-    // Auth guard
-    const isAuth = sessionStorage.getItem("sss_admin_auth");
-    if (isAuth !== "true") {
-      router.push("/admin/login");
+    // Auth guard is handled in layout
+
+    const loadOrders = async () => {
+      const { data, error } = await insforge.database
+        .from("Orders")
+        .select(`
+          *,
+          Order_Items (
+            *,
+            Products (*)
+          )
+        `)
+        .order("created_at", { ascending: false });
+
+      if (data) {
+        const mappedOrders: AdminOrder[] = data.map((o: any) => ({
+          id: o.id,
+          customerName: o.customer_name || "Unknown",
+          phone: o.customer_phone || "",
+          address: o.customer_address || "",
+          status: o.status,
+          totalAmount: parseFloat(o.total_amount || "0"),
+          deliveryFee: parseFloat(o.delivery_fee || "0"),
+          createdAt: o.created_at,
+          items: (o.Order_Items || []).map((item: any) => ({
+            productId: item.product_id,
+            nameBn: item.Products?.name || "Unknown",
+            nameEn: item.Products?.name || "Unknown",
+            price: parseFloat(item.price_at_time || "0"),
+            quantity: item.quantity,
+            unitBn: "১ কেজি",
+            unitEn: "1kg"
+          }))
+        }));
+
+        // To calculate stable serials (1st order = 01, 2nd = 02), we must process them in chronological order
+        mappedOrders.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+
+        const dateCounters: Record<string, number> = {};
+        mappedOrders.forEach(o => {
+          const d = new Date(o.createdAt);
+          const day = d.getDate().toString().padStart(2, '0');
+          const month = d.toLocaleString('en-US', { month: 'short' });
+          const key = `${day}-${month}`;
+          dateCounters[key] = (dateCounters[key] || 0) + 1;
+          const serial = dateCounters[key].toString().padStart(2, '0');
+          o.shortId = `${key}-${serial}`;
+        });
+
+        // Re-sort to newest first
+        mappedOrders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+        setOrders(mappedOrders);
+      }
+    };
+    loadOrders();
+  }, [router]);
+
+  const handleMarkCompleted = async (orderId: string, newStatus: string) => {
+    const { error } = await insforge.database
+      .from("Orders")
+      .update({ status: newStatus })
+      .eq("id", orderId);
+
+    if (!error) {
+      const updated = orders.map((o) => (o.id === orderId ? { ...o, status: newStatus as any } : o));
+      setOrders(updated);
+      
+      if (newStatus === "Paid" || newStatus === "delivered") {
+        const orderToPrint = updated.find(o => o.id === orderId);
+        if (orderToPrint) {
+          generateReceipt(orderToPrint);
+        }
+      }
+    } else {
+      alert("Error updating order status.");
+    }
+  };
+
+  const handleDeleteOrder = async (orderId: string) => {
+    if (!window.confirm(t("আপনি কি নিশ্চিত যে আপনি এই অর্ডারটি মুছে ফেলতে চান? এটি পুনরায় ফিরিয়ে আনা সম্ভব নয়।", "Are you sure you want to delete this order? This cannot be undone."))) {
       return;
     }
 
-    // Load orders from sessionStorage
-    const savedOrders = sessionStorage.getItem("sss_admin_orders");
-    if (savedOrders) {
-      try {
-        setOrders(JSON.parse(savedOrders));
-      } catch (e) {
-        console.error("Failed to parse saved orders", e);
-      }
-    } else {
-      setOrders(initialAdminOrders);
-      sessionStorage.setItem("sss_admin_orders", JSON.stringify(initialAdminOrders));
-    }
-  }, [router]);
+    const { error } = await insforge.database
+      .from("Orders")
+      .delete()
+      .eq("id", orderId);
 
-  const handleMarkCompleted = (orderId: string) => {
-    const updated = orders.map((o) => (o.id === orderId ? { ...o, status: "delivered" as const } : o));
-    setOrders(updated);
-    sessionStorage.setItem("sss_admin_orders", JSON.stringify(updated));
-    const orderToPrint = updated.find(o => o.id === orderId);
-    if (orderToPrint) {
-      generateReceipt(orderToPrint);
+    if (error) {
+      alert("Error deleting order: " + error.message);
+    } else {
+      setOrders(orders.filter(o => o.id !== orderId));
     }
   };
 
@@ -184,7 +173,7 @@ export default function AdminOrdersPage() {
       <body>
         <h1>Smart Supper Shop</h1>
         <div class="section">
-          <div><span class="bold">অর্ডার নম্বর:</span> ${order.id}</div>
+          <div><span class="bold">অর্ডার নম্বর:</span> ${order.shortId || order.id}</div>
           <div><span class="bold">তারিখ:</span> ${dateStr}</div>
         </div>
         
@@ -203,11 +192,15 @@ export default function AdminOrdersPage() {
               "<div>৳" + (item.price * item.quantity) + "</div>" +
             "</div>"
           ).join("")}
+          <div class='item-row' style="margin-top: 5px; border-top: 1px dotted #ccc; padding-top: 4px;">
+            <div class='item-name'>ডেলিভারি ফি (Delivery Fee):</div>
+            <div>৳${order.deliveryFee}</div>
+          </div>
         </div>
 
         <div class="total-row">
-          <span>মোট মূল্য:</span>
-          <span>৳${order.totalAmount}</span>
+          <span>সর্বমোট মূল্য:</span>
+          <span>৳${order.totalAmount + order.deliveryFee}</span>
         </div>
 
         <div class="footer">
@@ -252,31 +245,40 @@ export default function AdminOrdersPage() {
   const getStatusBadge = (status: AdminOrder["status"]) => {
     switch (status) {
       case "pending":
+      case "Pending Payment":
         return (
           <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-red-100 text-red-800 text-xs font-bold gap-1 border border-red-200">
             <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>
-            {t("অপেক্ষমান", "Pending")}
+            {t("অপেক্ষমান", status)}
           </span>
         );
       case "processing":
+      case "Shipped":
         return (
           <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-orange-100 text-orange-800 text-xs font-bold gap-1 border border-orange-200">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
-            {t("প্রক্রিয়াধীন", "Processing")}
+            {t("প্রক্রিয়াধীন", status)}
           </span>
         );
       case "delivered":
+      case "Paid":
         return (
           <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-green-100 text-green-800 text-xs font-bold gap-1 border border-green-200">
             <span className="w-1.5 h-1.5 rounded-full bg-green-600"></span>
-            {t("সম্পন্ন", "Completed")}
+            {t("সম্পন্ন", status)}
           </span>
         );
       case "cancelled":
         return (
           <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-gray-100 text-gray-800 text-xs font-bold gap-1 border border-gray-200">
             <span className="w-1.5 h-1.5 rounded-full bg-gray-500"></span>
-            {t("বাতিলকৃত", "Cancelled")}
+            {t("বাতিলকৃত", status)}
+          </span>
+        );
+      default:
+        return (
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-gray-100 text-gray-800 text-xs font-bold gap-1 border border-gray-200">
+            {status}
           </span>
         );
     }
@@ -410,6 +412,7 @@ export default function AdminOrdersPage() {
                       <th className="p-4">{t("গ্রাহকের বিবরণ", "Customer Details")}</th>
                       <th className="p-4">{t("তারিখ", "Date")}</th>
                       <th className="p-4 w-40">{t("অর্ডারকৃত পণ্যসমূহ", "Items")}</th>
+                      <th className="p-4 w-24 text-right">{t("ডেলিভারি", "Delivery")}</th>
                       <th className="p-4 w-28 text-right">{t("মোট মূল্য", "Total BDT")}</th>
                       <th className="p-4 w-32 text-center">{t("অবস্থা", "Status")}</th>
                       <th className="p-4 w-36 text-right">{t("অ্যাকশন", "Action")}</th>
@@ -432,8 +435,12 @@ export default function AdminOrdersPage() {
 
                         return (
                           <tr key={order.id} className="hover:bg-surface-container transition-colors group">
-                            {/* Order Num */}
-                            <td className="p-4 font-bold text-on-surface">#{order.id}</td>
+                            <td className="p-4 leading-normal">
+                              <div className="font-bold text-on-surface text-base">#{order.shortId || order.id.substring(0, 8)}</div>
+                              <div className="text-xs font-mono text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded inline-block mt-1">
+                                {order.id.substring(0, 8)}
+                              </div>
+                            </td>
                             
                             {/* Customer info */}
                             <td className="p-4 leading-normal">
@@ -457,35 +464,53 @@ export default function AdminOrdersPage() {
                               ))}
                             </td>
 
+                            {/* Delivery Fee */}
+                            <td className="p-4 font-bold text-on-surface text-right">
+                              ৳{f(order.deliveryFee)}
+                            </td>
+
                             {/* Total BDT */}
                             <td className="p-4 font-bold text-on-surface text-right">
-                              ৳{f(order.totalAmount)}
+                              ৳{f(order.totalAmount + order.deliveryFee)}
                             </td>
 
                             {/* Status Badge */}
                             <td className="p-4 text-center">{getStatusBadge(order.status)}</td>
 
-                            {/* Actions button */}
-                            <td className="p-4 text-right">
-                              {isCompleted ? (
-                                <button
-                                  type="button"
-                                  disabled
-                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-outline-variant text-on-surface-variant rounded-full text-xs hover:bg-surface-container transition-colors disabled:opacity-50 font-bold"
-                                >
-                                  <span className="material-symbols-outlined text-[14px]">visibility</span>
-                                  {t("দেখুন", "View")}
-                                </button>
-                              ) : (
-                                <button
-                                  type="button"
-                                  onClick={() => handleMarkCompleted(order.id)}
-                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-green text-on-primary rounded-full text-xs shadow-sm hover:shadow-md active:scale-95 transition-all cursor-pointer font-bold"
-                                >
-                                  <span className="material-symbols-outlined text-[14px]">check</span>
-                                  {t("সম্পন্ন করুন", "Complete")}
-                                </button>
-                              )}
+                            <td className="p-4 text-right flex items-center justify-end gap-2">
+                              <Link
+                                href={`/admin/orders/${order.id}/edit`}
+                                className="w-8 h-8 flex items-center justify-center rounded-lg bg-surface border border-outline-variant text-on-surface hover:bg-surface-container transition-colors"
+                                title="Edit Order"
+                              >
+                                <span className="material-symbols-outlined text-[16px]">edit</span>
+                              </Link>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteOrder(order.id)}
+                                className="w-8 h-8 flex items-center justify-center rounded-lg bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 transition-colors cursor-pointer"
+                                title="Delete Order"
+                              >
+                                <span className="material-symbols-outlined text-[16px]">delete</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => generateReceipt(order)}
+                                className="inline-flex items-center gap-1 px-2 py-1.5 border border-primary text-primary rounded-lg text-xs font-bold hover:bg-primary/10 transition-colors cursor-pointer"
+                                title="Print Receipt"
+                              >
+                                <span className="material-symbols-outlined text-[16px]">print</span>
+                              </button>
+                              <select
+                                value={order.status}
+                                onChange={(e) => handleMarkCompleted(order.id, e.target.value)}
+                                className="bg-surface border border-outline-variant/60 rounded-xl px-2 py-1.5 text-xs font-bold text-on-surface focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
+                              >
+                                <option value="Pending Payment">Pending Payment</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="cancelled">Cancelled</option>
+                              </select>
                             </td>
                           </tr>
                         );
@@ -533,8 +558,9 @@ export default function AdminOrdersPage() {
 
                         <div className="flex justify-between items-start mb-2">
                           <div>
-                            <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-0.5">
-                              {t("অর্ডার ", "Order ")} #{order.id}
+                            <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-0.5 flex items-center gap-2">
+                              <span>{t("অর্ডার ", "Order ")} #{order.shortId || order.id.substring(0, 8)}</span>
+                              <span className="font-mono text-[10px] normal-case bg-surface-container px-1 rounded">{order.id.substring(0, 8)}</span>
                             </p>
                             <p className="font-headline-sm text-headline-sm text-on-surface font-bold">
                               {order.customerName}
@@ -555,32 +581,60 @@ export default function AdminOrdersPage() {
 
                         <div className="flex justify-between items-end mt-3 pt-3 border-t border-outline-variant/40">
                           <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="font-micro text-micro text-on-surface-variant font-bold">{t("ডেলিভারি:", "Delivery:")}</span>
+                              <span className="text-xs font-bold text-on-surface">৳{f(order.deliveryFee)}</span>
+                            </div>
                             <p className="font-micro text-micro text-on-surface-variant">{formattedDate}</p>
                             <p className="font-headline-sm text-headline-sm text-on-surface mt-0.5 font-bold">
-                              ৳{f(order.totalAmount)}
+                              ৳{f(order.totalAmount + order.deliveryFee)}
                             </p>
                           </div>
 
                           {/* Action button */}
-                          {isCompleted ? (
+                          <div className="flex gap-2 items-center flex-wrap mt-2">
+                            <Link
+                              href={`/admin/orders/${order.id}/edit`}
+                              className="w-8 h-8 flex items-center justify-center rounded-lg bg-surface border border-outline-variant text-on-surface hover:bg-surface-container transition-colors"
+                              title="Edit Order"
+                            >
+                              <span className="material-symbols-outlined text-[16px]">edit</span>
+                            </Link>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteOrder(order.id)}
+                              className="w-8 h-8 flex items-center justify-center rounded-lg bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 transition-colors cursor-pointer"
+                              title="Delete Order"
+                            >
+                              <span className="material-symbols-outlined text-[16px]">delete</span>
+                            </button>
                             <button
                               type="button"
                               onClick={() => generateReceipt(order)}
-                              className="inline-flex items-center gap-1 px-4 py-2 border border-primary text-primary rounded-full text-xs font-bold hover:bg-primary/10 transition-colors justify-center w-32 cursor-pointer"
+                              className="inline-flex items-center justify-center w-8 h-8 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors cursor-pointer"
+                              title="Print Receipt"
                             >
                               <span className="material-symbols-outlined text-[16px]">print</span>
-                              {t("প্রিন্ট রসিদ", "Print Receipt")}
                             </button>
-                          ) : (
+                            <select
+                              value={order.status}
+                              onChange={(e) => handleMarkCompleted(order.id, e.target.value)}
+                              className="bg-surface border border-outline-variant/60 rounded-xl px-2 py-1 text-xs font-bold text-on-surface focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
+                            >
+                              <option value="Pending Payment">Pending Payment</option>
+                              <option value="Paid">Paid</option>
+                              <option value="Shipped">Shipped</option>
+                              <option value="cancelled">Cancelled</option>
+                            </select>
+
                             <button
                               type="button"
-                              onClick={() => handleMarkCompleted(order.id)}
-                              className="inline-flex items-center gap-1 px-4 py-2 bg-gradient-green text-on-primary rounded-full text-xs font-bold shadow-sm active:scale-95 transition-transform justify-center w-32 cursor-pointer"
+                              onClick={() => generateReceipt(order)}
+                              className="inline-flex items-center gap-1 px-4 py-2 border border-primary text-primary rounded-full text-xs font-bold hover:bg-primary/10 transition-colors justify-center cursor-pointer"
                             >
-                              <span className="material-symbols-outlined text-[16px]">check</span>
-                              {t("সম্পন্ন করুন", "Complete")}
+                              <span className="material-symbols-outlined text-[16px]">print</span>
                             </button>
-                          )}
+                          </div>
                         </div>
                       </div>
                     );

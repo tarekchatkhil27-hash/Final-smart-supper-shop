@@ -5,28 +5,65 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useApp } from "@/context/AppContext";
-import { mockProducts } from "@/data/mockData";
+import { insforge } from "@/lib/insforge";
 
 export default function HomePage() {
   const { t, addToCart, language } = useApp();
 
-  const heroImages = [
-    "https://lh3.googleusercontent.com/aida-public/AB6AXuDRu51jFjJMF5nY0eGG0SfreRJzQZ3_Qe2FjOJQONOMZm3msHfZqvC2-KWhN8IGm_dffrcEq4SjLOWIJn3cj6zbQMgL8G1vnhsbad51Ec_778UPpEb9sHwC-tZRwNqfVuvHThJ8Lp5Td2nztd_Jjx_RdnH9ENQ5Tpl2wxnU4LvIVhHWvIEzuwUA9Bglzr5rFqLAZcMIoOaGuj_wCB6W5aSDM-V3FI66BfvJHu60yQpOQC5CMZ2QCwaAow",
-    "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1600",
-    "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&q=80&w=1600"
-  ];
+  const [heroSlides, setHeroSlides] = useState<any[]>([]);
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
 
   useEffect(() => {
+    if (heroSlides.length === 0) return;
     const timer = setInterval(() => {
-      setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length);
+      setCurrentHeroIndex((prev) => (prev + 1) % heroSlides.length);
     }, 5000);
     return () => clearInterval(timer);
+  }, [heroSlides.length]);
+
+
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data: settingsData } = await insforge.database.from("Settings").select("hero_slides").eq("id", 1).single();
+      if (settingsData && settingsData.hero_slides && settingsData.hero_slides.length > 0) {
+        setHeroSlides(settingsData.hero_slides.filter((s: any) => s.image_url)); // Only valid slides
+      } else {
+        // Fallback default slides
+        setHeroSlides([
+          {
+            image_url: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1600",
+            titleBn: "বাজার এখন ঘরে",
+            titleEn: "Grocery now at home",
+            subtitleBn: "ফ্রেশ কোয়ালিটির বাজার পৌঁছে যাবে সরাসরি আপনার দরজায়। দ্রুত, নির্ভরযোগ্য এবং সাশ্রয়ী।",
+            subtitleEn: "Fresh quality groceries delivered straight to your door. Fast, reliable, and affordable."
+          }
+        ]);
+      }
+
+      const { data } = await insforge.database.from("Products").select().limit(4);
+      if (data) {
+        const mapped = data.map((p: any) => ({
+          id: p.id,
+          slug: p.id, // using id as slug for now
+          nameBn: p.name,
+          nameEn: p.name,
+          price: p.price,
+          image: p.image_url || "https://placehold.co/400x400?text=No+Image",
+          unitBn: p.unit || "১ টি",
+          unitEn: p.unit || "1 Pc",
+          category: p.category || "grocery",
+          discountPrice: p.discount_price || undefined,
+          discountPercent: p.discount_percent || undefined,
+          descriptionBn: p.description,
+          descriptionEn: p.description,
+        }));
+        setFeaturedProducts(mapped);
+      }
+    };
+    fetchData();
   }, []);
-
-
-  // Get the first 4 products to match the Stitch design's featured grid
-  const featuredProducts = mockProducts.slice(0, 4);
 
   return (
     <div className="bg-background text-on-background font-body-md min-h-screen flex flex-col">
@@ -69,21 +106,21 @@ export default function HomePage() {
 
       <main className="flex-grow w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-section-gap flex flex-col gap-8 md:gap-12 pb-24 md:pb-12">
         {/* Hero Banner */}
-        <section className="relative w-full h-[300px] md:h-[400px] rounded-2xl overflow-hidden shadow-premium flex items-center bg-surface-container-high hover-lift group">
-          {heroImages.map((src, index) => (
+        <section className="relative w-full h-[350px] md:h-[500px] rounded-2xl overflow-hidden shadow-premium flex items-center bg-[#0f172a] hover-lift group">
+          {heroSlides.map((slide, index) => (
             <div
               key={index}
-              className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+              className={`absolute inset-0 bg-contain bg-center bg-no-repeat transition-opacity duration-1000 ${
                 index === currentHeroIndex ? "opacity-100" : "opacity-0"
               }`}
-              style={{ backgroundImage: `url('${src}')` }}
+              style={{ backgroundImage: `url('${slide.image_url}')` }}
             ></div>
           ))}
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/20"></div>
           
           {/* Carousel Indicators */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-            {heroImages.map((_, index) => (
+            {heroSlides.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentHeroIndex(index)}
@@ -95,24 +132,26 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="relative z-10 p-8 md:p-12 max-w-lg">
-            <h1 className="font-tiro text-3xl md:text-5xl text-white font-bold leading-tight mb-4 drop-shadow-md">
-              {t("বাজার এখন ঘরে", "Grocery now at home")}
-            </h1>
-            <p className="font-body-lg text-surface-container-low mb-6">
-              {t(
-                "ফ্রেশ কোয়ালিটির বাজার পৌঁছে যাবে সরাসরি আপনার দরজায়। দ্রুত, নির্ভরযোগ্য এবং সাশ্রয়ী।",
-                "Fresh quality groceries delivered straight to your door. Fast, reliable, and affordable."
-              )}
-            </p>
-            <Link
-              href="/shop"
-              className="bg-gradient-green text-white font-headline-sm text-headline-sm px-6 py-3 rounded-full btn-press shadow-md hover:shadow-lg inline-flex items-center gap-2"
-            >
-              {t("অর্ডার করুন", "Order Now")}{" "}
-              <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-            </Link>
-          </div>
+          {heroSlides[currentHeroIndex] && (
+            <div className="relative z-10 p-8 md:p-12 max-w-lg transition-opacity duration-500">
+              <h1 className="font-tiro text-3xl md:text-5xl text-white font-bold leading-tight mb-4 drop-shadow-md">
+                {t(heroSlides[currentHeroIndex].titleBn || "বাজার এখন ঘরে", heroSlides[currentHeroIndex].titleEn || "Grocery now at home")}
+              </h1>
+              <p className="font-body-lg text-surface-container-low mb-6">
+                {t(
+                  heroSlides[currentHeroIndex].subtitleBn || "",
+                  heroSlides[currentHeroIndex].subtitleEn || ""
+                )}
+              </p>
+              <Link
+                href="/shop"
+                className="bg-gradient-green text-white font-headline-sm text-headline-sm px-6 py-3 rounded-full btn-press shadow-md hover:shadow-lg inline-flex items-center gap-2"
+              >
+                {t("অর্ডার করুন", "Order Now")}{" "}
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </Link>
+            </div>
+          )}
         </section>
 
         {/* Featured Products Grid */}

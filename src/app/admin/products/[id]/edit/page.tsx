@@ -5,8 +5,8 @@ import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { AdminSidebar } from "@/components/AdminSidebar";
 import { useApp } from "@/context/AppContext";
-import { mockProducts } from "@/data/mockData";
 import { Product } from "@/context/AppContext";
+import { insforge } from "@/lib/insforge";
 
 interface AdminProduct extends Product {
   stock?: number;
@@ -41,50 +41,48 @@ export default function AdminEditProductPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    // Auth guard
-    const isAuth = sessionStorage.getItem("sss_admin_auth");
-    if (isAuth !== "true") {
-      router.push("/admin/login");
-      return;
-    }
+    // Auth guard is in layout but handled
 
-    // Load products
-    const saved = sessionStorage.getItem("sss_admin_products");
-    const activeProducts: AdminProduct[] = saved ? JSON.parse(saved) : mockProducts;
-    
-    // Find the product
-    const product = activeProducts.find((p) => p.id === id);
-    if (product) {
-      setNameEn(product.nameEn);
-      setNameBn(product.nameBn);
-      setDescriptionBn(product.descriptionBn || "");
-      setDescriptionEn(product.descriptionEn || "");
-      setCategory(product.category);
-      setIsActive(product.isActive !== undefined ? product.isActive : true);
-      setPrice(product.price.toString());
-      setStock((product.stock !== undefined ? product.stock : 100).toString());
-      
-      // Determine discount type
-      if (product.discountPercent !== undefined && product.discountPercent > 0) {
-        setDiscountType("percent");
-        setDiscountValue(product.discountPercent.toString());
-      } else {
-        setDiscountType("none");
-        setDiscountValue("");
-      }
+    const loadProduct = async () => {
+      const { data } = await insforge.database.from("Products").select().eq("id", id as string).single();
+      if (data) {
+        setNameEn(data.name || "");
+        setNameBn(data.name || "");
+        setDescriptionBn(data.description || "");
+        setDescriptionEn(data.description || "");
+        setPrice(data.price?.toString() || "0");
+        setStock(data.stock?.toString() || "");
+        setCategory(data.category || "grocery");
+        setIsActive(true);
+        
+        let initDiscountType: "none" | "percent" | "fixed" = "none";
+        let initDiscountValue = "";
+        
+        if (data.discount_percent) {
+          initDiscountType = "percent";
+          initDiscountValue = data.discount_percent.toString();
+        } else if (data.discount_price && data.price) {
+          initDiscountType = "fixed";
+          initDiscountValue = (data.price - data.discount_price).toString();
+        }
 
-      // Load sizes
-      if (product.packSizes && product.packSizes.length > 0) {
-        setPackSizes(product.packSizes.map((s) => s.nameBn));
+        setDiscountType(initDiscountType);
+        setDiscountValue(initDiscountValue);
+        
+        if (data.unit) {
+          setPackSizes([data.unit]);
+        } else {
+          setPackSizes([]);
+        }
+        
+        setImage(data.image_url || "");
+        setLoading(false);
       } else {
-        setPackSizes([product.unitBn]);
+        alert(t("পণ্যটি পাওয়া যায়নি!", "Product not found!"));
+        router.push("/admin/products");
       }
-      setImage(product.image);
-      setLoading(false);
-    } else {
-      alert(t("পণ্যটি পাওয়া যায়নি!", "Product not found!"));
-      router.push("/admin/products");
-    }
+    };
+    loadProduct();
   }, [id, router, t]);
 
   const handleAddSizeTag = (e: React.MouseEvent) => {
@@ -130,75 +128,43 @@ export default function AdminEditProductPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
-    // Load active list
-    const saved = sessionStorage.getItem("sss_admin_products");
-    const activeProducts: AdminProduct[] = saved ? JSON.parse(saved) : mockProducts;
-
-    // Calculate discount percentages and prices
     const priceNum = parseFloat(price);
-    let calculatedDiscountPrice: number | undefined = undefined;
-    let calculatedDiscountPercent: number | undefined = undefined;
+    
+    let finalDiscountPrice = null;
+    let finalDiscountPercent = null;
 
     if (discountType === "percent") {
-      calculatedDiscountPercent = parseFloat(discountValue);
-      calculatedDiscountPrice = Math.round(priceNum - (priceNum * calculatedDiscountPercent) / 100);
+      finalDiscountPercent = parseFloat(discountValue);
+      finalDiscountPrice = priceNum - (priceNum * (finalDiscountPercent / 100));
     } else if (discountType === "fixed") {
-      const val = parseFloat(discountValue);
-      calculatedDiscountPrice = priceNum - val;
-      calculatedDiscountPercent = Math.round((val / priceNum) * 100);
+      const discountVal = parseFloat(discountValue);
+      finalDiscountPrice = priceNum - discountVal;
+      finalDiscountPercent = Math.round((discountVal / priceNum) * 100);
     }
 
-    const sizeMapping = packSizes.map((size) => {
-      // Scale price slightly by size for mock data
-      const scale = size.includes("৫") || size.includes("5") ? 4.5 : size.includes("১০") || size.includes("10") ? 8.5 : 1.0;
-      const baseSizePrice = Math.round(priceNum * scale);
-      let sizeDiscountPrice: number | undefined = undefined;
-      
-      if (calculatedDiscountPercent) {
-        sizeDiscountPrice = Math.round(baseSizePrice - (baseSizePrice * calculatedDiscountPercent) / 100);
-      }
+    const unitStr = packSizes.length > 0 ? packSizes[0] : "১ টি";
 
-      return {
-        nameBn: size,
-        nameEn: size.replace(/১/g, "1").replace(/৫/g, "5").replace(/১০/g, "10").replace(/কেজি/g, "kg").replace(/গ্রাম/g, "g"),
-        price: baseSizePrice,
-        discountPrice: sizeDiscountPrice,
-        discountPercent: calculatedDiscountPercent,
-      };
-    });
+    const { error } = await insforge.database.from("Products").update({
+      name: nameEn,
+      description: descriptionBn,
+      price: priceNum,
+      stock: parseInt(stock),
+      image_url: image || "https://placehold.co/400x400?text=No+Image",
+      category: category,
+      discount_price: finalDiscountPrice,
+      discount_percent: finalDiscountPercent,
+      unit: unitStr
+    }).eq("id", id as string);
 
-    const updated = activeProducts.map((p) => {
-      if (p.id === id) {
-        return {
-          ...p,
-          slug: nameEn.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
-          nameBn,
-          nameEn,
-          price: priceNum,
-          discountPrice: calculatedDiscountPrice,
-          discountPercent: calculatedDiscountPercent,
-          unitBn: packSizes[0] || "১ কেজি",
-          unitEn: (packSizes[0] || "১ কেজি").replace(/১/g, "1").replace(/কেজি/g, "kg"),
-          category,
-          image,
-          descriptionBn,
-          descriptionEn,
-          stock: parseInt(stock),
-          isActive,
-          packSizes: sizeMapping.length > 0 ? sizeMapping : undefined,
-        };
-      }
-      return p;
-    });
-
-    sessionStorage.setItem("sss_admin_products", JSON.stringify(updated));
-
-    // Redirect to list
-    router.push("/admin/products");
+    if (!error) {
+      router.push("/admin/products");
+    } else {
+      alert("Error updating product");
+    }
   };
 
   if (loading) {
@@ -521,7 +487,7 @@ export default function AdminEditProductPage() {
                       {t("এখানে ছবি ড্র্যাগ করুন", "Drag and drop image here")}
                     </p>
                     <p className="font-label-sm text-label-sm text-on-surface-variant mb-4">
-                      {t("SVG, PNG, JPG বা GIF (সর্বোচ্চ ৮০০x৪০০)", "SVG, PNG, JPG or GIF (max. 800x400px)")}
+                      {t("SVG, PNG, JPG বা GIF (৬০০x৪০০ পিক্সেল)", "SVG, PNG, JPG or GIF (600x400 px)")}
                     </p>
                     <button
                       type="button"

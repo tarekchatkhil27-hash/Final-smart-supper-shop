@@ -84,31 +84,35 @@ export const Footer: React.FC = () => {
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-gray-300 text-sm">
                 <i className="fas fa-phone text-primary text-base w-5 text-center"></i>
-                <span>{t("১৬৪৭৮ (সকাল ৮টা – রাত ১০টা)", "16478 (8:00 AM – 10:00 PM)")}</span>
+                <a href="tel:+8801629011446" className="hover:text-white transition-colors">০১৬২৯ ০১১৪৪৬</a>
               </div>
               <div className="flex items-center gap-3 text-gray-300 text-sm">
                 <i className="fas fa-envelope text-primary text-base w-5 text-center"></i>
-                <span>support@smartsupershop.com.bd</span>
+                <span>smartsuppershop@gmail.com</span>
               </div>
               <div className="flex items-center gap-3 text-gray-300 text-sm">
                 <i className="fas fa-map-marker-alt text-primary text-base w-5 text-center"></i>
-                <span>{t("ঢাকা, চট্টগ্রাম, সিলেট, রাজশাহী", "Dhaka, Chittagong, Sylhet, Rajshahi")}</span>
+                <span>{t("ইয়াছিন হাজির বাজার, চাটখিল, নোয়াখালী।", "Yasin Hajir Bazar, Chatkhil, Noakhali.")}</span>
               </div>
             </div>
             <div className="flex items-center gap-4 mt-6">
               <span className="text-gray-400 text-sm">{t("ফলো করুন:", "Follow us:")}</span>
-              <button className="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center hover:scale-110 transition-transform btn-press cursor-pointer">
-                <i className="fab fa-facebook-f text-white text-sm"></i>
-              </button>
-              <button
-                className="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition-transform btn-press cursor-pointer"
-                style={{ background: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)" }}
+              <a 
+                href="https://www.facebook.com/profile.php?id=61592496354099" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center hover:scale-110 transition-transform btn-press cursor-pointer"
               >
-                <i className="fab fa-instagram text-white text-sm"></i>
-              </button>
-              <button className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center hover:scale-110 transition-transform btn-press cursor-pointer">
-                <i className="fab fa-youtube text-white text-sm"></i>
-              </button>
+                <i className="fab fa-facebook-f text-white text-sm"></i>
+              </a>
+              <a
+                href="https://wa.me/8801629011446"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center hover:scale-110 transition-transform btn-press cursor-pointer"
+              >
+                <i className="fab fa-whatsapp text-white text-[18px]"></i>
+              </a>
             </div>
           </div>
         </div>

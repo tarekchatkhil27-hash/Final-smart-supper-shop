@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useApp, PackSize } from "@/context/AppContext";
-import { mockProducts } from "@/data/mockData";
+import { insforge } from "@/lib/insforge";
 
 export default function ProductDetailPage() {
   const { slug } = useParams();
@@ -15,7 +15,54 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState<PackSize | undefined>(undefined);
 
-  const product = mockProducts.find((p) => p.slug === slug);
+  const [product, setProduct] = useState<any>(null);
+  const [similarProducts, setSimilarProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data } = await insforge.database.from("Products").select().eq("id", slug as string).single();
+      if (data) {
+        const p = {
+          id: data.id,
+          slug: data.id,
+          nameBn: data.name,
+          nameEn: data.name,
+          price: data.price,
+          image: data.image_url || "https://placehold.co/400x400?text=No+Image",
+          unitBn: data.unit || "১ টি",
+          unitEn: data.unit || "1 Pc",
+          category: data.category || "grocery",
+          descriptionBn: data.description,
+          descriptionEn: data.description,
+          discountPrice: data.discount_price || undefined,
+          discountPercent: data.discount_percent || undefined,
+          packSizes: []
+        };
+        setProduct(p);
+
+        // Fetch similar
+        const { data: simData } = await insforge.database.from("Products").select().neq("id", data.id).limit(4);
+        if (simData) {
+          setSimilarProducts(simData.map((sp: any) => ({
+            id: sp.id,
+            slug: sp.id,
+            nameBn: sp.name,
+            nameEn: sp.name,
+            price: sp.price,
+            image: sp.image_url || "https://placehold.co/400x400?text=No+Image",
+            unitBn: sp.unit || "১ টি",
+            unitEn: sp.unit || "1 Pc",
+            category: sp.category || "grocery",
+            discountPrice: sp.discount_price || undefined,
+            discountPercent: sp.discount_percent || undefined,
+          })));
+        }
+      }
+      setLoading(false);
+    };
+    fetchProduct();
+  }, [slug]);
 
   // Set default pack size on mount if product has packSizes
   useEffect(() => {
@@ -25,6 +72,18 @@ export default function ProductDetailPage() {
       setSelectedSize(product.packSizes[defaultIndex]);
     }
   }, [product]);
+
+  if (loading) {
+    return (
+      <div className="bg-background text-on-background min-h-screen flex flex-col justify-between">
+        <Header />
+        <main className="flex-grow flex justify-center items-center font-bold text-primary py-24">
+          Loading product...
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -64,11 +123,6 @@ export default function ProductDetailPage() {
 
   const incrementQty = () => setQuantity((q) => q + 1);
   const decrementQty = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
-
-  // Similar products in same category (excluding current)
-  const similarProducts = mockProducts
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
 
   return (
     <div className="bg-background text-on-background min-h-screen flex flex-col">
@@ -134,7 +188,7 @@ export default function ProductDetailPage() {
                   {t("প্যাকেজ নির্বাচন করুন:", "Select Package:")}
                 </span>
                 <div className="flex flex-wrap gap-2">
-                  {product.packSizes.map((size, idx) => {
+                  {product.packSizes.map((size: any, idx: number) => {
                     const isSelected = selectedSize?.nameEn === size.nameEn;
                     return (
                       <button

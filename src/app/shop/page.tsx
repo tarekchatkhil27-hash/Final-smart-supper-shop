@@ -6,8 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useApp } from "@/context/AppContext";
-import { mockProducts } from "@/data/mockData";
 import { Product } from "@/context/AppContext";
+import { insforge } from "@/lib/insforge";
 
 function ShopContent() {
   const { t, addToCart, language } = useApp();
@@ -15,6 +15,8 @@ function ShopContent() {
   const catParam = searchParams.get("cat") || "all";
 
   // Filter States
+  const [allProducts, setAllProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
   const [selectedCategories, setSelectedCategories] = useState({
     all: true,
@@ -25,6 +27,32 @@ function ShopContent() {
     garments: false,
   });
   const [sortBy, setSortBy] = useState<string>("popular");
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data } = await insforge.database.from("Products").select();
+      if (data) {
+        const mapped = data.map((p: any) => ({
+          id: p.id,
+          slug: p.id,
+          nameBn: p.name,
+          nameEn: p.name,
+          price: p.price,
+          image: p.image_url || "https://placehold.co/400x400?text=No+Image",
+          unitBn: p.unit || "১ টি",
+          unitEn: p.unit || "1 Pc",
+          category: p.category || "grocery",
+          descriptionBn: p.description,
+          descriptionEn: p.description,
+          discountPrice: p.discount_price || undefined,
+          discountPercent: p.discount_percent || undefined,
+        }));
+        setAllProducts(mapped);
+      }
+      setLoading(false);
+    };
+    fetchProducts();
+  }, []);
 
   // Sync with URL query parameter on mount / change
   useEffect(() => {
@@ -113,7 +141,7 @@ function ShopContent() {
   };
 
   // Filter & Sort Logic
-  const filteredProducts = mockProducts.filter((product) => {
+  const filteredProducts = allProducts.filter((product) => {
     // Price check
     const activePrice = product.discountPrice !== undefined ? product.discountPrice : product.price;
     if (activePrice > maxPrice) return false;
@@ -182,6 +210,11 @@ function ShopContent() {
       <Header />
 
       {/* Main Content Area */}
+      {loading ? (
+        <div className="flex-grow flex justify-center items-center font-bold text-primary py-24">
+          Loading products...
+        </div>
+      ) : (
       <main className="flex-grow w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-section-gap flex flex-col md:flex-row gap-6 mt-4 mb-16 md:mb-0">
         {/* Sidebar Filters */}
         <aside className="hidden md:block w-64 flex-shrink-0 bg-surface-container-lowest p-5 rounded-2xl shadow-sm border border-surface-variant/40 self-start sticky top-24">
@@ -412,6 +445,7 @@ function ShopContent() {
           </div>
         </div>
       </main>
+      )}
 
       {/* BottomNavBar (Mobile Only) */}
       <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface border-t border-surface-variant/40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] rounded-t-xl md:hidden">

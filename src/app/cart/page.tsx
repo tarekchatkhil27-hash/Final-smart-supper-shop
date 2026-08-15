@@ -5,16 +5,32 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useApp } from "@/context/AppContext";
+import { insforge } from "@/lib/insforge";
 
 export default function CartPage() {
   const { t, cart, updateQuantity, removeFromCart, cartTotal, language } = useApp();
+  const [deliveryFeeSetting, setDeliveryFeeSetting] = React.useState(0);
+
+  React.useEffect(() => {
+    const fetchSettings = async () => {
+      const { data } = await insforge.database
+        .from("Settings")
+        .select("delivery_fee")
+        .eq("id", 1)
+        .single();
+      if (data) {
+        setDeliveryFeeSetting(Number(data.delivery_fee) || 0);
+      }
+    };
+    fetchSettings();
+  }, []);
 
   // Calculate costs based on item properties
   const originalSubtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   const activeSubtotal = cartTotal; // already incorporates discount price if present
   const totalDiscount = originalSubtotal - activeSubtotal;
 
-  const deliveryCharge = cart.length > 0 ? 50 : 0;
+  const deliveryCharge = cart.length > 0 ? deliveryFeeSetting : 0;
   const grandTotal = activeSubtotal + deliveryCharge;
 
   // Formatting helper

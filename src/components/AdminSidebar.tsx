@@ -56,6 +56,18 @@ export const AdminSidebar: React.FC = () => {
           <span className="material-symbols-outlined text-[20px]">orders</span>
           <span>{t("অর্ডার ব্যবস্থাপনা", "Manage Orders")}</span>
         </Link>
+
+        <Link
+          href="/admin/settings"
+          className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+            isActive("/admin/settings")
+              ? "bg-primary text-white font-semibold"
+              : "hover:bg-gray-800 hover:text-white"
+          }`}
+        >
+          <span className="material-symbols-outlined text-[20px]">settings</span>
+          <span>{t("সেটিংস", "Settings")}</span>
+        </Link>
       </nav>
 
       {/* Footer Nav */}

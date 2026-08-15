@@ -4,10 +4,13 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useApp } from "@/context/AppContext";
+import { insforge } from "@/lib/insforge";
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { t, cart, cartTotal, clearCart, language } = useApp();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [deliveryFeeSetting, setDeliveryFeeSetting] = useState(0);
 
   // Form Fields State
   const [phone, setPhone] = useState("");
@@ -24,17 +27,30 @@ export default function CheckoutPage() {
   const originalSubtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   const activeSubtotal = cartTotal;
   const totalDiscount = originalSubtotal - activeSubtotal;
-  const deliveryCharge = cart.length > 0 ? 50 : 0;
+  const deliveryCharge = cart.length > 0 ? deliveryFeeSetting : 0;
   const grandTotal = activeSubtotal + deliveryCharge;
 
   // Language formatting helper
   const f = (num: number) => (language === "bn" ? num.toLocaleString("bn-BD") : num);
 
-  // Redirect if cart is empty
+  // Redirect if cart is empty, also fetch settings
   useEffect(() => {
     if (cart.length === 0) {
       router.push("/cart");
+      return;
     }
+
+    const fetchSettings = async () => {
+      const { data } = await insforge.database
+        .from("Settings")
+        .select("delivery_fee")
+        .eq("id", 1)
+        .single();
+      if (data) {
+        setDeliveryFeeSetting(Number(data.delivery_fee) || 0);
+      }
+    };
+    fetchSettings();
   }, [cart, router]);
 
   const validate = () => {
@@ -53,14 +69,6 @@ export default function CheckoutPage() {
       newErrors.address = t("ঠিকানা আবশ্যক", "Delivery address is required");
     }
 
-    if (!thana.trim()) {
-      newErrors.thana = t("উপজেলা/থানা আবশ্যক", "Upazila/Thana is required");
-    }
-
-    if (!district.trim()) {
-      newErrors.district = t("জেলা আবশ্যক", "District is required");
-    }
-
     if (!village.trim()) {
       newErrors.village = t("গ্রাম/মহল্লা আবশ্যক", "Village/Mohalla is required");
     }
@@ -69,17 +77,57 @@ export default function CheckoutPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handlePlaceOrder = (e: React.FormEvent) => {
+  const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    setIsSubmitting(true);
 
     // Format full delivery address string
-    const fullAddress = `${address}, ${village}, ${thana}, ${district}`;
+    const fullAddress = [address, village, thana, district]
+      .map(part => part.trim())
+      .filter(Boolean)
+      .join(", ");
 
-    // Generate simulated order data
-    const mockOrderNum = `SSS-${Math.floor(10000 + Math.random() * 90000)}`;
-    const orderData = {
-      orderId: mockOrderNum,
+    // Generate UUID in the frontend so we don't need a SELECT policy on Orders for public users
+    const orderId = crypto.randomUUID();
+
+    // Insert Order into InsForge
+    const { error: orderError } = await insforge.database.from("Orders").insert([{
+      id: orderId,
+      customer_email: phone + "@placeholder.com",
+      customer_name: name,
+      customer_phone: phone,
+      customer_address: fullAddress,
+      total_amount: grandTotal,
+      delivery_fee: deliveryCharge,
+      status: "Pending Payment"
+    }]);
+
+    if (orderError) {
+      alert("Error placing order: " + (orderError?.message || "Unknown error"));
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Insert Order Items into InsForge
+    const itemsToInsert = cart.map((item) => ({
+      order_id: orderId,
+      product_id: item.productId,
+      quantity: item.quantity,
+      price_at_time: item.discountPrice !== undefined ? item.discountPrice : item.price
+    }));
+
+    const { error: itemsError } = await insforge.database.from("Order_Items").insert(itemsToInsert);
+
+    if (itemsError) {
+      alert("Error placing order items: " + itemsError.message);
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Generate simulated order data to pass to confirmation page quickly
+    const orderDataSession = {
+      orderId: orderId,
       customerName: name,
       phone,
       address: fullAddress,
@@ -91,6 +139,7 @@ export default function CheckoutPage() {
         quantity: item.quantity,
         unitBn: item.unitBn,
         unitEn: item.unitEn,
+        image: item.image
       })),
       totalAmount: grandTotal,
       subtotal: activeSubtotal,
@@ -100,10 +149,7 @@ export default function CheckoutPage() {
     };
 
     // Store order summary details in sessionStorage
-    sessionStorage.setItem("sss_last_order", JSON.stringify(orderData));
-
-    // Clear cart context state inside order-confirmation to prevent redirect race condition
-    // clearCart();
+    sessionStorage.setItem("sss_last_order", JSON.stringify(orderDataSession));
 
     // Navigate to order-confirmation
     router.push("/order-confirmation");
@@ -269,7 +315,7 @@ export default function CheckoutPage() {
                 {/* Upazila / Thana */}
                 <div>
                   <label className="block font-label-md text-label-md text-on-surface-variant mb-1.5 ml-1">
-                    {t("উপজেলা/থানা", "Upazila/Thana")} <span className="text-error">*</span>
+                    {t("উপজেলা/থানা (ঐচ্ছিক)", "Upazila/Thana (Optional)")}
                   </label>
                   <input
                     type="text"
@@ -289,7 +335,7 @@ export default function CheckoutPage() {
                 {/* District Dropdown */}
                 <div className="md:col-span-2">
                   <label className="block font-label-md text-label-md text-on-surface-variant mb-1.5 ml-1">
-                    {t("জেলা", "District")} <span className="text-error">*</span>
+                    {t("জেলা (ঐচ্ছিক)", "District (Optional)")}
                   </label>
                   <input
                     type="text"
@@ -375,11 +421,12 @@ export default function CheckoutPage() {
               </div>
 
               <button
+                disabled={isSubmitting}
                 onClick={handlePlaceOrder}
-                className="w-full bg-gradient-green text-on-primary font-label-md text-label-md py-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-[2px] active:scale-95 flex justify-center items-center gap-2 cursor-pointer font-bold text-[15px]"
+                className="w-full bg-gradient-green text-on-primary font-label-md text-label-md py-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-[2px] active:scale-95 flex justify-center items-center gap-2 cursor-pointer font-bold text-[15px] disabled:opacity-50"
               >
                 <span className="material-symbols-outlined">check_circle</span>
-                {t("অর্ডার প্লেস করুন", "Place Order")}
+                {isSubmitting ? t("অপেক্ষা করুন...", "Please wait...") : t("অর্ডার প্লেস করুন", "Place Order")}
               </button>
 
               <div className="mt-5 flex items-center justify-center gap-2 text-on-surface-variant font-micro text-micro bg-surface-container-high px-3 py-2 rounded-full w-fit mx-auto">
