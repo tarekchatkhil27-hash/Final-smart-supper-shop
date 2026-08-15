@@ -224,11 +224,11 @@ export default function AdminOrdersPage() {
 
   // Stat computations
   const totalSalesToday = orders
-    .filter((o) => o.status === "delivered")
+    .filter((o) => o.status === "delivered" || o.status === "Paid")
     .reduce((sum, o) => sum + o.totalAmount, 0);
 
-  const pendingCount = orders.filter((o) => o.status === "pending").length;
-  const processingCount = orders.filter((o) => o.status === "processing").length;
+  const pendingCount = orders.filter((o) => o.status === "pending" || o.status === "Pending Payment").length;
+  const processingCount = orders.filter((o) => o.status === "processing" || o.status === "Shipped").length;
 
   // Formatting helpers
   const f = (num: number) => (language === "bn" ? num.toLocaleString("bn-BD") : num);
@@ -626,14 +626,6 @@ export default function AdminOrdersPage() {
                               <option value="Shipped">Shipped</option>
                               <option value="cancelled">Cancelled</option>
                             </select>
-
-                            <button
-                              type="button"
-                              onClick={() => generateReceipt(order)}
-                              className="inline-flex items-center gap-1 px-4 py-2 border border-primary text-primary rounded-full text-xs font-bold hover:bg-primary/10 transition-colors justify-center cursor-pointer"
-                            >
-                              <span className="material-symbols-outlined text-[16px]">print</span>
-                            </button>
                           </div>
                         </div>
                       </div>
