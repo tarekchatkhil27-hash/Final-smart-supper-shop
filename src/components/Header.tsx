@@ -9,6 +9,7 @@ export const Header: React.FC = () => {
   const { language, setLanguage, t, cartCount } = useApp();
   const pathname = usePathname();
   const [showSearch, setShowSearch] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isActive = (path: string) => {
     if (path === "/" && pathname === "/") return true;
@@ -19,7 +20,13 @@ export const Header: React.FC = () => {
   return (
     <>
       <header className="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-2.5 glassmorphism shadow-soft">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
+          <button 
+            className="md:hidden p-1 text-primary hover:bg-surface-container rounded-lg"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <span className="material-symbols-outlined align-middle">menu</span>
+          </button>
           <Link href="/" className="flex items-center gap-2 md:gap-3 shrink-0 select-none">
             <img
               src="/sss_logo.png"
@@ -112,8 +119,43 @@ export const Header: React.FC = () => {
         </div>
       </header>
 
-      {/* Mobile Bottom Navigation (Dark background, white text, Home/Shop/Cart/Contact from right) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 flex flex-row-reverse justify-around items-center py-1.5 z-50 shadow-[0_-4px_16px_rgba(0,0,0,0.3)] pb-[env(safe-area-inset-bottom)]">
+      {/* Mobile Hamburger Menu Overlay */}
+      {isMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-[60] bg-black/50 transition-opacity" onClick={() => setIsMenuOpen(false)}>
+          <div 
+            className="absolute top-0 left-0 w-64 h-full bg-surface shadow-lg flex flex-col p-5 animate-slide-in-left"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-6 border-b border-outline-variant pb-3">
+              <span className="font-bold text-primary font-headline-sm text-lg">Menu</span>
+              <button onClick={() => setIsMenuOpen(false)} className="text-on-surface-variant hover:text-primary">
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <nav className="flex flex-col gap-5">
+              <Link href="/" className="text-on-surface font-bold text-[15px] flex items-center gap-3" onClick={() => setIsMenuOpen(false)}>
+                <span className="material-symbols-outlined text-primary text-[20px]">home</span>
+                {t("হোম", "Home")}
+              </Link>
+              <Link href="/shop" className="text-on-surface font-bold text-[15px] flex items-center gap-3" onClick={() => setIsMenuOpen(false)}>
+                <span className="material-symbols-outlined text-primary text-[20px]">storefront</span>
+                {t("শপ", "Shop")}
+              </Link>
+              <Link href="/about" className="text-on-surface font-bold text-[15px] flex items-center gap-3" onClick={() => setIsMenuOpen(false)}>
+                <span className="material-symbols-outlined text-primary text-[20px]">info</span>
+                {t("আমাদের সম্পর্কে", "About Us")}
+              </Link>
+              <Link href="/contact" className="text-on-surface font-bold text-[15px] flex items-center gap-3" onClick={() => setIsMenuOpen(false)}>
+                <span className="material-symbols-outlined text-primary text-[20px]">chat</span>
+                {t("যোগাযোগ", "Contact")}
+              </Link>
+            </nav>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Bottom Navigation (Dark background, white text, Home/Shop/Cart/Contact from left) */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 flex justify-around items-center py-1.5 z-50 shadow-[0_-4px_16px_rgba(0,0,0,0.3)] pb-[env(safe-area-inset-bottom)]">
         <Link
           href="/"
           className={`flex flex-col items-center justify-center flex-1 py-1 min-h-[44px] gap-0.5 text-[10px] font-bold transition-all duration-200 ${
