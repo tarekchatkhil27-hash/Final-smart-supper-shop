@@ -112,12 +112,12 @@ export const Header: React.FC = () => {
         </div>
       </header>
 
-      {/* Mobile Apple-style Bottom Navigation (Premium white-ish, Home/Cart/Shop/Contact) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#ffffff] border-t border-outline-variant/25 flex justify-around items-center py-1.5 z-50 shadow-[0_-4px_16px_rgba(0,0,0,0.06)] pb-[env(safe-area-inset-bottom)]">
+      {/* Mobile Bottom Navigation (Dark background, white text, Home/Shop/Cart/Contact from right) */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 flex flex-row-reverse justify-around items-center py-1.5 z-50 shadow-[0_-4px_16px_rgba(0,0,0,0.3)] pb-[env(safe-area-inset-bottom)]">
         <Link
           href="/"
           className={`flex flex-col items-center justify-center flex-1 py-1 min-h-[44px] gap-0.5 text-[10px] font-bold transition-all duration-200 ${
-            isActive("/") ? "text-[#003366] scale-105" : "text-on-surface-variant hover:text-[#ff6600]"
+            isActive("/") ? "text-[#ff6600] scale-105" : "text-white hover:text-gray-300"
           }`}
         >
           <span className="material-symbols-outlined text-[22px]">home</span>
@@ -125,9 +125,19 @@ export const Header: React.FC = () => {
         </Link>
 
         <Link
+          href="/shop"
+          className={`flex flex-col items-center justify-center flex-1 py-1 min-h-[44px] gap-0.5 text-[10px] font-bold transition-all duration-200 ${
+            isActive("/shop") ? "text-[#ff6600] scale-105" : "text-white hover:text-gray-300"
+          }`}
+        >
+          <span className="material-symbols-outlined text-[22px]">storefront</span>
+          <span>{t("শপ", "Shop")}</span>
+        </Link>
+
+        <Link
           href="/cart"
           className={`relative flex flex-col items-center justify-center flex-1 py-1 min-h-[44px] gap-0.5 text-[10px] font-bold transition-all duration-200 ${
-            isActive("/cart") ? "text-[#003366] scale-105" : "text-on-surface-variant hover:text-[#ff6600]"
+            isActive("/cart") ? "text-[#ff6600] scale-105" : "text-white hover:text-gray-300"
           }`}
         >
           <span className="material-symbols-outlined text-[22px]">shopping_cart</span>
@@ -138,21 +148,11 @@ export const Header: React.FC = () => {
           )}
           <span>{t("কার্ট", "Cart")}</span>
         </Link>
-        
-        <Link
-          href="/shop"
-          className={`flex flex-col items-center justify-center flex-1 py-1 min-h-[44px] gap-0.5 text-[10px] font-bold transition-all duration-200 ${
-            isActive("/shop") ? "text-[#003366] scale-105" : "text-on-surface-variant hover:text-[#ff6600]"
-          }`}
-        >
-          <span className="material-symbols-outlined text-[22px]">storefront</span>
-          <span>{t("শপ", "Shop")}</span>
-        </Link>
 
         <Link
           href="/contact"
           className={`flex flex-col items-center justify-center flex-1 py-1 min-h-[44px] gap-0.5 text-[10px] font-bold transition-all duration-200 ${
-            isActive("/contact") ? "text-[#003366] scale-105" : "text-on-surface-variant hover:text-[#ff6600]"
+            isActive("/contact") ? "text-[#ff6600] scale-105" : "text-white hover:text-gray-300"
           }`}
         >
           <span className="material-symbols-outlined text-[22px]">chat</span>

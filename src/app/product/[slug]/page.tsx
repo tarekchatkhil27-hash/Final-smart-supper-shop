@@ -308,45 +308,7 @@ export default function ProductDetailPage() {
         )}
       </main>
 
-      {/* Mobile bottom nav: Balanced icons, removed Profile, added Home & Cart shortcuts */}
-      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 md:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] bg-surface dark:bg-inverse-surface rounded-t-2xl border-t border-surface-variant">
-        <Link
-          href="/"
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-2xl px-3 py-1 scale-94 transition-all duration-150"
-        >
-          <span className="material-symbols-outlined text-primary" data-icon="home">
-            home
-          </span>
-          <span className="font-label-sm text-label-sm mt-1">{t("হোম", "Home")}</span>
-        </Link>
-        <Link
-          href="/shop"
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-2xl px-3 py-1 scale-94 transition-all duration-150"
-        >
-          <span className="material-symbols-outlined text-primary" data-icon="store">
-            store
-          </span>
-          <span className="font-label-sm text-label-sm mt-1">{t("শপ", "Shop")}</span>
-        </Link>
-        <Link
-          href="/shop?cat=all"
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-2xl px-3 py-1 scale-94 transition-all duration-150"
-        >
-          <span className="material-symbols-outlined text-primary" data-icon="grid_view">
-            grid_view
-          </span>
-          <span className="font-label-sm text-label-sm mt-1">{t("ক্যাটাগরি", "Categories")}</span>
-        </Link>
-        <Link
-          href="/cart"
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-2xl px-3 py-1 scale-94 transition-all duration-150"
-        >
-          <span className="material-symbols-outlined text-primary" data-icon="shopping_cart">
-            shopping_cart
-          </span>
-          <span className="font-label-sm text-label-sm mt-1">{t("কার্ট", "Cart")}</span>
-        </Link>
-      </nav>
+
 
       {/* Footer */}
       <Footer />

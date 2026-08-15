@@ -391,45 +391,6 @@ export default function HomePage() {
       {/* Footer */}
       <Footer />
 
-      {/* Bottom NavBar (Mobile navigation) */}
-      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 md:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] bg-surface dark:bg-inverse-surface rounded-t-2xl border-t border-surface-variant">
-        <Link
-          href="/shop?cat=grocery"
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-2xl px-3 py-1 scale-94 transition-all duration-150"
-        >
-          <span className="material-symbols-outlined text-primary" data-icon="local_grocery_store">
-            local_grocery_store
-          </span>
-          <span className="font-label-sm text-label-sm mt-1">{t("মুদি বাজার", "Grocery")}</span>
-        </Link>
-        <Link
-          href="/shop?cat=fruits"
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-2xl px-3 py-1 scale-94 transition-all duration-150"
-        >
-          <span className="material-symbols-outlined text-primary" data-icon="nutrition">
-            nutrition
-          </span>
-          <span className="font-label-sm text-label-sm mt-1">{t("ফলমূল", "Fruits")}</span>
-        </Link>
-        <Link
-          href="/shop?cat=vegetables"
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-2xl px-3 py-1 scale-94 transition-all duration-150"
-        >
-          <span className="material-symbols-outlined text-primary" data-icon="eco">
-            eco
-          </span>
-          <span className="font-label-sm text-label-sm mt-1">{t("সবজি", "Vegetables")}</span>
-        </Link>
-        <Link
-          href="/shop?cat=baby-care"
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-2xl px-3 py-1 scale-94 transition-all duration-150"
-        >
-          <span className="material-symbols-outlined text-primary" data-icon="baby_changing_station">
-            baby_changing_station
-          </span>
-          <span className="font-label-sm text-label-sm mt-1">{t("বেবি কেয়ার", "Baby Care")}</span>
-        </Link>
-      </nav>
     </div>
   );
 }

@@ -447,45 +447,7 @@ function ShopContent() {
       </main>
       )}
 
-      {/* BottomNavBar (Mobile Only) */}
-      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface border-t border-surface-variant/40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] rounded-t-xl md:hidden">
-        <Link
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high scale-94 transition-all duration-150 rounded-2xl px-3 py-1"
-          href="/"
-        >
-          <span className="material-symbols-outlined mb-1" data-icon="home">
-            home
-          </span>
-          <span className="font-label-sm text-label-sm">{t("হোম", "Home")}</span>
-        </Link>
-        <Link
-          className="flex flex-col items-center justify-center bg-primary-container text-on-primary-container scale-94 transition-all duration-150 rounded-2xl px-3 py-1"
-          href="/shop"
-        >
-          <span className="material-symbols-outlined mb-1" data-icon="local_grocery_store">
-            local_grocery_store
-          </span>
-          <span className="font-label-sm text-label-sm font-bold">{t("শপ", "Shop")}</span>
-        </Link>
-        <Link
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high scale-94 transition-all duration-150 rounded-2xl px-3 py-1"
-          href="/shop?cat=fruits"
-        >
-          <span className="material-symbols-outlined mb-1" data-icon="nutrition">
-            nutrition
-          </span>
-          <span className="font-label-sm text-label-sm">{t("ফলমূল", "Fruits")}</span>
-        </Link>
-        <Link
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high scale-94 transition-all duration-150 rounded-2xl px-3 py-1"
-          href="/cart"
-        >
-          <span className="material-symbols-outlined mb-1" data-icon="shopping_cart">
-            shopping_cart
-          </span>
-          <span className="font-label-sm text-label-sm">{t("কার্ট", "Cart")}</span>
-        </Link>
-      </nav>
+
 
       {/* Footer */}
       <Footer />
