@@ -87,17 +87,29 @@ export default function AdminNewProductPage() {
     let uploadedImageUrl = "https://placehold.co/400x400?text=No+Image";
 
     if (imageFile) {
-      const { data: uploadData, error: uploadError } = await insforge.storage
-        .from("product-images")
-        .uploadAuto(imageFile);
+      const formData = new FormData();
+      formData.append("file", imageFile);
 
-      if (uploadError) {
-        alert("Error uploading image: " + uploadError.message);
+      try {
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+        const uploadData = await response.json();
+
+        if (!response.ok || uploadData.error) {
+          alert("Error uploading image: " + (uploadData.error || "Unknown error"));
+          setIsSaving(false);
+          return;
+        }
+
+        if (uploadData.url) {
+          uploadedImageUrl = uploadData.url;
+        }
+      } catch (err: any) {
+        alert("Error uploading image: " + err.message);
         setIsSaving(false);
         return;
-      }
-      if (uploadData) {
-        uploadedImageUrl = uploadData.url;
       }
     }
 

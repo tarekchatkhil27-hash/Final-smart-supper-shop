@@ -58,16 +58,25 @@ export default function AdminSettingsPage() {
   };
 
   const handleImageUpload = async (index: number, file: File) => {
-    const { data: uploadData, error: uploadError } = await insforge.storage
-      .from("product-images")
-      .uploadAuto(file);
+    const formData = new FormData();
+    formData.append("file", file);
 
-    if (uploadError) {
-      alert("Error uploading image: " + uploadError.message);
-      return;
-    }
-    if (uploadData) {
-      handleSlideChange(index, "image_url", uploadData.url);
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const uploadData = await response.json();
+
+      if (!response.ok || uploadData.error) {
+        alert("Error uploading image: " + (uploadData.error || "Unknown error"));
+        return;
+      }
+      if (uploadData.url) {
+        handleSlideChange(index, "image_url", uploadData.url);
+      }
+    } catch (err: any) {
+      alert("Error uploading image: " + err.message);
     }
   };
 

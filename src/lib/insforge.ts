@@ -1,6 +1,9 @@
 import { createClient } from '@insforge/sdk';
 
+const supabaseUrl = process.env.NEXT_PUBLIC_INSFORGE_URL || 'https://ccgv7qnz.ap-southeast.insforge.app';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY || 'ik_14797639230450fd54b0a27a44a3517b';
+
 export const insforge = createClient({
-  baseUrl: 'https://qmqutrq8.ap-southeast.insforge.app',
-  anonKey: 'anon_5001208435e0be0cde4f851dde1d7c37e8005a03c4ee36e9c123fca7443b1643'
+  baseUrl: supabaseUrl,
+  anonKey: supabaseAnonKey
 });

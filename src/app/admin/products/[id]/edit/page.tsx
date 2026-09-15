@@ -38,7 +38,9 @@ export default function AdminEditProductPage() {
   const [newSizeInput, setNewSizeInput] = useState("");
 
   const [image, setImage] = useState("");
+  const [newImageFile, setNewImageFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     // Auth guard is in layout but handled
@@ -131,6 +133,36 @@ export default function AdminEditProductPage() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    setIsSaving(true);
+
+    let finalImageUrl = image || "https://placehold.co/400x400?text=No+Image";
+
+    if (newImageFile) {
+      const formData = new FormData();
+      formData.append("file", newImageFile);
+
+      try {
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+        const uploadData = await response.json();
+
+        if (!response.ok || uploadData.error) {
+          alert("Error uploading image: " + (uploadData.error || "Unknown error"));
+          setIsSaving(false);
+          return;
+        }
+
+        if (uploadData.url) {
+          finalImageUrl = uploadData.url;
+        }
+      } catch (err: any) {
+        alert("Error uploading image: " + err.message);
+        setIsSaving(false);
+        return;
+      }
+    }
 
     const priceNum = parseFloat(price);
     
@@ -153,13 +185,14 @@ export default function AdminEditProductPage() {
       description: descriptionBn,
       price: priceNum,
       stock: parseInt(stock),
-      image_url: image || "https://placehold.co/400x400?text=No+Image",
+      image_url: finalImageUrl,
       category: category,
       discount_price: finalDiscountPrice,
       discount_percent: finalDiscountPercent,
       unit: unitStr
     }).eq("id", id as string);
 
+    setIsSaving(false);
     if (!error) {
       router.push("/admin/products");
     } else {
@@ -489,12 +522,16 @@ export default function AdminEditProductPage() {
                     <p className="font-label-sm text-label-sm text-on-surface-variant mb-4">
                       {t("SVG, PNG, JPG বা GIF (৬০০x৪০০ পিক্সেল)", "SVG, PNG, JPG or GIF (600x400 px)")}
                     </p>
-                    <button
-                      type="button"
-                      className="px-4 py-1.5 rounded-full border border-primary text-primary hover:bg-primary/5 font-label-md text-label-md transition-all active:scale-95 cursor-pointer font-bold"
-                    >
+                    <label className="px-4 py-1.5 rounded-full border border-primary text-primary hover:bg-primary/5 font-label-md text-label-md transition-all active:scale-95 cursor-pointer font-bold">
                       {t("ফাইল খুঁজুন", "Browse Files")}
-                    </button>
+                      <input type="file" accept="image/*" onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setNewImageFile(file);
+                          setImage(URL.createObjectURL(file));
+                        }
+                      }} className="hidden" />
+                    </label>
                   </div>
                 </div>
 
