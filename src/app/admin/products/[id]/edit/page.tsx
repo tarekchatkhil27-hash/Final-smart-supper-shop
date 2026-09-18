@@ -48,10 +48,10 @@ export default function AdminEditProductPage() {
     const loadProduct = async () => {
       const { data } = await insforge.database.from("Products").select().eq("id", id as string).single();
       if (data) {
-        setNameEn(data.name || "");
-        setNameBn(data.name || "");
-        setDescriptionBn(data.description || "");
-        setDescriptionEn(data.description || "");
+        setNameEn(data.name_en || "");
+        setNameBn(data.name_bn || "");
+        setDescriptionBn(data.description_bn || "");
+        setDescriptionEn(data.description_en || "");
         setPrice(data.price?.toString() || "0");
         setStock(data.stock?.toString() || "");
         setCategory(data.category || "grocery");
@@ -181,15 +181,15 @@ export default function AdminEditProductPage() {
     const unitStr = packSizes.length > 0 ? packSizes[0] : "১ টি";
 
     const { error } = await insforge.database.from("Products").update({
-      name: nameEn,
-      description: descriptionBn,
+      name_en: nameEn, name_bn: nameBn,
+      description_en: descriptionEn, description_bn: descriptionBn,
       price: priceNum,
       stock: parseInt(stock),
       image_url: finalImageUrl,
       category: category,
       discount_price: finalDiscountPrice,
       discount_percent: finalDiscountPercent,
-      unit: unitStr
+      unit_en: unitStr, unit_bn: unitStr
     }).eq("id", id as string);
 
     setIsSaving(false);
@@ -506,13 +506,13 @@ export default function AdminEditProductPage() {
 
                   {/* Render Existing Image Preview if loaded */}
                   {image && (
-                    <div className="mb-4 aspect-video rounded-xl overflow-hidden bg-surface-container relative border border-outline-variant/40">
-                      <img className="w-full h-full object-cover" src={image} alt="Preview" />
+                    <div className="mb-4 aspect-square rounded-xl overflow-hidden bg-surface-container relative border border-outline-variant/40">
+                      <img className="w-full h-full object-contain" src={image} alt="Preview" />
                     </div>
                   )}
 
                   {/* Drag and Drop Box */}
-                  <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-xl bg-surface p-6 text-center hover:border-primary transition-colors cursor-pointer group min-h-[150px]">
+                  <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-xl bg-surface p-6 text-center hover:border-primary transition-colors cursor-pointer group aspect-square min-h-[150px]">
                     <div className="w-12 h-12 rounded-full bg-primary-container text-primary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                       <span className="material-symbols-outlined text-[24px]">cloud_upload</span>
                     </div>
@@ -520,15 +520,24 @@ export default function AdminEditProductPage() {
                       {t("এখানে ছবি ড্র্যাগ করুন", "Drag and drop image here")}
                     </p>
                     <p className="font-label-sm text-label-sm text-on-surface-variant mb-4">
-                      {t("SVG, PNG, JPG বা GIF (৬০০x৪০০ পিক্সেল)", "SVG, PNG, JPG or GIF (600x400 px)")}
+                      {t("PNG, JPG (500*500 Pixel)", "PNG, JPG (500*500 px)")}
                     </p>
                     <label className="px-4 py-1.5 rounded-full border border-primary text-primary hover:bg-primary/5 font-label-md text-label-md transition-all active:scale-95 cursor-pointer font-bold">
                       {t("ফাইল খুঁজুন", "Browse Files")}
-                      <input type="file" accept="image/*" onChange={(e) => {
+                      <input type="file" accept="image/png, image/jpeg" onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          setNewImageFile(file);
-                          setImage(URL.createObjectURL(file));
+                          const img = new Image();
+                          img.onload = () => {
+                            if (img.width !== 500 || img.height !== 500) {
+                              alert("Photo dimension must be exactly 500x500 Pixel to upload.");
+                              e.target.value = "";
+                              return;
+                            }
+                            setNewImageFile(file);
+                            setImage(URL.createObjectURL(file));
+                          };
+                          img.src = URL.createObjectURL(file);
                         }
                       }} className="hidden" />
                     </label>

@@ -55,6 +55,7 @@ export default function EditOrderPage() {
       .update({
         customer_name: customerName,
         customer_phone: phone,
+        phone: phone,
         customer_address: address,
         delivery_fee: deliveryFee,
         status: status

@@ -42,13 +42,13 @@ export default function HomePage() {
         ]);
       }
 
-      const { data } = await insforge.database.from("Products").select().limit(4);
+      const { data } = await insforge.database.from("Products").select().eq("is_active", true).eq("is_popular", true).limit(20);
       if (data) {
         const mapped = data.map((p: any) => ({
           id: p.id,
           slug: p.id, // using id as slug for now
-          nameBn: p.name,
-          nameEn: p.name,
+          nameBn: p.name_bn || p.name_en,
+          nameEn: p.name_en,
           price: p.price,
           image: p.image_url || "https://placehold.co/400x400?text=No+Image",
           unitBn: p.unit || "১ টি",
@@ -56,8 +56,8 @@ export default function HomePage() {
           category: p.category || "grocery",
           discountPrice: p.discount_price || undefined,
           discountPercent: p.discount_percent || undefined,
-          descriptionBn: p.description,
-          descriptionEn: p.description,
+          descriptionBn: p.description_bn || p.description_en,
+          descriptionEn: p.description_en,
         }));
         setFeaturedProducts(mapped);
       }
@@ -160,12 +160,12 @@ export default function HomePage() {
             <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background">
               {t("জনপ্রিয় পণ্য", "Popular Products")}
             </h2>
-            <Link href="/shop" className="text-primary font-label-md text-label-md hover:underline">
-              {t("সব দেখুন", "See All")}
+            <Link href="/shop" className="text-primary font-label-md text-label-md hover:underline flex items-center gap-1">
+              {t("সব দেখুন", "See All")} <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
+          <div className="flex overflow-x-auto gap-4 md:gap-6 pb-4 snap-x snap-mandatory hide-scrollbar">
             {featuredProducts.map((product) => {
               const activePrice = product.discountPrice !== undefined ? product.discountPrice : product.price;
               const hasDiscount = product.discountPrice !== undefined;
@@ -174,7 +174,7 @@ export default function HomePage() {
               return (
                 <div
                   key={product.id}
-                  className="bg-surface-container-lowest rounded-2xl p-4 shadow-soft border border-surface-variant hover-lift flex flex-col h-full relative group"
+                  className="w-[160px] md:w-[220px] shrink-0 snap-start bg-surface-container-lowest rounded-2xl p-4 shadow-soft border border-surface-variant hover-lift flex flex-col h-full relative group"
                 >
                   {/* Discount Badge */}
                   {hasDiscount && (
@@ -217,8 +217,15 @@ export default function HomePage() {
 
                   {/* Price & Add to Cart */}
                   <div className="mt-auto flex items-center justify-between">
-                    <div className="font-headline-md text-headline-md text-primary">
-                      ৳{formattedPrice}
+                    <div className="flex flex-col">
+                      <div className="font-headline-md text-headline-md text-primary font-bold">
+                        ৳{formattedPrice}
+                      </div>
+                      {hasDiscount && (
+                        <span className="text-xs text-outline-variant line-through mt-0.5">
+                          ৳{language === "bn" ? product.price.toLocaleString("bn-BD") : product.price}
+                        </span>
+                      )}
                     </div>
                     <button
                         onClick={(e) => {

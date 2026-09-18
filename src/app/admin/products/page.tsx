@@ -11,6 +11,7 @@ import { insforge } from "@/lib/insforge";
 interface AdminProduct extends Product {
   stock?: number;
   isActive?: boolean;
+  isPopular?: boolean;
 }
 
 export default function AdminProductsPage() {
@@ -29,17 +30,18 @@ export default function AdminProductsPage() {
         const mapped: AdminProduct[] = data.map((p: any) => ({
           id: p.id,
           slug: p.id,
-          nameBn: p.name,
-          nameEn: p.name,
+          nameBn: p.name_bn || p.name_en,
+          nameEn: p.name_en,
           price: p.price,
           image: p.image_url || "https://placehold.co/400x400?text=No+Image",
           unitBn: "১ টি",
           unitEn: "1 Pc",
-          category: "general",
-          descriptionBn: p.description,
-          descriptionEn: p.description,
+          category: p.category || "general",
+          isPopular: !!p.is_popular,
+          descriptionBn: p.description_bn || p.description_en,
+          descriptionEn: p.description_en,
           stock: p.stock || 0,
-          isActive: true
+          isActive: p.is_active !== false
         }));
         setProducts(mapped);
       }
@@ -62,17 +64,48 @@ export default function AdminProductsPage() {
     }
   };
 
+  const togglePopularStatus = async (id: string) => {
+    const p = products.find(prod => prod.id === id);
+    if (!p) return;
+    const newStatus = !p.isPopular;
+    
+    const { error } = await insforge.database.from("Products").update({ is_popular: newStatus }).eq("id", id);
+    if (!error) {
+      const updated = products.map((prod) => {
+        if (prod.id === id) {
+          return {
+            ...prod,
+            isPopular: newStatus,
+          };
+        }
+        return prod;
+      });
+      setProducts(updated);
+    } else {
+      alert("Error updating status: " + error.message);
+    }
+  };
+
   const toggleActiveStatus = async (id: string) => {
-    const updated = products.map((p) => {
-      if (p.id === id) {
-        return {
-          ...p,
-          isActive: !p.isActive,
-        };
-      }
-      return p;
-    });
-    setProducts(updated);
+    const p = products.find(prod => prod.id === id);
+    if (!p) return;
+    const newStatus = !p.isActive;
+    
+    const { error } = await insforge.database.from("Products").update({ is_active: newStatus }).eq("id", id);
+    if (!error) {
+      const updated = products.map((prod) => {
+        if (prod.id === id) {
+          return {
+            ...prod,
+            isActive: newStatus,
+          };
+        }
+        return prod;
+      });
+      setProducts(updated);
+    } else {
+      alert("Error updating status: " + error.message);
+    }
   };
 
   const filteredProducts = products.filter((product) => {
@@ -298,6 +331,13 @@ export default function AdminProductsPage() {
                           {/* Edit / Delete actions */}
                           <td className="px-6 py-3 text-right">
                             <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button
+                                onClick={() => togglePopularStatus(product.id)}
+                                className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer ${product.isPopular ? "text-yellow-500 hover:bg-yellow-100" : "text-on-surface-variant hover:bg-yellow-50 hover:text-yellow-600"}`}
+                                title={t("জনপ্রিয় পণ্য", "Popular Product")}
+                              >
+                                <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: product.isPopular ? "'FILL' 1" : "'FILL' 0" }}>star</span>
+                              </button>
                               <Link
                                 href={`/admin/products/${product.id}/edit`}
                                 className="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-primary transition-colors cursor-pointer"
@@ -360,6 +400,9 @@ export default function AdminProductsPage() {
                           
                           {/* Actions */}
                           <div className="flex gap-2">
+                            <button onClick={() => togglePopularStatus(product.id)} className={`cursor-pointer ${product.isPopular ? "text-yellow-500" : "text-on-surface-variant hover:text-yellow-600"}`}>
+                              <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: product.isPopular ? "'FILL' 1" : "'FILL' 0" }}>star</span>
+                            </button>
                             <Link href={`/admin/products/${product.id}/edit`} className="text-on-surface-variant hover:text-primary">
                               <span className="material-symbols-outlined text-[18px]">edit</span>
                             </Link>

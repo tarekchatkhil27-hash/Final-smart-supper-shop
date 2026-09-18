@@ -91,16 +91,29 @@ export default function CheckoutPage() {
     // Generate UUID in the frontend so we don't need a SELECT policy on Orders for public users
     const orderId = crypto.randomUUID();
 
+    // Prepare items jsonb for the Orders table
+    const itemsToInsert = cart.map((item) => ({
+      product_id: item.productId,
+      nameBn: item.nameBn,
+      nameEn: item.nameEn,
+      unitBn: item.unitBn,
+      unitEn: item.unitEn,
+      quantity: item.quantity,
+      price_at_time: item.discountPrice !== undefined ? item.discountPrice : item.price
+    }));
+
     // Insert Order into InsForge
     const { error: orderError } = await insforge.database.from("Orders").insert([{
       id: orderId,
       customer_email: phone + "@placeholder.com",
       customer_name: name,
       customer_phone: phone,
+      phone: phone,
       customer_address: fullAddress,
       total_amount: grandTotal,
       delivery_fee: deliveryCharge,
-      status: "Pending Payment"
+      status: "Pending Order",
+      items: itemsToInsert
     }]);
 
     if (orderError) {
@@ -109,21 +122,7 @@ export default function CheckoutPage() {
       return;
     }
 
-    // Insert Order Items into InsForge
-    const itemsToInsert = cart.map((item) => ({
-      order_id: orderId,
-      product_id: item.productId,
-      quantity: item.quantity,
-      price_at_time: item.discountPrice !== undefined ? item.discountPrice : item.price
-    }));
-
-    const { error: itemsError } = await insforge.database.from("Order_Items").insert(itemsToInsert);
-
-    if (itemsError) {
-      alert("Error placing order items: " + itemsError.message);
-      setIsSubmitting(false);
-      return;
-    }
+    
 
     // Generate simulated order data to pass to confirmation page quickly
     const orderDataSession = {

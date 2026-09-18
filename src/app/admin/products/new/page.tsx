@@ -21,12 +21,12 @@ export default function AdminNewProductPage() {
   const [isActive, setIsActive] = useState(true);
 
   const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("100");
+  const [stock, setStock] = useState("");
 
   const [discountType, setDiscountType] = useState<"none" | "percent" | "fixed">("none");
   const [discountValue, setDiscountValue] = useState("");
 
-  const [packSizes, setPackSizes] = useState<string[]>(["১ কেজি", "৫ কেজি"]);
+  const [packSizes, setPackSizes] = useState<string[]>([]);
   const [newSizeInput, setNewSizeInput] = useState("");
 
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -53,6 +53,7 @@ export default function AdminNewProductPage() {
     const newErrors: Record<string, string> = {};
     if (!nameEn.trim()) newErrors.nameEn = t("ইংরেজি নাম আবশ্যক", "English name is required");
     if (!nameBn.trim()) newErrors.nameBn = t("বাংলা নাম আবশ্যক", "Bangla name is required");
+    if (!imageFile) newErrors.imageFile = t("সঠিক মাপের ছবি দিন (৫০০x৫০০)", "Valid 500x500 image required");
     
     const priceNum = parseFloat(price);
     if (!price || isNaN(priceNum) || priceNum <= 0) {
@@ -130,15 +131,15 @@ export default function AdminNewProductPage() {
     const unitStr = packSizes.length > 0 ? packSizes[0] : "১ টি";
 
     const { error } = await insforge.database.from("Products").insert([{
-      name: nameEn,
-      description: descriptionBn,
+      name_en: nameEn, name_bn: nameBn,
+      description_en: descriptionEn, description_bn: descriptionBn,
       price: priceNum,
       stock: parseInt(stock),
       image_url: uploadedImageUrl,
       category: category,
       discount_price: finalDiscountPrice,
       discount_percent: finalDiscountPercent,
-      unit: unitStr
+      unit_en: unitStr, unit_bn: unitStr
     }]);
 
     setIsSaving(false);
@@ -458,7 +459,7 @@ export default function AdminNewProductPage() {
                     {t("পণ্যের ছবি", "Product Image")}
                   </h2>
 
-                  <div className="relative flex-1 flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-xl bg-surface p-6 text-center hover:border-primary transition-colors group min-h-[180px]">
+                  <div className="relative flex-1 flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-xl bg-surface p-6 text-center hover:border-primary transition-colors group aspect-square min-h-[180px]">
                     {imagePreview ? (
                       <div className="absolute inset-0 w-full h-full p-2">
                         <img src={imagePreview} className="w-full h-full object-contain rounded-lg" alt="Preview" />
@@ -472,14 +473,15 @@ export default function AdminNewProductPage() {
                           {t("এখানে ছবি ড্র্যাগ করুন", "Drag and drop image here")}
                         </p>
                         <p className="font-label-sm text-label-sm text-on-surface-variant mb-4">
-                          {t("SVG, PNG, JPG বা GIF (৬০০x৪০০ পিক্সেল)", "SVG, PNG, JPG or GIF (600x400 px)")}
+                          {t("PNG, JPG (500*500 Pixel)", "PNG, JPG (500*500 px)")}
                         </p>
                       </>
                     )}
-                    <label className="px-4 py-1.5 rounded-full border border-primary text-primary hover:bg-primary/5 font-label-md text-label-md transition-all active:scale-95 cursor-pointer font-bold relative z-10 bg-white shadow-sm mt-auto">
+                    <label className="px-4 py-1.5 rounded-full border border-primary text-primary hover:bg-primary/5 font-label-md text-label-md transition-all active:scale-95 cursor-pointer font-bold relative z-10 bg-white shadow-sm mt-auto mb-2">
                       {t("ফাইল খুঁজুন", "Browse Files")}
-                      <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                      <input type="file" accept="image/png, image/jpeg" onChange={handleImageChange} className="hidden" />
                     </label>
+                    {errors.imageFile && <p className="text-error text-xs font-semibold absolute bottom-2">{errors.imageFile}</p>}
                   </div>
                 </div>
 

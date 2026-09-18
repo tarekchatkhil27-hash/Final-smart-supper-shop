@@ -24,7 +24,7 @@ interface AdminOrder {
   address: string;
   items: OrderItem[];
   totalAmount: number;
-  status: "pending" | "processing" | "delivered" | "cancelled" | "Pending Payment" | "Paid" | "Shipped";
+  status: "pending" | "processing" | "delivered" | "cancelled" | "Pending Payment" | "Paid" | "Shipped" | "Pending Order";
   createdAt: string;
   shortId?: string;
   deliveryFee: number;
@@ -35,6 +35,7 @@ export default function AdminOrdersPage() {
   const { t, language } = useApp();
   const [orders, setOrders] = useState<AdminOrder[]>([]);
   const [orderSortBy, setOrderSortBy] = useState<string>("newest");
+  const [activeTab, setActiveTab] = useState<"active" | "archive">("active");
 
   useEffect(() => {
     // Auth guard is handled in layout
@@ -42,13 +43,7 @@ export default function AdminOrdersPage() {
     const loadOrders = async () => {
       const { data, error } = await insforge.database
         .from("Orders")
-        .select(`
-          *,
-          Order_Items (
-            *,
-            Products (*)
-          )
-        `)
+        .select('*')
         .order("created_at", { ascending: false });
 
       if (data) {
@@ -61,14 +56,14 @@ export default function AdminOrdersPage() {
           totalAmount: parseFloat(o.total_amount || "0"),
           deliveryFee: parseFloat(o.delivery_fee || "0"),
           createdAt: o.created_at,
-          items: (o.Order_Items || []).map((item: any) => ({
+          items: (o.items || []).map((item: any) => ({
             productId: item.product_id,
-            nameBn: item.Products?.name || "Unknown",
-            nameEn: item.Products?.name || "Unknown",
+            nameBn: item.nameBn || "Unknown",
+            nameEn: item.nameEn || "Unknown",
             price: parseFloat(item.price_at_time || "0"),
             quantity: item.quantity,
-            unitBn: "১ কেজি",
-            unitEn: "1kg"
+            unitBn: item.unitBn || "১ কেজি",
+            unitEn: item.unitEn || "1kg"
           }))
         }));
 
@@ -96,6 +91,12 @@ export default function AdminOrdersPage() {
   }, [router]);
 
   const handleMarkCompleted = async (orderId: string, newStatus: string) => {
+    if (newStatus === "Paid") {
+      if (!window.confirm(t("আপনি কি নিশ্চিত যে এই অর্ডারটি সম্পন্ন (Paid) হয়েছে? এটি আর্কাইভ ট্যাবে চলে যাবে।", "Are you sure this order is Paid? It will be moved to the archive."))) {
+        return;
+      }
+    }
+    
     const { error } = await insforge.database
       .from("Orders")
       .update({ status: newStatus })
@@ -105,7 +106,7 @@ export default function AdminOrdersPage() {
       const updated = orders.map((o) => (o.id === orderId ? { ...o, status: newStatus as any } : o));
       setOrders(updated);
       
-      if (newStatus === "Paid" || newStatus === "delivered") {
+      if (newStatus === "Shipped" || newStatus === "processing") {
         const orderToPrint = updated.find(o => o.id === orderId);
         if (orderToPrint) {
           generateReceipt(orderToPrint);
@@ -227,7 +228,7 @@ export default function AdminOrdersPage() {
     .filter((o) => o.status === "delivered" || o.status === "Paid")
     .reduce((sum, o) => sum + o.totalAmount, 0);
 
-  const pendingCount = orders.filter((o) => o.status === "pending" || o.status === "Pending Payment").length;
+  const pendingCount = orders.filter((o) => o.status === "pending" || o.status === "Pending Payment" || o.status === "Pending Order").length;
   const processingCount = orders.filter((o) => o.status === "processing" || o.status === "Shipped").length;
 
   // Formatting helpers
@@ -242,14 +243,17 @@ export default function AdminOrdersPage() {
     return 0;
   });
 
+  const filteredTabOrders = sortedOrders.filter(o => activeTab === "active" ? (o.status !== "Paid" && o.status !== "delivered") : (o.status === "Paid" || o.status === "delivered"));
+
   const getStatusBadge = (status: AdminOrder["status"]) => {
     switch (status) {
       case "pending":
       case "Pending Payment":
+      case "Pending Order":
         return (
           <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-red-100 text-red-800 text-xs font-bold gap-1 border border-red-200">
             <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>
-            {t("অপেক্ষমান", status)}
+            {t("অপেক্ষমান", "Pending Order")}
           </span>
         );
       case "processing":
@@ -257,7 +261,7 @@ export default function AdminOrdersPage() {
         return (
           <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-orange-100 text-orange-800 text-xs font-bold gap-1 border border-orange-200">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
-            {t("প্রক্রিয়াধীন", status)}
+            {t("প্রক্রিয়াধীন", "Shipped")}
           </span>
         );
       case "delivered":
@@ -265,7 +269,7 @@ export default function AdminOrdersPage() {
         return (
           <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-green-100 text-green-800 text-xs font-bold gap-1 border border-green-200">
             <span className="w-1.5 h-1.5 rounded-full bg-green-600"></span>
-            {t("সম্পন্ন", status)}
+            {t("ডেলিভার্ড", "Delivered")}
           </span>
         );
       case "cancelled":
@@ -389,18 +393,33 @@ export default function AdminOrdersPage() {
 
             {/* Orders Data Area */}
             <div className="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/30 overflow-hidden">
-              <div className="flex items-center justify-between p-4 border-b border-outline-variant/30 bg-surface-container-low/50">
-                <h2 className="font-headline-sm text-lg font-bold text-on-surface">{t("সকল অর্ডার", "All Orders")}</h2>
-                <select
-                  value={orderSortBy}
-                  onChange={(e) => setOrderSortBy(e.target.value)}
-                  className="bg-surface border border-outline-variant/60 rounded-xl px-4 py-2 text-sm text-on-surface focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
-                >
-                  <option value="newest">{t("নতুন থেকে পুরাতন", "Newest First")}</option>
-                  <option value="oldest">{t("পুরাতন থেকে নতুন", "Oldest First")}</option>
-                  <option value="amount-high">{t("বেশি মূল্য", "Amount (High to Low)")}</option>
-                  <option value="amount-low">{t("কম মূল্য", "Amount (Low to High)")}</option>
-                </select>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-outline-variant/30 bg-surface-container-low/50 px-4 pt-4 gap-4">
+                <div className="flex gap-6">
+                  <button
+                    className={`pb-3 font-headline-sm text-sm font-bold border-b-2 transition-colors ${activeTab === "active" ? "border-primary text-primary" : "border-transparent text-on-surface-variant hover:text-on-surface"}`}
+                    onClick={() => setActiveTab("active")}
+                  >
+                    {t("অর্ডার তালিকা", "Order List")}
+                  </button>
+                  <button
+                    className={`pb-3 font-headline-sm text-sm font-bold border-b-2 transition-colors ${activeTab === "archive" ? "border-primary text-primary" : "border-transparent text-on-surface-variant hover:text-on-surface"}`}
+                    onClick={() => setActiveTab("archive")}
+                  >
+                    {t("অর্ডার আর্কাইভ", "Order Archive")}
+                  </button>
+                </div>
+                <div className="pb-3">
+                  <select
+                    value={orderSortBy}
+                    onChange={(e) => setOrderSortBy(e.target.value)}
+                    className="bg-surface border border-outline-variant/60 rounded-xl px-4 py-2 text-sm text-on-surface focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors w-full sm:w-auto"
+                  >
+                    <option value="newest">{t("নতুন থেকে পুরাতন", "Newest First")}</option>
+                    <option value="oldest">{t("পুরাতন থেকে নতুন", "Oldest First")}</option>
+                    <option value="amount-high">{t("বেশি মূল্য", "Amount (High to Low)")}</option>
+                    <option value="amount-low">{t("কম মূল্য", "Amount (Low to High)")}</option>
+                  </select>
+                </div>
               </div>
               
               {/* Desktop Table View */}
@@ -419,14 +438,14 @@ export default function AdminOrdersPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-outline-variant/20 text-sm">
-                    {sortedOrders.length === 0 ? (
+                    {filteredTabOrders.length === 0 ? (
                       <tr>
                         <td colSpan={7} className="p-8 text-center text-on-surface-variant font-medium">
                           {t("কোনো অর্ডার পাওয়া যায়নি", "No orders found")}
                         </td>
                       </tr>
                     ) : (
-                      sortedOrders.map((order) => {
+                      filteredTabOrders.map((order) => {
                         const isCompleted = order.status === "delivered";
                         const formattedDate = new Date(order.createdAt).toLocaleString(
                           language === "bn" ? "bn-BD" : "en-US",
@@ -506,9 +525,9 @@ export default function AdminOrdersPage() {
                                 onChange={(e) => handleMarkCompleted(order.id, e.target.value)}
                                 className="bg-surface border border-outline-variant/60 rounded-xl px-2 py-1.5 text-xs font-bold text-on-surface focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
                               >
-                                <option value="Pending Payment">Pending Payment</option>
-                                <option value="Paid">Paid</option>
+                                <option value="Pending Order">Pending Order</option>
                                 <option value="Shipped">Shipped</option>
+                                <option value="Paid">Paid</option>
                                 <option value="cancelled">Cancelled</option>
                               </select>
                             </td>
@@ -522,12 +541,12 @@ export default function AdminOrdersPage() {
 
               {/* Mobile Card List View */}
               <div className="md:hidden flex flex-col gap-3 p-4">
-                {sortedOrders.length === 0 ? (
+                {filteredTabOrders.length === 0 ? (
                   <div className="text-center py-6 text-on-surface-variant font-medium">
                     {t("কোনো অর্ডার পাওয়া যায়নি", "No orders found")}
                   </div>
                 ) : (
-                  sortedOrders.map((order) => {
+                  filteredTabOrders.map((order) => {
                     const isCompleted = order.status === "delivered";
                     const formattedDate = new Date(order.createdAt).toLocaleString(
                       language === "bn" ? "bn-BD" : "en-US",

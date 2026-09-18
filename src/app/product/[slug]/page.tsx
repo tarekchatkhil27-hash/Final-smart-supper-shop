@@ -21,20 +21,20 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const { data } = await insforge.database.from("Products").select().eq("id", slug as string).single();
+      const { data } = await insforge.database.from("Products").select().eq("is_active", true).eq("id", slug as string).single();
       if (data) {
         const p = {
           id: data.id,
           slug: data.id,
-          nameBn: data.name,
-          nameEn: data.name,
+          nameBn: data.name_bn || data.name_en,
+          nameEn: data.name_en,
           price: data.price,
           image: data.image_url || "https://placehold.co/400x400?text=No+Image",
           unitBn: data.unit || "১ টি",
           unitEn: data.unit || "1 Pc",
           category: data.category || "grocery",
-          descriptionBn: data.description,
-          descriptionEn: data.description,
+          descriptionBn: data.description_bn || data.description_en,
+          descriptionEn: data.description_en,
           discountPrice: data.discount_price || undefined,
           discountPercent: data.discount_percent || undefined,
           packSizes: []
@@ -42,7 +42,7 @@ export default function ProductDetailPage() {
         setProduct(p);
 
         // Fetch similar
-        const { data: simData } = await insforge.database.from("Products").select().neq("id", data.id).limit(4);
+        const { data: simData } = await insforge.database.from("Products").select().eq("is_active", true).neq("id", data.id).limit(4);
         if (simData) {
           setSimilarProducts(simData.map((sp: any) => ({
             id: sp.id,
@@ -169,7 +169,7 @@ export default function ProductDetailPage() {
             </p>
 
             {/* Price Display: Discounted Price and original struck through if discount exists */}
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex flex-col gap-1 mb-6">
               <div className="font-headline-lg text-3xl font-bold text-primary flex items-baseline gap-1">
                 <span>৳</span>
                 <span>{formattedPrice}</span>

@@ -57,17 +57,21 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+
+const safeGetItem = (k: string) => { try { return localStorage.getItem(k); } catch(e) { return null; } };
+const safeSetItem = (k: string, v: string) => { try { localStorage.setItem(k, v); } catch(e) {} };
+const safeRemoveItem = (k: string) => { try { localStorage.removeItem(k); } catch(e) {} };
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<"bn" | "en">("bn");
   const [cart, setCart] = useState<CartItem[]>([]);
 
   // Load language and cart from localStorage on mount
   useEffect(() => {
-    const savedLang = localStorage.getItem("sss_lang");
+    const savedLang = safeGetItem("sss_lang");
     if (savedLang === "bn" || savedLang === "en") {
       setLanguageState(savedLang);
     }
-    const savedCart = localStorage.getItem("sss_cart");
+    const savedCart = safeGetItem("sss_cart");
     if (savedCart) {
       try {
         setCart(JSON.parse(savedCart));
@@ -79,7 +83,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const setLanguage = (lang: "bn" | "en") => {
     setLanguageState(lang);
-    localStorage.setItem("sss_lang", lang);
+    safeSetItem("sss_lang", lang);
   };
 
   const t = (bn: string, en: string) => (language === "bn" ? bn : en);
@@ -119,7 +123,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           },
         ];
       }
-      localStorage.setItem("sss_cart", JSON.stringify(newCart));
+      safeSetItem("sss_cart", JSON.stringify(newCart));
       return newCart;
     });
   };
@@ -127,7 +131,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const removeFromCart = (id: string) => {
     setCart((prevCart) => {
       const newCart = prevCart.filter((item) => item.id !== id);
-      localStorage.setItem("sss_cart", JSON.stringify(newCart));
+      safeSetItem("sss_cart", JSON.stringify(newCart));
       return newCart;
     });
   };
@@ -140,14 +144,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       } else {
         newCart = prevCart.map((item) => (item.id === id ? { ...item, quantity } : item));
       }
-      localStorage.setItem("sss_cart", JSON.stringify(newCart));
+      safeSetItem("sss_cart", JSON.stringify(newCart));
       return newCart;
     });
   };
 
   const clearCart = () => {
     setCart([]);
-    localStorage.removeItem("sss_cart");
+    safeRemoveItem("sss_cart");
   };
 
   const cartCount = cart.reduce((count, item) => count + item.quantity, 0);

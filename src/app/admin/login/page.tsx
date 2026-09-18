@@ -50,7 +50,7 @@ export default function AdminLoginPage() {
           )
       );
     } else if (data?.user) {
-      router.push("/admin/products");
+      window.location.href = "/admin/products";
     }
   };
 

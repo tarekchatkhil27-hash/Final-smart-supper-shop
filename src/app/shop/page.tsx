@@ -30,20 +30,20 @@ function ShopContent() {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data } = await insforge.database.from("Products").select();
+      const { data } = await insforge.database.from("Products").select().eq("is_active", true);
       if (data) {
         const mapped = data.map((p: any) => ({
           id: p.id,
           slug: p.id,
-          nameBn: p.name,
-          nameEn: p.name,
+          nameBn: p.name_bn || p.name_en,
+          nameEn: p.name_en,
           price: p.price,
           image: p.image_url || "https://placehold.co/400x400?text=No+Image",
           unitBn: p.unit || "১ টি",
           unitEn: p.unit || "1 Pc",
           category: p.category || "grocery",
-          descriptionBn: p.description,
-          descriptionEn: p.description,
+          descriptionBn: p.description_bn || p.description_en,
+          descriptionEn: p.description_en,
           discountPrice: p.discount_price || undefined,
           discountPercent: p.discount_percent || undefined,
         }));
@@ -143,7 +143,7 @@ function ShopContent() {
   // Filter & Sort Logic
   const filteredProducts = allProducts.filter((product) => {
     // Price check
-    const activePrice = product.discountPrice !== undefined ? product.discountPrice : product.price;
+    const activePrice = product.discountPrice !== undefined ? product.discountPrice : (product.price || 0);
     if (activePrice > maxPrice) return false;
 
     // Category check
@@ -383,7 +383,7 @@ function ShopContent() {
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
                     {(selectedCategories.all ? group.items.slice(0, 3) : group.items).map((product) => {
-                      const activePrice = product.discountPrice !== undefined ? product.discountPrice : product.price;
+                      const activePrice = product.discountPrice !== undefined ? product.discountPrice : (product.price || 0);
                       const hasDiscount = product.discountPrice !== undefined;
                       const formattedPrice = language === "bn" ? activePrice.toLocaleString("bn-BD") : activePrice;
 
@@ -420,9 +420,16 @@ function ShopContent() {
                             </h3>
                             <p className="text-xs text-muted mb-3">{t(product.unitBn, product.unitEn)}</p>
                             <div className="mt-auto flex justify-between items-center">
-                              <span className="font-headline-sm text-headline-sm text-primary font-bold">
-                                ৳ {formattedPrice}
-                              </span>
+                              <div className="flex flex-col">
+                                <span className="font-headline-sm text-headline-sm text-primary font-bold">
+                                  ৳ {formattedPrice}
+                                </span>
+                                {hasDiscount && (
+                                  <span className="text-xs text-outline-variant line-through mt-0.5">
+                                    ৳ {language === "bn" ? product.price.toLocaleString("bn-BD") : product.price}
+                                  </span>
+                                )}
+                              </div>
                               <button
                                 onClick={(e) => {
                                   e.preventDefault();
