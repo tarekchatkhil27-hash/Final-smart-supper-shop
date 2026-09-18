@@ -121,8 +121,8 @@ export default function AdminProductsPage() {
   });
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
-    const priceA = a.discountPrice ?? a.price;
-    const priceB = b.discountPrice ?? b.price;
+    const priceA = a.discountPrice ?? (a.price || 0);
+    const priceB = b.discountPrice ?? (b.price || 0);
 
     if (sortBy === "price-high") return priceB - priceA;
     if (sortBy === "price-low") return priceA - priceB;
@@ -132,7 +132,7 @@ export default function AdminProductsPage() {
   });
 
   // Language display helper
-  const f = (num: number) => (language === "bn" ? num.toLocaleString("bn-BD") : num);
+  const f = (num: number) => { if (num == null) return "0"; return language === "bn" ? Number(num).toLocaleString("bn-BD") : Number(num).toString(); };
 
   return (
     <div className="bg-[#F3F4F6] min-h-screen flex w-full">
@@ -258,7 +258,7 @@ export default function AdminProductsPage() {
                       </tr>
                     ) : (
                       sortedProducts.map((product) => {
-                      const activePrice = product.discountPrice ?? product.price;
+                      const activePrice = product.discountPrice ?? (product.price || 0);
                       const isOutOfStock = product.stock === 0;
 
                       return (
@@ -370,7 +370,7 @@ export default function AdminProductsPage() {
                   </div>
                 ) : (
                   sortedProducts.map((product) => {
-                  const activePrice = product.discountPrice ?? product.price;
+                  const activePrice = product.discountPrice ?? (product.price || 0);
                   const isOutOfStock = product.stock === 0;
 
                   return (
