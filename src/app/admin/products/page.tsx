@@ -110,9 +110,9 @@ export default function AdminProductsPage() {
 
   const filteredProducts = products.filter((product) => {
     const term = searchTerm.toLowerCase();
-    const nameBnMatch = product.nameBn.includes(searchTerm);
-    const nameEnMatch = product.nameEn.toLowerCase().includes(term);
-    const categorySearchMatch = product.category.toLowerCase().includes(term);
+    const nameBnMatch = (product.nameBn || "").includes(searchTerm);
+    const nameEnMatch = (product.nameEn || "").toLowerCase().includes(term);
+    const categorySearchMatch = (product.category || "").toLowerCase().includes(term);
     
     const searchPassed = nameBnMatch || nameEnMatch || categorySearchMatch;
     const categoryPassed = filterCategory === "all" || product.category === filterCategory;
